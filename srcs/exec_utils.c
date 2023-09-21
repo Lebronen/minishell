@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 15:10:40 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/19 16:38:52 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:30:36 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,9 @@ void    ft_redirect_in(char *commande, char **envp)
     pid_t   pid;
     int     filein;
     int     status;
+    int     std_in;
 
-    ft_printf("redirect in\n");
+    std_in = dup(0);
     list_command = ft_split(commande, '<');
     pid = fork();
     if (pid == -1)
@@ -126,10 +127,10 @@ void    ft_redirect_in(char *commande, char **envp)
     if (pid == 0)
     {
         filein = open(list_command[1] + 1, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        dup2(filein, STDIN_FILENO);
-        ft_printf("commande = %s et fd = %d\n", list_command[0], STDIN_FILENO);
+        dup2(std_in, STDIN_FILENO);
         execute(list_command[0], envp);
         close(filein);
+        close(std_in);
         dup2(STDIN_FILENO, STDIN_FILENO);
     }
     else
