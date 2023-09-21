@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 15:10:40 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/21 16:30:36 by rshay            ###   ########.fr       */
+/*   Updated: 2023/09/21 17:20:31 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void    ft_redirect_out(char *commande, char **envp)
     {
         fileout = open(list_command[1] + 1, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         dup2(fileout, STDOUT_FILENO);
-        ft_printf("commande = %s et fd = %d\n", list_command[0], STDOUT_FILENO);
         execute(list_command[0], envp);
         close(fileout);
         dup2(STDOUT_FILENO, STDOUT_FILENO);
@@ -117,21 +116,20 @@ void    ft_redirect_in(char *commande, char **envp)
     pid_t   pid;
     int     filein;
     int     status;
-    int     std_in;
 
-    std_in = dup(0);
     list_command = ft_split(commande, '<');
     pid = fork();
     if (pid == -1)
         error();
     if (pid == 0)
     {
-        filein = open(list_command[1] + 1, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        dup2(std_in, STDIN_FILENO);
-        execute(list_command[0], envp);
+        filein = open(list_command[1] + 1, O_RDWR , S_IRUSR | S_IWUSR, 0644);
+        if (filein < 0)
+            ft_printf("file not found\n");
+        if (dup2(filein, STDIN_FILENO) < 0)
+            ft_printf("dup2 error\n");
         close(filein);
-        close(std_in);
-        dup2(STDIN_FILENO, STDIN_FILENO);
+        execute(list_command[0], envp);
     }
     else
         waitpid(pid, &status, 0);
