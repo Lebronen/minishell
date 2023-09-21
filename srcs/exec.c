@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/19 16:05:19 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:41:11 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,10 @@ void	process(char *commande, char **envp)
 	}
 	else if (nb_pipes)
 		ft_pipe(commande, envp);
-	else if (nb_redout)
+	else if (nb_redout == 1)
 		ft_redirect_out(commande, envp);
+	else if (nb_redout == 2)
+		ft_double(commande, envp);
 	else
 		ft_redirect_in(commande, envp);
 }

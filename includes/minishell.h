@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:33:32 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/21 15:49:10 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:41:28 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ int	    open_file(char *argv, int i);
 void    ft_redirect_out(char *commande, char **envp);
 void    ft_redirect_in(char *commande, char **envp);
 char    **init_env(char **envp);
+void    ft_double(char *commande, char **envp);
 
 #endif
