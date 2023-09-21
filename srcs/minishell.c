@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:30:45 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/21 14:08:51 by rshay            ###   ########.fr       */
+/*   Updated: 2023/09/21 16:21:13 by cgermain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 int main(int argc, char **argv, char **envp)
 {
     (void)argv;
-    init_env(envp);
+    char	**env;
+
+    env = init_env(envp);
     if (argc == 1)
     {
-        prompt(envp);
+        prompt(env);
     }
     else
     {
