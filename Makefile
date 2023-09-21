@@ -28,7 +28,7 @@ MAGENTA		=	\033[0;95m
 CYAN		=	\033[0;96m
 WHITE		=	\033[0;97m
 
-SRC_FILES	=	minishell prompt exec exec_utils utils2
+SRC_FILES	=	minishell prompt exec exec_utils utils2 env
 SRC_B_FILES	=	minishell prompt exec
 
 
