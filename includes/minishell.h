@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:33:32 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/19 16:04:37 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:49:10 by cgermain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ void	process(char *commande, char **envp);
 int	    open_file(char *argv, int i);
 void    ft_redirect_out(char *commande, char **envp);
 void    ft_redirect_in(char *commande, char **envp);
+char    **init_env(char **envp);
 
 #endif
