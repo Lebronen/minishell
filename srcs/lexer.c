@@ -17,7 +17,6 @@ t_token *new_token(int type, char *str, t_token *last)
 {
 	t_token *new;
 
-
 	new = malloc(sizeof(t_token));
 	if(!new)
 		return (NULL);
@@ -28,31 +27,47 @@ t_token *new_token(int type, char *str, t_token *last)
 	return (new);
 }
 
-char *getstring(char *str, char c)
+t_token *first_token(t_token *token)
 {
-	int	i;
-	char	*result;
+	t_token *previous;
 
-	result = malloc(sizeof(char) * (ft_strlen(str) + 1));
-	if (result == NULL)
+	while (token->previous)
+	{
+		previous = token->previous;
+		previous->next = token;
+		token = token->previous;
+	}
+	return(token);
+}
+
+char	*ft_strdup_c(char *s, char c)
+{
+	char	*result;
+	int		i;
+
+	result = malloc((ft_strlen(s) + 1) * sizeof(char));
+	if (!result)
 		return (NULL);
 	i = 0;
-	while (str[i] != c || str[i] != '\0')
+	while (s[i] && s[i] != c)
 	{
-		result[i] = str[i];
+		result[i] = s[i];
 		i++;
 	}
 	result[i] = '\0';
+	if (s[i] == '\0' && (c == 39 || c == 34))
+		return (NULL);
 	return (result);
 }
  	
 
+//gérer unclosed quotes
 
 t_token	*lexer(char *commande)
 {
 	int	i;
-
 	t_token *last;
+
 	last = NULL;
 	i = 0;
 	while (commande[i])
@@ -86,23 +101,31 @@ t_token	*lexer(char *commande)
 				last = new_token(REDIR, "Output", last);
 			i++;
 		}
-	/*	else if (commande[i]  == 34)
+		else if (commande[i]  == 34)
 		{
 			i++;
-			last = new_token(QUOTE, getstring(commande + i, 34), last);
+			last = new_token(QUOTE, ft_strdup_c(&commande[i], 34), last);
 			while (commande[i] != 34 && commande[i] != '\0')
 				i++;
-			//printf("lol");
-			//i++;
-		}*/
+			if (commande[i] == 34)
+				i++;
+
+		}
+		else if (commande[i]  == 39)
+		{
+			i++;
+			last = new_token(QUOTE, ft_strdup_c(&commande[i], 39), last);
+			while (commande[i] != 39 && commande[i] != '\0')
+				i++;
+			if (commande[i] == 39)
+				i++;
+		}
 		else
 		{
-		/*	last = new_token(WORD, getstring(commande + i, 32), last); 
+			last = new_token(WORD, ft_strdup_c(&commande[i], 32), last); 
 			while (commande[i] != 32 && commande[i] != '\0')
-				i++;*/
-			printf("lol");
-			i++;
+				i++;
 		}
 	}
-	return (last);
+	return (first_token(last));
 }

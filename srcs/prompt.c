@@ -25,6 +25,7 @@ void    prompt(char **envp)
             break;
         }
 
+        
         process(commande, envp);
 
         add_history(commande);
