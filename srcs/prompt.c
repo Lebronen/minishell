@@ -26,8 +26,8 @@ void    prompt(char **envp)
         }
 
     /*token = lexer(commande);
-    print_token(token);*/
-    (void) envp;
+    print_token(token);
+    (void) envp;*/
         process(commande, envp);
 
         add_history(commande);
