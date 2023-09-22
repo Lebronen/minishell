@@ -27,9 +27,20 @@
 #define WORD 2
 #define QUOTE 3
 
+# define IN 0
+# define OUT 1
+# define ENDOF 2
+# define APPEND 3
+
+# define PATH 0
+# define COMMAND 1
+# define OPTION 2
+# define ARG 3
+
 typedef struct s_token
 {
 	int	type;
+	int	type_2;
 	char	*str;
 
 	struct s_token	*next;
@@ -49,5 +60,6 @@ void    ft_redirect_in(char *commande, char **envp);
 char    **init_env(char **envp);
 void    ft_double(char *commande, char **envp);
 t_token *lexer(char *commande);
+void print_token(t_token *token);
 
 #endif

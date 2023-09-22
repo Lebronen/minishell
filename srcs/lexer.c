@@ -56,11 +56,47 @@ char	*ft_strdup_c(char *s, char c)
 	}
 	result[i] = '\0';
 	if (s[i] == '\0' && (c == 39 || c == 34))
+	{
+		write(2, "il faut fermer les guillemets", 29);
 		return (NULL);
+	}
 	return (result);
 }
  	
-
+void tokenizer(t_token *token)
+{
+	
+	if (token->type == PIPE)
+	{
+		printf("parse error near '|'");
+		return ;
+	}
+	if (token->type == REDIR)
+	{
+		token = token->next;
+		token->type_2 = PATH;
+	}
+	else
+	{
+		token->type_2 = COMMAND;
+		token = token->next;
+	}
+	while (token != NULL)
+	{
+		if ((token->type == WORD || token->type == QUOTE) && token->previous->type != REDIR)
+		{
+			if (token->previous->type == PIPE)
+				token->type_2 = COMMAND;
+			else if (token->str[0]== '-')
+				token->type_2 = OPTION;
+			else
+				token->type_2 = ARG; 
+		}
+		if (token->type == REDIR)
+			token->next->type_2 = PATH;
+		token = token->next;
+	}
+}
 //gérer unclosed quotes
 
 t_token	*lexer(char *commande)
@@ -77,6 +113,7 @@ t_token	*lexer(char *commande)
 		else if (commande[i] == '|')
 		{
 			last = new_token(PIPE, NULL, last);
+			last->type_2 = 0;
 			i++;
 		}
 		else if (commande[i] == ('<'))
@@ -84,10 +121,14 @@ t_token	*lexer(char *commande)
 			if (commande[i + 1] == '<')
 			{
 				last = new_token(REDIR, "EOF", last);
+				last->type_2 = ENDOF;
 				i++;
 			}
 			else
+			{
 				last = new_token(REDIR, "input", last);
+				last->type_2 = IN;
+			}
 			i++;
 		}
 		else if (commande[i] == ('>'))
@@ -95,10 +136,14 @@ t_token	*lexer(char *commande)
 			if (commande[i + 1] == '>')
 			{
 				last = new_token(REDIR, "Append", last);
+				last->type_2 = APPEND;
 				i++;
 			}
 			else
+			{
 				last = new_token(REDIR, "Output", last);
+				last->type_2 = OUT;
+			}
 			i++;
 		}
 		else if (commande[i]  == 34)
@@ -127,5 +172,42 @@ t_token	*lexer(char *commande)
 				i++;
 		}
 	}
+	tokenizer (first_token(last));
 	return (first_token(last));
+}
+
+
+void print_token(t_token *token)
+{
+	while (token)
+	{
+		if (token->type == PIPE)
+		{
+			printf("<PIPE>\n");
+		}
+		else if (token->type == REDIR)
+		{
+			if (token->type_2 == IN)
+				printf("<IN>\n");
+			if (token->type_2 == OUT)
+				printf("<OUT>\n");
+			if (token->type_2 == ENDOF)
+				printf("<EOF>\n");
+			if (token->type_2 == APPEND)
+				printf("<APPEND>\n");
+		}
+		else
+		{
+			if (token->type_2 == PATH)
+				printf("<%s>, <type = path>\n", token->str);
+			if (token->type_2 == COMMAND)
+				printf("<%s>, <type = command>\n", token->str);
+			if (token->type_2 == OPTION)
+				printf("<%s>, <type = option>\n", token->str);
+			if (token->type_2 == ARG)
+				printf("<%s>, <type = arg>\n", token->str);
+		}
+		token = token->next;
+	}
+
 }
