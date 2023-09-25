@@ -6,7 +6,7 @@
 /*   By: cgermain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 15:31:31 by cgermain          #+#    #+#             */
-/*   Updated: 2023/09/21 16:20:13 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/09/25 11:13:36 by cgermain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,34 @@ char	**init_env(char **envp)
 		i--;
 	}
 	return (fill_env(envp, result));
+}
+
+static int	compare_words(char *word1, char *word2)
+{
+	size_t	i;
+
+	i = 0;
+	while(word1[i] == word2[i] && word1 && word2)
+		i++;
+	if (i == ft_strlen(word2))
+			return(1);
+	return (0);
+}	
+
+char	*get_env_value(char **envp, char *name)
+{
+	int	i;
+	int	j;
+	
+	i = 0;
+	while(envp[i])
+	{
+		if (compare_words(envp[i], name))
+		{
+			j = ft_strlen(name) + 1;
+			return (ft_strdup(&envp[i][j]));
+		}
+		i++;			
+	}
+	return (NULL);
 }

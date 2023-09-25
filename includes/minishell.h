@@ -61,5 +61,6 @@ char    **init_env(char **envp);
 void    ft_double(char *commande, char **envp);
 t_token *lexer(char *commande);
 void print_token(t_token *token);
+char	*get_env_value(char **envp, char *name);
 
 #endif
