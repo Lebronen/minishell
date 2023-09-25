@@ -168,7 +168,7 @@ t_token	*lexer(char *commande, char **envp)
 		else if (commande[i] == '$')
 		{
 			i++;
-			if (get_env_value(envp, ft_strdup_c(&commande[i], ' ')));
+			if (get_env_value(envp, ft_strdup_c(&commande[i], ' ')))
 				last = new_token(WORD, get_env_value(envp, ft_strdup_c(&commande[i], ' ')), last);
 			while (commande[i] != ' ' && commande[i] != '\0')
 				i++;
