@@ -59,7 +59,7 @@ void    ft_redirect_out(char *commande, char **envp);
 void    ft_redirect_in(char *commande, char **envp);
 char    **init_env(char **envp);
 void    ft_double(char *commande, char **envp);
-t_token *lexer(char *commande);
+t_token *lexer(char *commande, char **envp);
 void print_token(t_token *token);
 char	*get_env_value(char **envp, char *name);
 

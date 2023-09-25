@@ -99,7 +99,7 @@ void tokenizer(t_token *token)
 }
 //gérer unclosed quotes
 
-t_token	*lexer(char *commande)
+t_token	*lexer(char *commande, char **envp)
 {
 	int	i;
 	t_token *last;
@@ -164,6 +164,12 @@ t_token	*lexer(char *commande)
 				i++;
 			if (commande[i] == 39)
 				i++;
+		}
+		else if (commande[i] == '$')
+		{
+			i++;
+			last = new_token(WORD, get_env_value(envp, ft_strdup_c(&commande[i], ' ')), last);
+			i++;
 		}
 		else
 		{
