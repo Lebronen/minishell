@@ -102,6 +102,7 @@ void tokenizer(t_token *token)
 t_token	*lexer(char *commande, char **envp)
 {
 	int	i;
+	char *str;
 	t_token *last;
 
 	last = NULL;
@@ -168,8 +169,11 @@ t_token	*lexer(char *commande, char **envp)
 		else if (commande[i] == '$')
 		{
 			i++;
-			if (get_env_value(envp, ft_strdup_c(&commande[i], ' ')))
-				last = new_token(WORD, get_env_value(envp, ft_strdup_c(&commande[i], ' ')), last);
+			str = get_env_value(envp, ft_strdup_c(&commande[i], ' '));
+			if (str)
+				last = new_token(WORD, str, last);
+			else
+				free(str);
 			while (commande[i] != ' ' && commande[i] != '\0')
 				i++;
 		}
