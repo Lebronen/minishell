@@ -182,7 +182,7 @@ char *env_value_checker(char *commande, char **envp)
 	return (commande);
 }
 
-//gerer unclosed quotes "
+//gerer unclosed quotes
 
 t_token	*lexer(char *commande, char **envp)
 {
