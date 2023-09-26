@@ -97,16 +97,101 @@ void tokenizer(t_token *token)
 		token = token->next;
 	}
 }
-//gérer unclosed quotes
+
+char *new_command(char *commande, char *env_value, int i)
+{
+	size_t j;
+	size_t	k;
+	size_t l;
+	char *str;
+	
+	j = 0;
+	k = i;
+	l = 0;
+
+	while(commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"')
+		i++;
+	str = malloc(sizeof(char) * ((ft_strlen(commande) - (i-k)) + ft_strlen(env_value)));
+	if(!str)
+		return (NULL);
+	while (j < k)
+	{
+		str[j] = commande[j];
+		j++;
+	}
+	while(j < (ft_strlen(env_value) + k))
+	{
+		str[j] = env_value[l];
+		j++;
+		l++;
+	}
+	while(commande[i])
+	{
+		str[j] = commande[i];
+		i++;
+		j++;
+	}
+	str[j] = '\0';
+	free(commande);
+	return str;
+}
+
+char *env_value_checker(char *commande, char **envp)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (commande[i])
+	{
+		if (commande[i] == 39)
+		{
+			i++;
+			while(commande[i] != 39 && commande[i])
+				i++;
+		}
+		else if (commande[i] == '"')
+		{
+			i++;
+			while(commande[i] != '"' && commande[i])
+			{
+				if (commande[i] == '$')
+				{
+					i++;
+					j = i;
+					while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"')
+						i++;
+					if (commande[i] == '"')
+						commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], '"')), j);
+					else
+						commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], ' ')), j);
+				}
+				i++;
+			}
+		}
+		else if (commande[i] == '$')
+		{
+			i++;
+			commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], ' ')), j);
+			while (commande[i] != ' ' && commande[i] != '\0')
+				i++;
+		}
+		else 
+			i++;
+	}
+	return (commande);
+}
+
+//gerer unclosed quotes "
 
 t_token	*lexer(char *commande, char **envp)
 {
 	int	i;
-	char *str;
 	t_token *last;
 
 	last = NULL;
 	i = 0;
+	commande = env_value_checker(commande, envp);
 	while (commande[i])
 	{
 		if (commande[i] == ' ')
@@ -166,17 +251,6 @@ t_token	*lexer(char *commande, char **envp)
 			if (commande[i] == 39)
 				i++;
 		}
-		else if (commande[i] == '$')
-		{
-			i++;
-			str = get_env_value(envp, ft_strdup_c(&commande[i], ' '));
-			if (str)
-				last = new_token(WORD, str, last);
-			else
-				free(str);
-			while (commande[i] != ' ' && commande[i] != '\0')
-				i++;
-		}
 		else
 		{
 			last = new_token(WORD, ft_strdup_c(&commande[i], 32), last); 
@@ -221,5 +295,4 @@ void print_token(t_token *token)
 		}
 		token = token->next;
 	}
-
 }
