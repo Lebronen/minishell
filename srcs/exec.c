@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/21 17:41:11 by rshay            ###   ########.fr       */
+/*   Updated: 2023/09/26 15:45:59 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,28 @@ void	process(char *commande, char **envp)
 	nb_pipes = nb_str(commande, '|');
 	nb_redout = nb_str(commande, '>');
 	nb_redin = nb_str(commande, '<');
-	if (!nb_pipes && !nb_redout && !nb_redin)
+	if (nb_pipes)
+		ft_pipe(commande, envp);
+	else if (nb_redout == 1)
+		ft_redirect_out(commande, envp);
+	else if (nb_redout == 2)
+		ft_double(commande, envp);
+	else if (!strncmp("cd", commande, 2))
+		cd(commande + 3);
+	else if (!strcmp("pwd", commande))
+		pwd();
+	else if (!strcmp("env", commande))
+		env(envp);
+	else if (!strncmp("echo", commande, 4))
+	{
+		if (! strncmp("-n", commande + 4, 2))
+			echo(commande + 8, 1, 1);
+		else
+			echo(commande + 5, 0, 1);
+	}
+	else if (nb_redin == 1)
+		ft_redirect_in(commande, envp);
+	else
 	{
 		pid = fork();
 		if (pid == 0)
@@ -107,12 +128,4 @@ void	process(char *commande, char **envp)
 		else
 			perror("fork");
 	}
-	else if (nb_pipes)
-		ft_pipe(commande, envp);
-	else if (nb_redout == 1)
-		ft_redirect_out(commande, envp);
-	else if (nb_redout == 2)
-		ft_double(commande, envp);
-	else
-		ft_redirect_in(commande, envp);
 }

@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:33:32 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/21 20:05:08 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:42:29 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,9 @@ void    ft_double(char *commande, char **envp);
 t_token *lexer(char *commande, char **envp);
 void print_token(t_token *token);
 char	*get_env_value(char **envp, char *name);
+void    cd(char *path);
+void    pwd();
+void    env(char **envp);
+void    echo(char *str, int option, int fd);
 
 #endif
