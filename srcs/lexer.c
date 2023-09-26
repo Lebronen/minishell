@@ -162,9 +162,9 @@ char *env_value_checker(char *commande, char **envp)
 					while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"')
 						i++;
 					if (commande[i] == '"')
-						commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], '"')), j);
+						commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], '"')), j - 1);
 					else
-						commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], ' ')), j);
+						commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], ' ')), j - 1);
 				}
 				i++;
 			}
@@ -172,7 +172,7 @@ char *env_value_checker(char *commande, char **envp)
 		else if (commande[i] == '$')
 		{
 			i++;
-			commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], ' ')), j);
+			commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[i], ' ')), i - 1);
 			while (commande[i] != ' ' && commande[i] != '\0')
 				i++;
 		}
@@ -182,7 +182,7 @@ char *env_value_checker(char *commande, char **envp)
 	return (commande);
 }
 
-//gerer unclosed quotes
+//gerer unclosed quotes "
 
 t_token	*lexer(char *commande, char **envp)
 {
