@@ -85,7 +85,7 @@ void tokenizer(t_token *token)
 	{
 		if ((token->type == WORD || token->type == QUOTE) && token->previous->type != REDIR)
 		{
-			if (token->previous->type == PIPE)
+			if (token->previous->type == PIPE || token->previous->type_2 == PATH)
 				token->type_2 = COMMAND;
 			else if (token->str[0]== '-')
 				token->type_2 = OPTION;
