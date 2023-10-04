@@ -32,10 +32,14 @@
 # define ENDOF 2
 # define APPEND 3
 
-# define PATH 0
-# define COMMAND 1
-# define OPTION 2
-# define ARG 3
+# define PATH 4
+# define COMMAND 5
+# define OPTION 6
+# define ARG 7
+
+#define PIP 0
+#define RDR 1
+#define CMD 2
 
 typedef struct s_token
 {
@@ -46,6 +50,17 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*previous;
 }	t_token;
+
+typedef struct s_node
+{
+	int type;
+	int rdr_type;
+	char *path;
+	char **str_options;
+	struct s_node *up;
+	struct s_node *left;
+	struct s_node  *right;
+} t_node;
 
 void    prompt(char **envp);
 void    execute(char *commande, char **envp);
@@ -66,5 +81,7 @@ void    cd(char *path);
 void    pwd();
 void    env(char **envp);
 void    echo(char *str, int option, int fd);
+t_node  *make_cmd(t_token *token);
+t_node  *nodizer(t_token *token);
 
 #endif
