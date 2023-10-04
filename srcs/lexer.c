@@ -187,11 +187,12 @@ char *env_value_checker(char *commande, char **envp)
 t_token	*lexer(char *commande, char **envp)
 {
 	int	i;
+(void)envp;
 	t_token *last;
 
 	last = NULL;
 	i = 0;
-	commande = env_value_checker(commande, envp);
+	//commande = env_value_checker(commande, envp);
 	while (commande[i])
 	{
 		if (commande[i] == ' ')
@@ -217,7 +218,7 @@ t_token	*lexer(char *commande, char **envp)
 			}
 			i++;
 		}
-		else if (commande[i] == ('>'))
+		else if (commande[i] == '>')
 		{
 			if (commande[i + 1] == '>')
 			{
@@ -257,6 +258,7 @@ t_token	*lexer(char *commande, char **envp)
 			while (commande[i] != 32 && commande[i] != '\0')
 				i++;
 		}
+
 	}
 	tokenizer (first_token(last));
 	return (first_token(last));

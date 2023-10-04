@@ -21,17 +21,50 @@ void print_node(t_node *node)
     
     if(node->type == CMD)
     {
-        printf ("node CMD :\n");
+        printf ("node CMD->");
         while(node->str_options[i])
-        {
-            printf("%s\n", node->str_options[i]);
-            i++;
+       {
+            printf("%s\n", node->str_options[0]);
+           i++;
         }
     }
     if (node->type == RDR)
         printf("redirection type %d\nchemin : %s\n", node->rdr_type, node->path);
     if (node->type == PIP)
         printf("PIIIIIIPE\n");
+}
+
+t_node  *make_rdr(t_token *token)
+{
+    t_node *rdr_node;
+
+    rdr_node = malloc(sizeof(t_node));
+    if (!rdr_node)
+        return (NULL);
+    rdr_node->type = RDR;
+    rdr_node->rdr_type = token->type_2;
+    rdr_node->path = token->next->str;
+    print_node(rdr_node);
+    return (rdr_node);
+}
+
+void init_rdr_nodes(t_token *token, t_node *node)
+{
+    t_node *temp_node;
+
+    while(token && token->previous && token->previous->type != PIPE)
+        token = token->previous;
+    while(token && token->next && token->next->type != PIPE)
+    {
+        if (token->type == REDIR)
+        {
+            node->left = make_rdr(token);
+            temp_node = node;
+            node = node->left;
+            node->up = temp_node;
+        }
+        token = token->next;
+    }
 }
 
 // jenvoie un token cmd pour creer un node cmd
@@ -68,22 +101,9 @@ t_node  *make_cmd(t_token *token)
     }
     cmd_node->str_options[i] = NULL;
     cmd_node->type = CMD;
+    init_rdr_nodes(tmp_token, cmd_node);
     print_node(cmd_node);
     return (cmd_node);
-}
-
-t_node  *make_rdr(t_token *token)
-{
-    t_node *rdr_node;
-
-    rdr_node = malloc(sizeof(t_node));
-    if (!rdr_node)
-        return (NULL);
-    rdr_node->type = RDR;
-    rdr_node->rdr_type = token->type_2;
-    rdr_node->path = token->next->str;
-    print_node(rdr_node);
-    return (rdr_node);
 }
 
 t_node *make_pip(t_token *token)
