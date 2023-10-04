@@ -26,9 +26,16 @@ t_token *last_cmd(t_token *token)
 {
     while (token->next)
         token = token->next;
-    while(token->type != COMMAND && token->previous)
+    while(token->type_2 != COMMAND && token->previous)
         token = token->previous;
     return (token);
+}
+
+t_token *previous_cmd(t_token *token)
+{
+    while(token->previous && token->type_2 != COMMAND)
+        token = token->previous;
+    return(token);
 }
 
 t_node *first_node(t_node *node)

@@ -88,16 +88,20 @@ t_node  *make_rdr(t_token *token)
 
 t_node *make_pip(t_token *token)
 {
-    (void) token;
     t_node  *pip_node;
+    t_node  *temp_node;
 
     pip_node = malloc(sizeof(t_node));
     if(!pip_node)
         return(NULL);
     pip_node->type = PIP;
+    pip_node->left = make_cmd(previous_cmd(token));
+    temp_node = pip_node->left;
+    temp_node->up = pip_node;
     print_node(pip_node);
     return(pip_node);
 }
+
 
 t_node  *nodizer(t_token *token)
 {
