@@ -68,7 +68,7 @@ t_node  *make_cmd(t_token *token)
     }
     cmd_node->str_options[i] = NULL;
     cmd_node->type = CMD;
-//    print_node(cmd_node);
+    print_node(cmd_node);
     return (cmd_node);
 }
 
@@ -82,7 +82,7 @@ t_node  *make_rdr(t_token *token)
     rdr_node->type = RDR;
     rdr_node->rdr_type = token->type_2;
     rdr_node->path = token->next->str;
- //   print_node(rdr_node);
+    print_node(rdr_node);
     return (rdr_node);
 }
 
@@ -95,7 +95,7 @@ t_node *make_pip(t_token *token)
     if(!pip_node)
         return(NULL);
     pip_node->type = PIP;
-    //print_node(pip_node);
+    print_node(pip_node);
     return(pip_node);
 }
 

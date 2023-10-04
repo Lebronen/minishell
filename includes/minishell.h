@@ -82,6 +82,10 @@ void    pwd();
 void    env(char **envp);
 void    echo(char *str, int option, int fd);
 t_node  *make_cmd(t_token *token);
+t_node  *make_pip(t_token *token);
+t_node  *make_rdr(t_token *token);
 t_node  *nodizer(t_token *token);
+t_node *init_tree(t_token *token);
+
 
 #endif
