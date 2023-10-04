@@ -26,9 +26,8 @@ void    prompt(char **envp)
         }
 
     token = lexer(commande, envp);
-   print_token(token);
-   printf ("XXXXXXXXXXXXXXXXXXXXX\n");
-   nodizer(token);
+//   print_token(token);
+    nodizer(token);
 
         process(commande, envp);
 
