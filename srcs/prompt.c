@@ -26,8 +26,7 @@ void    prompt(char **envp)
         }
 
     token = lexer(commande, envp);
-// print_token(token);
-init_tree(token);
+    init_tree(token);
 
         process(commande, envp);
 
