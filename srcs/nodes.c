@@ -19,19 +19,20 @@ void print_node(t_node *node)
     i = 0;
     printf("node type : %d\n", node->type);
     
-    if(node->type == CMD)
+
+    if (node->type == RDR)
+        printf("redirection type %d\nchemin : %s\n", node->rdr_type, node->path);
+    else if (node->type == PIP)
+        printf("PIIIIIIPE\n");
+    else if(node->type == CMD)
     {
         printf ("node CMD->");
         while(node->str_options[i])
        {
-            printf("%s\n", node->str_options[0]);
+            printf("%s\n", node->str_options[i]);
            i++;
         }
     }
-    if (node->type == RDR)
-        printf("redirection type %d\nchemin : %s\n", node->rdr_type, node->path);
-    if (node->type == PIP)
-        printf("PIIIIIIPE\n");
 }
 
 t_node  *make_rdr(t_token *token)
@@ -51,7 +52,10 @@ t_node  *make_rdr(t_token *token)
 void init_rdr_nodes(t_token *token, t_node *node)
 {
     t_node *temp_node;
+    t_node *cmd_node;
 
+
+    cmd_node = node;
     while(token && token->previous && token->previous->type != PIPE)
         token = token->previous;
     while(token && token->next && token->next->type != PIPE)
@@ -101,8 +105,9 @@ t_node  *make_cmd(t_token *token)
     }
     cmd_node->str_options[i] = NULL;
     cmd_node->type = CMD;
-    init_rdr_nodes(tmp_token, cmd_node);
+   
     print_node(cmd_node);
+     init_rdr_nodes(tmp_token, cmd_node);
     return (cmd_node);
 }
 
