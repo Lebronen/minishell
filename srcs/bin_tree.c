@@ -45,6 +45,45 @@ t_node *first_node(t_node *node)
     return(node);
 }
 
+void print_branch(t_node *node)
+{
+    t_node *tmp_node;
+
+    tmp_node = node;
+ 
+    if (node->left)
+    {
+        node = node->left;
+        print_node(node);
+    }
+    print_node(tmp_node);
+    /*while (node->left)
+    {
+        node = node->left;
+        print_node(node);
+    }   
+    while(node && node->up)
+        node = node->up;
+    print_node(node);
+
+    if (node->right)
+    {
+        node = node->right;
+        print_tree(node);
+    }*/
+}
+
+void print_tree(t_node *node)
+{
+    while(node && node->right)
+    {
+        print_branch(node);
+        node = node->right;
+    }
+    if (node)
+        print_branch(node);
+}
+
 t_node *init_tree(t_token *token)
 {
     t_node *node;
@@ -70,3 +109,4 @@ t_node *init_tree(t_token *token)
     node->up = temp_node;
     return(first_node(node));
 }
+

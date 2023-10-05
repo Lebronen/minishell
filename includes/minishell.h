@@ -59,7 +59,7 @@ typedef struct s_node
 	char **str_options;
 	struct s_node *up;
 	struct s_node *left;
-	struct s_node  *right;
+	struct s_node *right;
 } t_node;
 
 void    prompt(char **envp);
@@ -88,6 +88,7 @@ t_token *previous_cmd(t_token *token);
 t_node  *nodizer(t_token *token);
 t_node *init_tree(t_token *token);
 t_token *next_pipe(t_token *token);
-
+void print_node(t_node *node);
+void print_tree(t_node *node);
 
 #endif
