@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/07 17:49:52 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/07 18:58:00 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void    export(char *commande, t_list *envp)
     
     here = 0;
     current = envp;
-    while (current->next)
+    while (current)
     {
         if (!ft_strncmp(current->content, commande, ft_index(commande, '=')))
         {
@@ -68,5 +68,23 @@ void    export(char *commande, t_list *envp)
     {
         new = ft_lstdupnew(commande);
         ft_lstadd_back(&envp, new);
+    }
+}
+
+void    unset(char *commande, t_list *envp)
+{
+    t_list  *current;
+    t_list  *next;
+    
+    current = envp;
+    while (current && current ->next)
+    {
+        if (!ft_strncmp(current->next->content, commande, ft_strlen(commande)))
+        {
+            next = current->next->next;
+            ft_lstdelone(current->next, &del);
+            current->next = next;
+        }
+        current = current->next;
     }
 }

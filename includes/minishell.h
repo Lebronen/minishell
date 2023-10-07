@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:33:32 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/07 16:56:45 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/07 18:45:07 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,11 @@ void    echo(char *str, int option, int fd);
 void    export(char *commande, t_list *env);
 char    **add_env(char *ligne, t_list *envp);
 char    **supp_env(char *ligne, t_list *envp);
-char    **unset(char *commande, t_list *env);
 t_list  *tab_to_list(char **tab);
 char    **tabcpy(char **tab);
 char    **list_to_tab(t_list *env);
 t_list	*ft_lstdupnew(char *content);
+void    unset(char *commande, t_list *envp);
+void	del(void *content);
 
 #endif
