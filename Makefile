@@ -7,7 +7,7 @@ LIBFT		= libft
 SRC_DIR		= srcs/
 OBJ_DIR		= objects/
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g3
 RM			= rm -f
 SMAKE		= make --no-print-directory
 
@@ -28,7 +28,7 @@ MAGENTA		=	\033[0;95m
 CYAN		=	\033[0;96m
 WHITE		=	\033[0;97m
 
-SRC_FILES	=	minishell prompt exec exec_utils utils2 env lexer builtins nodes bin_tree
+SRC_FILES	=	minishell prompt exec exec_utils utils2 env lexer builtins modify linked_list
 SRC_B_FILES	=	minishell prompt exec
 
 

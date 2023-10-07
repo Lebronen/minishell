@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/26 15:45:59 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/07 16:24:03 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,20 @@ int	is_slash(char *s)
 }
 
 
-void    execute(char *commande, char **envp)
+void    execute(char *commande, t_list *envp)
 {
     char    **cmd;
     char    *path;
     int     i;
+	char	**tab;
     
-    
+		tab = list_to_tab(envp);
         cmd = ft_split(commande, ' ');
         if (is_slash(cmd[0]))
             path = cmd[0];
         else
-            path = find_path(cmd[0], envp);
-        if (!path || execve(path, cmd, envp) == -1)
+            path = find_path(cmd[0], tab);
+        if (!path || execve(path, cmd, tab) == -1)
 	    {  
             i = -1;
             while (cmd[++i])
@@ -84,13 +85,14 @@ void    execute(char *commande, char **envp)
 		}
 }
 
-void	process(char *commande, char **envp)
+void	process(char *commande, t_list *envp)
 {
 	int		nb_pipes;
 	int		nb_redout;
 	int		nb_redin;
 	pid_t   pid;
 	int		status;
+	char	**tab;
 
 	nb_pipes = nb_str(commande, '|');
 	nb_redout = nb_str(commande, '>');
@@ -109,15 +111,20 @@ void	process(char *commande, char **envp)
 		env(envp);
 	else if (!strncmp("echo", commande, 4))
 	{
-		if (! strncmp("-n", commande + 4, 2))
+		if (! strncmp("-n", commande + 5, 2))
 			echo(commande + 8, 1, 1);
 		else
 			echo(commande + 5, 0, 1);
 	}
+	
+	else if (!strncmp("export", commande, 6))
+		export(commande + 7, envp);
+	
 	else if (nb_redin == 1)
 		ft_redirect_in(commande, envp);
 	else
 	{
+		tab = list_to_tab(envp);
 		pid = fork();
 		if (pid == 0)
 			execute(commande, envp);

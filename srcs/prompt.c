@@ -6,16 +6,16 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 18:15:16 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/26 15:03:47 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/03 15:41:33 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void    prompt(char **envp)
+void    prompt(t_list *envp)
 {
     char    *commande;
-    t_token *token;
+    //t_token *token;
     while (1)
     {
         commande = readline("$");
@@ -25,9 +25,8 @@ void    prompt(char **envp)
             break;
         }
 
-    token = lexer(commande, envp);
+    //token = lexer(commande, envp);
     //print_token(token);
-    print_tree(init_tree(token));
 
         process(commande, envp);
 

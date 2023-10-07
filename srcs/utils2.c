@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 14:06:59 by lebronen          #+#    #+#             */
-/*   Updated: 2023/06/19 22:53:46 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/10/07 16:37:03 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,19 @@ int	open_file(char *argv, int i)
 	if (file == -1)
 		error();
 	return (file);
+}
+
+void	del(void *content)
+{
+	content = NULL;
+}
+
+int	ft_index(char *commande, char c)
+{
+	int	i;
+
+	i = 0;
+	while (commande[i] != c)
+		i++;
+	return (i);
 }

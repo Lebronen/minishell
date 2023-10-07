@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 15:10:40 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/21 18:34:30 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/03 15:34:28 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int nb_str(char *s, char c)
     return (i);
 }
 
-void	child_process(char *commande, char **envp, int *fd)
+void	child_process(char *commande, t_list *envp, int *fd)
 {
 	int		filein;
 
@@ -38,7 +38,7 @@ void	child_process(char *commande, char **envp, int *fd)
 	execute(commande, envp);
 }
 
-void	parent_process(char *commande, char **envp, int *fd)
+void	parent_process(char *commande, t_list *envp, int *fd)
 {
 	int		fileout;
 
@@ -51,7 +51,7 @@ void	parent_process(char *commande, char **envp, int *fd)
 	execute(commande, envp);
 }
 
-void    ft_pipe(char *commande, char **envp)
+void    ft_pipe(char *commande, t_list *envp)
 {
     char **list_commandes;
     int     fd[2];
@@ -86,7 +86,7 @@ void    ft_pipe(char *commande, char **envp)
             }
 }
 
-void    ft_redirect_out(char *commande, char **envp)
+void    ft_redirect_out(char *commande, t_list *envp)
 {
     char    **list_command;
     pid_t   pid;
@@ -110,7 +110,7 @@ void    ft_redirect_out(char *commande, char **envp)
     
 }
 
-void    ft_redirect_in(char *commande, char **envp)
+void    ft_redirect_in(char *commande, t_list *envp)
 {
     char    **list_command;
     pid_t   pid;
@@ -135,7 +135,7 @@ void    ft_redirect_in(char *commande, char **envp)
         waitpid(pid, &status, 0);
 }
 
-void    ft_double(char *commande, char **envp)
+void    ft_double(char *commande, t_list *envp)
 {
     char    **list_command;
     pid_t   pid;
