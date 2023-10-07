@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:30:45 by rshay             #+#    #+#             */
-/*   Updated: 2023/09/26 15:06:05 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/03 15:11:36 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 int main(int argc, char **argv, char **envp)
 {
     (void)argv;
-    char	**env;
+    t_list *env;
 
-    env = init_env(envp);
+    //env = init_env(envp);
+    env = tab_to_list(envp);
     
     if (argc == 1)
     {
