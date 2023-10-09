@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgermain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 17:49:44 by cgermain          #+#    #+#             */
-/*   Updated: 2023/10/03 15:10:12 by rshay            ###   ########.fr       */
+/*   Updated: 2023/09/21 19:51:55 by cgermain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void tokenizer(t_token *token)
 	{
 		if ((token->type == WORD || token->type == QUOTE) && token->previous->type != REDIR)
 		{
-			if (token->previous->type == PIPE)
+			if (token->previous->type == PIPE || token->previous->type_2 == PATH)
 				token->type_2 = COMMAND;
 			else if (token->str[0]== '-')
 				token->type_2 = OPTION;
@@ -187,11 +187,12 @@ char *env_value_checker(char *commande, char **envp)
 t_token	*lexer(char *commande, char **envp)
 {
 	int	i;
+(void)envp;
 	t_token *last;
 
 	last = NULL;
 	i = 0;
-	commande = env_value_checker(commande, envp);
+	//commande = env_value_checker(commande, envp);
 	while (commande[i])
 	{
 		if (commande[i] == ' ')
@@ -217,7 +218,7 @@ t_token	*lexer(char *commande, char **envp)
 			}
 			i++;
 		}
-		else if (commande[i] == ('>'))
+		else if (commande[i] == '>')
 		{
 			if (commande[i + 1] == '>')
 			{
@@ -257,6 +258,7 @@ t_token	*lexer(char *commande, char **envp)
 			while (commande[i] != 32 && commande[i] != '\0')
 				i++;
 		}
+
 	}
 	tokenizer (first_token(last));
 	return (first_token(last));
