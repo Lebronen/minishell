@@ -15,7 +15,7 @@
 void    prompt(t_list *envp)
 {
     char    *commande;
-    //t_token *token;
+    t_token *token;
     while (1)
     {
         commande = readline("$");
@@ -25,8 +25,9 @@ void    prompt(t_list *envp)
             break;
         }
 
-    //token = lexer(commande, envp);
-    //print_token(token);
+    token = lexer(commande, envp);
+    print_token(token);
+    //nodizer(token);
 
         process(commande, envp);
 

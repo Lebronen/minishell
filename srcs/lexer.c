@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 17:49:44 by cgermain          #+#    #+#             */
-/*   Updated: 2023/09/21 19:51:55 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/10/03 15:10:12 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void tokenizer(t_token *token)
 	{
 		if ((token->type == WORD || token->type == QUOTE) && token->previous->type != REDIR)
 		{
-			if (token->previous->type == PIPE || token->previous->type_2 == PATH)
+			if (token->previous->type == PIPE)
 				token->type_2 = COMMAND;
 			else if (token->str[0]== '-')
 				token->type_2 = OPTION;
@@ -136,7 +136,7 @@ char *new_command(char *commande, char *env_value, int i)
 	return str;
 }
 
-char *env_value_checker(char *commande, char **envp)
+char *env_value_checker(char *commande, t_list *envp)
 {
 	int i;
 	int j;
@@ -147,19 +147,21 @@ char *env_value_checker(char *commande, char **envp)
 		if (commande[i] == 39)
 		{
 			i++;
-			while(commande[i] != 39 && commande[i])
+			while(commande[i] && commande[i] != 39)
 				i++;
+			if (commande[i] == 39)
+			i++;
 		}
 		else if (commande[i] == '"')
 		{
 			i++;
-			while(commande[i] != '"' && commande[i])
+			while(commande[i] && commande[i] != '"')
 			{
 				if (commande[i] == '$')
 				{
 					i++;
 					j = i;
-					while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"')
+					while (commande[i] && commande[i] != ' ' && commande[i] != '"')
 						i++;
 					if (commande[i] == '"')
 						commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], '"')), j - 1);
@@ -168,12 +170,14 @@ char *env_value_checker(char *commande, char **envp)
 				}
 				i++;
 			}
+			if(commande[i] == '"')
+				i++;
 		}
 		else if (commande[i] == '$')
 		{
 			i++;
 			commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[i], ' ')), i - 1);
-			while (commande[i] != ' ' && commande[i] != '\0')
+			while (commande[i] && commande[i] != ' ')
 				i++;
 		}
 		else 
@@ -184,15 +188,15 @@ char *env_value_checker(char *commande, char **envp)
 
 //gerer unclosed quotes "
 
-t_token	*lexer(char *commande, char **envp)
+t_token	*lexer(char *commande, t_list *envp)
 {
 	int	i;
-(void)envp;
 	t_token *last;
 
 	last = NULL;
 	i = 0;
-	//commande = env_value_checker(commande, envp);
+	
+	commande = env_value_checker(commande, envp);
 	while (commande[i])
 	{
 		if (commande[i] == ' ')
@@ -218,7 +222,7 @@ t_token	*lexer(char *commande, char **envp)
 			}
 			i++;
 		}
-		else if (commande[i] == '>')
+		else if (commande[i] == ('>'))
 		{
 			if (commande[i + 1] == '>')
 			{
@@ -258,7 +262,6 @@ t_token	*lexer(char *commande, char **envp)
 			while (commande[i] != 32 && commande[i] != '\0')
 				i++;
 		}
-
 	}
 	tokenizer (first_token(last));
 	return (first_token(last));
