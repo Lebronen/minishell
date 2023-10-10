@@ -53,13 +53,12 @@ typedef struct s_token
 
 typedef struct s_node
 {
-	int type;
-	int rdr_type;
-	char *path;
+	int fd_in;
+	int	fd_out;
 	char **str_options;
-	struct s_node *up;
-	struct s_node *left;
-	struct s_node *right;
+	struct s_node *prev;
+	struct s_node *next;
+
 } t_node;
 
 
@@ -91,7 +90,7 @@ t_list  *tab_to_list(char **tab);
 char    **tabcpy(char **tab);
 char    **list_to_tab(t_list *env);
 t_list	*ft_lstdupnew(char *content);
-t_node  *make_cmd(t_token *token, t_node *up);
+t_node  *make_cmd(t_token *token);
 t_node  *make_pip(t_token *token);
 t_node  *make_rdr(t_token *token);
 t_token *previous_cmd(t_token *token);
@@ -100,6 +99,8 @@ t_node *init_tree(t_token *token);
 t_token *next_pipe(t_token *token);
 void print_node(t_node *node);
 void print_tree(t_node *node);
+int     init_out(t_token *token);
+int     init_in(t_token *token);
 
 
 #endif

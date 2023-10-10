@@ -17,11 +17,22 @@ void    print_node(t_node *node)
     int i;
 
     i = 0;
-    printf("node type : %d\n", node->type);
-    while(node->str_options[i])
+
+    while (node)
     {
-        printf("options :%s\n", node->str_options[i]);
-        i++;
+        i = 0;
+        if(node->str_options)
+        {
+            printf("options:\n");
+            while(node->str_options && node->str_options[i])
+            {
+                printf("%s\n", node->str_options[i]);
+                i++;
+            }
+        }
+        printf("fd_in -> %d\n", node->fd_in);
+        printf("fd_out -> %d\n", node->fd_out);
+        node = node->next;
     }
 }
 
@@ -43,7 +54,7 @@ char **cmd_str(t_token *token, char **str)
     return (str);
 }
 
-t_node *make_cmd(t_token *token, t_node *up)
+t_node *make_cmd(t_token *token)
 {
     t_node *node;
     t_token *tmp_token;
@@ -62,32 +73,67 @@ t_node *make_cmd(t_token *token, t_node *up)
     node->str_options = malloc((i+1) * sizeof(char*));
     if (!node->str_options)
         return (NULL);
-    node->type = CMD;
     node->str_options = cmd_str(tmp_token, node->str_options);
-    node->left = NULL;
-    node->right = NULL;
-    node->up = up;
+    node->next = NULL;
     return (node);
+}
+
+t_node  *nodizer_unit(t_token *token)
+{
+    t_token *tmp_token;
+    t_node  *node;
+
+    tmp_token = token;
+    while(token && token->type != PIPE)
+    {
+        if (token->type_2 == COMMAND)
+            node = make_cmd(token);
+        token = token->next;
+    }
+    if (!node)
+    {
+        node = malloc(sizeof(t_node));
+        if(!node)
+            return (NULL);
+        node->str_options = NULL;
+        node->next = NULL;
+    }
+    node->fd_in = init_in(tmp_token);
+    node->fd_out = init_out(tmp_token);   
+    return (node);
+}
+
+t_token *next_unit(t_token *token)
+{
+    while(token && token->type != PIPE)
+        token = token->next;
+    if (token && token->type == PIPE)
+        return (token->next);
+    else
+        return (NULL);
 }
 
 t_node  *nodizer(t_token *token)
 {
-    while(token)
-    {
-        t_node  *node;
+    t_node *node;
+    t_node *tmp_node;
+    t_node *prev;
 
-        if (token->type_2 == COMMAND)
-        {
-            node = make_cmd(token, NULL);
-            print_node(node);
-        }
-        else
-            node = NULL;
-        /*if (token->type_2 == REDIR)
-            make_rdr(token);
-        if(token->type == PIPE)
-            make_pip(token);*/
-        token = token->next;
+    prev = NULL;
+    while (token)
+    {
+        node = nodizer_unit(token);
+        node->prev = prev;
+        prev = node;
+        token = next_unit(token);
     }
-    return (NULL);
+    while(node->prev)
+    {
+        tmp_node = node;
+        node = node->prev;
+        node->next = tmp_node;
+    }
+    print_node(node);
+    return (node);
 }
+
