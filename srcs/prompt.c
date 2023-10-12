@@ -16,6 +16,8 @@ void    prompt(t_list *envp)
 {
     char    *commande;
     t_token *token;
+    t_node *node;
+    node = NULL;
     while (1)
     {
         commande = readline("$");
@@ -25,13 +27,14 @@ void    prompt(t_list *envp)
             break;
         }
 
-    token = lexer(commande, envp);
-    //print_token(token);
-    nodizer(token);
+        token = lexer(commande, envp);
+        node = nodizer(token);
+        //print_node(node);
 
         process(commande, envp);
-
         add_history(commande);
         free(commande);
+        free_lexer(token);
+        free_nodes(node);
     }
 }

@@ -56,6 +56,7 @@ typedef struct s_node
 	int fd_in;
 	int	fd_out;
 	char **str_options;
+	char **heredoc;
 	struct s_node *prev;
 	struct s_node *next;
 
@@ -101,6 +102,10 @@ void print_node(t_node *node);
 void print_tree(t_node *node);
 int     init_out(t_token *token);
 int     init_in(t_token *token);
+void 	free_lexer(t_token *token);
+void    manage_heredoc(t_node *node, t_token *token);
+void    free_nodes(t_node *node);
+t_token *first_token(t_token *token);
 
 
 #endif

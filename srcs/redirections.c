@@ -51,20 +51,61 @@ int has_heredoc(t_token *token)
     return (0);
 }
 
+void    manage_heredoc(t_node *node, t_token *token)
+{
+    int i;
+    t_token *tmp_token;
+
+    i = 0;
+    tmp_token = token;
+    if (node->fd_in != -2)
+    {
+        node->heredoc = NULL;
+        return ;
+    }
+    while (token && token->type != PIPE)
+    {
+        if (token->type_2 == ENDOF)
+            i++;
+        token = token->next;
+    }
+    node->heredoc = malloc(sizeof(char *) * (i + 1));
+    if (!node->heredoc)
+        return ;
+    i = 0;
+    while (tmp_token)
+    {
+        if (tmp_token->type_2 == ENDOF)
+        {
+            node->heredoc[i] = ft_strdup(tmp_token->next->str);
+            i++;
+        }
+        tmp_token = tmp_token->next;
+    }
+    node->heredoc[i] = NULL;
+}
+
 int init_in(t_token *token)
 {
     int fd;
 
     fd = -1;
+
     while(token && token->type != PIPE)
     {
         if (token->type_2 == IN)
         {
-            if (fd != -1)
+            if (fd != -1 && fd != -2)
                 close(fd);
             fd = open(token->next->str, O_RDONLY);
             if (fd == -1)
                 return (-1);
+        }
+        else if (token->type_2 == ENDOF)
+        {
+            if (fd != -1 && fd != -2)
+                close(fd);
+            return (-2);
         }
         token = token->next;
     }

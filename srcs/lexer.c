@@ -25,6 +25,7 @@ t_token *new_token(int type, char *str, t_token *last)
 	new->previous = last;
 	new->next = NULL;
 	return (new);
+
 }
 
 t_token *first_token(t_token *token)
@@ -49,7 +50,7 @@ char	*ft_strdup_c(char *s, char c)
 	if (!result)
 		return (NULL);
 	i = 0;
-	while (s[i] && s[i] != c)
+	while (s[i] && s[i] != c && s[i] != '>' && s[i] != '<')
 	{
 		result[i] = s[i];
 		i++;
@@ -259,7 +260,7 @@ t_token	*lexer(char *commande, t_list *envp)
 		else
 		{
 			last = new_token(WORD, ft_strdup_c(&commande[i], 32), last); 
-			while (commande[i] != 32 && commande[i] != '\0')
+			while (commande[i] != 32 && commande[i] != '\0' && commande[i] != '>' &&commande[i] != '<')
 				i++;
 		}
 	}
@@ -300,5 +301,23 @@ void print_token(t_token *token)
 				printf("<%s>, <type = arg>\n", token->str);
 		}
 		token = token->next;
+	}
+}
+
+void	free_lexer(t_token *token)
+{
+	t_token	*tmp_token;
+
+	while(token->previous)
+	{
+		token = token->previous;
+	}
+	while (token)
+	{
+		tmp_token = token->next;
+		if (token->type == QUOTE || token->type == WORD)
+			free(token->str);
+		free(token);
+		token = tmp_token;
 	}
 }
