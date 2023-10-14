@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/07 18:58:00 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/14 16:10:13 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void    env(t_list *envp)
 
 void    echo(char *str, int option, int fd)
 {
-    ft_putstr_fd(str, fd);
+    if (write(fd, str, ft_strlen(str)) == -1)
+        ft_printf("write error");
     if (!option)
         ft_putchar_fd('\n', fd);
 }
