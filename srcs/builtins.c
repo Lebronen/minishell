@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/07 18:58:00 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/14 11:45:52 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,20 @@
 
 void    cd(char *path)
 {
+    struct stat    buf;
+    mode_t          mode;
+    
+    stat(path, &buf);
+    mode = buf.st_mode;
     if (chdir(path) < 0)
-        ft_printf("No such file or directory\n");
+    {
+        if (access(path, F_OK))
+            ft_printf("No such file or directory\n");
+        else if (!S_ISDIR(mode))
+            ft_printf("cd: not a directory: %s\n", path);
+        else if (!(mode & S_IXUSR))
+            ft_printf("cd: permission denied: %s\n", path);
+    }
 }
 
 void    pwd()
