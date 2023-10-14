@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/07 18:48:59 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/14 16:53:50 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void	process(char *commande, t_list *envp)
 	int		nb_redin;
 	pid_t   pid;
 	int		status;
-	char	**tab;
 
 	nb_pipes = nb_str(commande, '|');
 	nb_redout = nb_str(commande, '>');
@@ -125,9 +124,10 @@ void	process(char *commande, t_list *envp)
 	
 	else if (nb_redin == 1)
 		ft_redirect_in(commande, envp);
+	else if (nb_redin == 2)
+		ft_heredoc(commande, envp);
 	else
 	{
-		tab = list_to_tab(envp);
 		pid = fork();
 		if (pid == 0)
 			execute(commande, envp);

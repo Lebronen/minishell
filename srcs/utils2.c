@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 14:06:59 by lebronen          #+#    #+#             */
-/*   Updated: 2023/10/07 16:37:03 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/14 16:58:20 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	open_file(char *argv, int i)
 void	del(void *content)
 {
 	content = NULL;
+	free(content);
 }
 
 int	ft_index(char *commande, char c)

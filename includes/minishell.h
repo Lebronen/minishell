@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:33:32 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/07 18:45:07 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/14 17:07:05 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
+# include <sys/types.h>
 # include <fcntl.h>
 
 #define PIPE 0
@@ -52,6 +54,7 @@ void    execute(char *commande, t_list *envp);
 void	error(void);
 char	*find_path(char *cmd, char **envp);
 int     nb_str(char *s, char c);
+int 	ft_strcmp(char *s1, char *s2);
 int		ft_index(char *commande, char c);
 void    ft_pipe(char *commande, t_list *envp);
 void	process(char *commande, t_list *envp);
@@ -76,5 +79,7 @@ char    **list_to_tab(t_list *env);
 t_list	*ft_lstdupnew(char *content);
 void    unset(char *commande, t_list *envp);
 void	del(void *content);
+int 	get_next_line(char **line);
+void    ft_heredoc(char *commande, t_list *envp);
 
 #endif

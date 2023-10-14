@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/14 16:10:13 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/14 16:14:24 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,20 @@
 
 void    cd(char *path)
 {
+    struct stat    buf;
+    mode_t          mode;
+    
+    stat(path, &buf);
+    mode = buf.st_mode;
     if (chdir(path) < 0)
-        ft_printf("No such file or directory\n");
+    {
+        if (access(path, F_OK))
+            ft_printf("No such file or directory\n");
+        else if (!S_ISDIR(mode))
+            ft_printf("cd: not a directory: %s\n", path);
+        else if (!(mode & S_IXUSR))
+            ft_printf("cd: permission denied: %s\n", path);
+    }
 }
 
 void    pwd()
@@ -43,7 +55,7 @@ void    env(t_list *envp)
 void    echo(char *str, int option, int fd)
 {
     if (write(fd, str, ft_strlen(str)) == -1)
-        ft_printf("write error");
+        ft_printf("write error\n");
     if (!option)
         ft_putchar_fd('\n', fd);
 }
