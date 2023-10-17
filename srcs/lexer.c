@@ -63,25 +63,26 @@ char	*ft_strdup_c(char *s, char c)
 	}
 	return (result);
 }
- 	
-void tokenizer(t_token *token)
+
+int tokenizer_first_token (t_token *token)
 {
-	
 	if (token->type == PIPE)
 	{
-		printf("parse error near '|'");
-		return ;
+		printf("parse error near '|'\n");
+		return (0);
 	}
 	if (token->type == REDIR)
-	{
-		token = token->next;
 		token->type_2 = PATH;
-	}
 	else
-	{
 		token->type_2 = COMMAND;
-		token = token->next;
-	}
+	return (1);
+}
+
+void tokenizer(t_token *token)
+{
+	if (!tokenizer_first_token(token))
+		return ;
+	token = token->next;
 	while (token != NULL)
 	{
 		if ((token->type == WORD || token->type == QUOTE) && token->previous->type != REDIR)
@@ -99,176 +100,37 @@ void tokenizer(t_token *token)
 	}
 }
 
-char *new_command(char *commande, char *env_value, int i)
-{
-	size_t j;
-	size_t	k;
-	size_t l;
-	char *str;
-	
-	j = 0;
-	k = i;
-	l = 0;
 
-	while(commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"')
-		i++;
-	str = malloc(sizeof(char) * ((ft_strlen(commande) - (i-k)) + ft_strlen(env_value)));
-	if(!str)
-		return (NULL);
-	while (j < k)
-	{
-		str[j] = commande[j];
-		j++;
-	}
-	while(j < (ft_strlen(env_value) + k))
-	{
-		str[j] = env_value[l];
-		j++;
-		l++;
-	}
-	while(commande[i])
-	{
-		str[j] = commande[i];
-		i++;
-		j++;
-	}
-	str[j] = '\0';
-	free(commande);
-	return str;
-}
 
-char *env_value_checker(char *commande, t_list *envp)
+t_token *lexer(char *commande, t_list *envp)
 {
-	int i;
-	int j;
+    int i;
+    t_token *last;
 
 	i = 0;
-	while (commande[i])
-	{
-		if (commande[i] == 39)
-		{
-			i++;
-			while(commande[i] && commande[i] != 39)
-				i++;
-			if (commande[i] == 39)
-			i++;
-		}
-		else if (commande[i] == '"')
-		{
-			i++;
-			while(commande[i] && commande[i] != '"')
-			{
-				if (commande[i] == '$')
-				{
-					i++;
-					j = i;
-					while (commande[i] && commande[i] != ' ' && commande[i] != '"')
-						i++;
-					if (commande[i] == '"')
-						commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], '"')), j - 1);
-					else
-						commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[j], ' ')), j - 1);
-				}
-				i++;
-			}
-			if(commande[i] == '"')
-				i++;
-		}
-		else if (commande[i] == '$')
-		{
-			i++;
-			commande = new_command(commande, get_env_value(envp, ft_strdup_c(&commande[i], ' ')), i - 1);
-			while (commande[i] && commande[i] != ' ')
-				i++;
-		}
-		else 
-			i++;
-	}
-	return (commande);
-}
-
-//gerer unclosed quotes "
-
-t_token	*lexer(char *commande, t_list *envp)
-{
-	int	i;
-	t_token *last;
-
 	last = NULL;
-	i = 0;
-	
-	commande = env_value_checker(commande, envp);
-	while (commande[i])
-	{
-		if (commande[i] == ' ')
-			i++;
-		else if (commande[i] == '|')
-		{
-			last = new_token(PIPE, NULL, last);
-			last->type_2 = 0;
-			i++;
-		}
-		else if (commande[i] == ('<'))
-		{
-			if (commande[i + 1] == '<')
-			{
-				last = new_token(REDIR, "EOF", last);
-				last->type_2 = ENDOF;
-				i++;
-			}
-			else
-			{
-				last = new_token(REDIR, "input", last);
-				last->type_2 = IN;
-			}
-			i++;
-		}
-		else if (commande[i] == ('>'))
-		{
-			if (commande[i + 1] == '>')
-			{
-				last = new_token(REDIR, "Append", last);
-				last->type_2 = APPEND;
-				i++;
-			}
-			else
-			{
-				last = new_token(REDIR, "Output", last);
-				last->type_2 = OUT;
-			}
-			i++;
-		}
-		else if (commande[i]  == 34)
-		{
-			i++;
-			last = new_token(QUOTE, ft_strdup_c(&commande[i], 34), last);
-			while (commande[i] != 34 && commande[i] != '\0')
-				i++;
-			if (commande[i] == 34)
-				i++;
-
-		}
-		else if (commande[i]  == 39)
-		{
-			i++;
-			last = new_token(QUOTE, ft_strdup_c(&commande[i], 39), last);
-			while (commande[i] != 39 && commande[i] != '\0')
-				i++;
-			if (commande[i] == 39)
-				i++;
-		}
-		else
-		{
-			last = new_token(WORD, ft_strdup_c(&commande[i], 32), last); 
-			while (commande[i] != 32 && commande[i] != '\0' && commande[i] != '>' &&commande[i] != '<')
-				i++;
-		}
-	}
-	last->next = NULL;
-	tokenizer (first_token(last));
-	return (first_token(last));
+    commande = env_value_checker(commande, envp);
+    while (commande[i])
+    {
+        if (commande[i] == ' ')
+            i++;
+        else if (commande[i] == '|')
+            i = handlePipeToken(i, &last);
+        else if (commande[i] == '<')
+            i = handleInputRedir(i, &last, commande);
+        else if (commande[i] == '>')
+            i = handleOutputRedir(i, &last, commande);
+        else if (commande[i] == 34)
+            i = handleDoubleQuoteToken(i, &last, commande);
+        else if (commande[i] == 39)
+            i = handleSingleQuoteToken(i, &last, commande);
+        else
+            i = handleWordToken(i, &last, commande);
+    }
+    last->next = NULL;
+    tokenizer(first_token(last));
+    return (first_token(last));
 }
-
 
 void print_token(t_token *token)
 {
