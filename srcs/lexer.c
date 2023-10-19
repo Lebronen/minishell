@@ -12,35 +12,6 @@
 
 #include "../includes/minishell.h"
 
-
-t_token *new_token(int type, char *str, t_token *last)
-{
-	t_token *new;
-
-	new = malloc(sizeof(t_token));
-	if(!new)
-		return (NULL);
-	new->type = type;
-	new->str = str;
-	new->previous = last;
-	new->next = NULL;
-	return (new);
-
-}
-
-t_token *first_token(t_token *token)
-{
-	t_token *previous;
-
-	while (token->previous)
-	{
-		previous = token->previous;
-		previous->next = token;
-		token = token->previous;
-	}
-	return(token);
-}
-
 char	*ft_strdup_c(char *s, char c)
 {
 	char	*result;
@@ -64,7 +35,7 @@ char	*ft_strdup_c(char *s, char c)
 	return (result);
 }
 
-int tokenizer_first_token (t_token *token)
+int	tokenizer_first_token(t_token *token)
 {
 	if (token->type == PIPE)
 	{
@@ -78,21 +49,23 @@ int tokenizer_first_token (t_token *token)
 	return (1);
 }
 
-void tokenizer(t_token *token)
+void	tokenizer(t_token *token)
 {
 	if (!tokenizer_first_token(token))
 		return ;
 	token = token->next;
 	while (token != NULL)
 	{
-		if ((token->type == WORD || token->type == QUOTE) && token->previous->type != REDIR)
+		if ((token->type == WORD || token->type == QUOTE)
+			&& token->previous->type != REDIR)
 		{
-			if (token->previous->type == PIPE || token->previous->type_2 == PATH)
+			if (token->previous->type == PIPE
+				|| token->previous->type_2 == PATH)
 				token->type_2 = COMMAND;
-			else if (token->str[0]== '-')
+			else if (token->str[0] == '-')
 				token->type_2 = OPTION;
 			else
-				token->type_2 = ARG; 
+				token->type_2 = ARG;
 		}
 		if (token->type == REDIR)
 			token->next->type_2 = PATH;
@@ -100,38 +73,44 @@ void tokenizer(t_token *token)
 	}
 }
 
-
-
-t_token *lexer(char *commande, t_list *envp)
+int	handlecommande(int i, t_token *last, char *commande)
 {
-    int i;
-    t_token *last;
+	if (commande[i] == '<')
+		i = handleinputredir(i, &last, commande);
+	else if (commande[i] == '>')
+		i = handleoutputredir(i, &last, commande);
+	else if (commande[i] == 34)
+		i = handledoublequotetoken(i, &last, commande);
+	else if (commande[i] == 39)
+		i = handlesinglequotetoken(i, &last, commande);
+	else
+		i = handlewordtoken(i, &last, commande);
+	return (i);
+}
+
+t_token	*lexer(char *commande, t_list *envp)
+{
+	int			i;
+	t_token		*last;
 
 	i = 0;
 	last = NULL;
-    commande = env_value_checker(commande, envp);
-    while (commande[i])
-    {
-        if (commande[i] == ' ')
-            i++;
-        else if (commande[i] == '|')
-            i = handlePipeToken(i, &last);
-        else if (commande[i] == '<')
-            i = handleInputRedir(i, &last, commande);
-        else if (commande[i] == '>')
-            i = handleOutputRedir(i, &last, commande);
-        else if (commande[i] == 34)
-            i = handleDoubleQuoteToken(i, &last, commande);
-        else if (commande[i] == 39)
-            i = handleSingleQuoteToken(i, &last, commande);
-        else
-            i = handleWordToken(i, &last, commande);
-    }
-    last->next = NULL;
-    tokenizer(first_token(last));
-    return (first_token(last));
+	commande = env_value_checker(commande, envp);
+	while (commande[i])
+	{
+		if (commande[i] == ' ')
+			i++;
+		else if (commande[i] == '|')
+			i = handlepipetoken(i, &last);
+		else
+			i = handlecommande(i, &last, commande);
+	}
+	last->next = NULL;
+	tokenizer(first_token(last));
+	return (first_token(last));
 }
 
+/*
 void print_token(t_token *token)
 {
 	while (token)
@@ -164,22 +143,4 @@ void print_token(t_token *token)
 		}
 		token = token->next;
 	}
-}
-
-void	free_lexer(t_token *token)
-{
-	t_token	*tmp_token;
-
-	while(token->previous)
-	{
-		token = token->previous;
-	}
-	while (token)
-	{
-		tmp_token = token->next;
-		if (token->type == QUOTE || token->type == WORD)
-			free(token->str);
-		free(token);
-		token = tmp_token;
-	}
-}
+}*/

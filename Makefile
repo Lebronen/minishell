@@ -28,7 +28,7 @@ MAGENTA		=	\033[0;95m
 CYAN		=	\033[0;96m
 WHITE		=	\033[0;97m
 
-SRC_FILES	=	minishell prompt exec exec_utils utils2 env lexer lexer_types lexer_env builtins modify linked_list nodes redirections
+SRC_FILES	=	minishell prompt exec exec_utils utils2 env lexer lexer_utils lexer_types lexer_types2 lexer_env builtins modify linked_list nodes nodes_free redirections
 SRC_B_FILES	=	minishell prompt exec
 
 

@@ -107,12 +107,12 @@ void    manage_heredoc(t_node *node, t_token *token);
 void    free_nodes(t_node *node);
 t_token *first_token(t_token *token);
 t_token *new_token(int type, char *str, t_token *last);
-int handlePipeToken(int i, t_token **last);
-int handleInputRedir(int i, t_token **last, char *commande);
-int handleOutputRedir(int i, t_token **last, char *commande);
-int handleDoubleQuoteToken(int i, t_token **last, char *commande);
-int handleSingleQuoteToken(int i, t_token **last, char *commande);
-int	handleWordToken(int i, t_token **last, char *commande);
+int handlepipetoken(int i, t_token **last);
+int handleinputredir(int i, t_token **last, char *commande);
+int handleoutputredir(int i, t_token **last, char *commande);
+int handledoublequotetoken(int i, t_token **last, char *commande);
+int handlesinglequotetoken(int i, t_token **last, char *commande);
+int	handlewordtoken(int i, t_token **last, char *commande);
 char	*ft_strdup_c(char *s, char c);
 char	*env_value_checker(char *commande, t_list *envp);
 
