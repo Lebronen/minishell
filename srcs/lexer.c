@@ -43,7 +43,7 @@ int	tokenizer_first_token(t_token *token)
 		return (0);
 	}
 	if (token->type == REDIR)
-		token->type_2 = PATH;
+		token->next->type_2 = PATH;
 	else
 		token->type_2 = COMMAND;
 	return (1);
@@ -110,7 +110,7 @@ t_token	*lexer(char *commande, t_list *envp)
 	return (first_token(last));
 }
 
-/*
+
 void print_token(t_token *token)
 {
 	while (token)
@@ -143,4 +143,4 @@ void print_token(t_token *token)
 		}
 		token = token->next;
 	}
-}*/
+}

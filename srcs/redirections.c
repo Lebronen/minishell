@@ -106,7 +106,7 @@ int	init_in(t_token *token)
 				close(fd);
 			fd = open(token->next->str, O_RDONLY);
 			if (fd == -1)
-				return (-1);
+				return (input_error(token->next->str));
 		}
 		else if (token->type_2 == ENDOF)
 		{

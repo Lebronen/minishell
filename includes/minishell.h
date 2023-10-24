@@ -115,6 +115,9 @@ int handlesinglequotetoken(int i, t_token **last, char *commande);
 int	handlewordtoken(int i, t_token **last, char *commande);
 char	*ft_strdup_c(char *s, char c);
 char	*env_value_checker(char *commande, t_list *envp);
+int error_cmd(char *commande);
+int input_error(char *str);
+
 
 
 

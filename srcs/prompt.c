@@ -17,25 +17,32 @@ void    prompt(t_list *envp)
     char    *commande;
     t_token *token;
     t_node *node;
+    
     node = NULL;
     while (1)
     {
         commande = readline("$");
-        if (!ft_strncmp(commande, "exit", 4))
+        while (error_cmd(commande))
         {
             free(commande);
+            commande = readline("$");
+        }
+        if (!ft_strncmp(commande, "exit", 4))
+        {
+            if(commande)
+                free(commande);
             break;
         }
 
         token = lexer(commande, envp);
         node = nodizer(token);
-        print_node(node);
 
         process(commande, envp);
         add_history(commande);
 
-        //free(commande);
+        free(commande);
         free_lexer(token);
         free_nodes(node);
+        //free_list(envp); A AJOUTER
     }
 }
