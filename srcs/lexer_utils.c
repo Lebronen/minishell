@@ -43,7 +43,7 @@ void	free_lexer(t_token *token)
 {
 	t_token	*tmp_token;
 
-	while (token->previous)
+	while (token && token->previous)
 	{
 		token = token->previous;
 	}

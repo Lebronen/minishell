@@ -34,7 +34,7 @@ int	handleinputredir(int i, t_token **last, char *commande)
 		(*last)->type_2 = IN;
 	}
 	i++;
-	if (commande[i] == '|' || commande[i] == '\\')
+	if (commande[i] == '|' || commande[i] == '\\' || commande[i] == '$')
 		i++;
 	return (i);
 }
@@ -53,7 +53,7 @@ int	handleoutputredir(int i, t_token **last, char *commande)
 		(*last)->type_2 = OUT;
 	}
 	i++;
-	if (commande[i] == '|' || commande[i] == '\\')
+	if (commande[i] == '|' || commande[i] == '\\' || commande[i] == '$')
 		i++;
 	return (i);
 }

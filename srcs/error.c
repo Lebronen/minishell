@@ -5,12 +5,38 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgermain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 11:57:01 by cgermain          #+#    #+#             */
-/*   Updated: 2023/10/24 11:57:07 by cgermain         ###   ########.fr       */
+/*   Created: 2023/10/24 12:49:21 by cgermain          #+#    #+#             */
+/*   Updated: 2023/10/24 12:49:30 by cgermain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	error_ambig(char *commande)
+{
+	int	i;
+
+	i = 0;
+	while (commande[i])
+	{
+		if (commande[i] == '<' || commande[i] == '>')
+		{
+			i ++;
+			if (commande[i] == '$')
+			{
+				while (commande[i] && commande [i] != ' ' && commande[i] != '|')
+				{
+					write(2, &commande[i], 1);
+					i++;
+				}
+				write(2, " : ambiguous redirect\n", 22);
+				return (1);
+			}
+		}
+		i++;
+	}
+	return (0);
+}
 
 int	error_cmd(char *commande)
 {
