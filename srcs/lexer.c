@@ -73,25 +73,25 @@ void	tokenizer(t_token *token)
 	}
 }
 
-int	handlecommande(int i, t_token *last, char *commande)
+int	handlecommande(int i, t_token **last, char *commande)
 {
 	if (commande[i] == '<')
-		i = handleinputredir(i, &last, commande);
+		i = handleinputredir(i, last, commande);
 	else if (commande[i] == '>')
-		i = handleoutputredir(i, &last, commande);
+		i = handleoutputredir(i, last, commande);
 	else if (commande[i] == 34)
-		i = handledoublequotetoken(i, &last, commande);
+		i = handledoublequotetoken(i, last, commande);
 	else if (commande[i] == 39)
-		i = handlesinglequotetoken(i, &last, commande);
+		i = handlesinglequotetoken(i, last, commande);
 	else
-		i = handlewordtoken(i, &last, commande);
+		i = handlewordtoken(i, last, commande);
 	return (i);
 }
 
 t_token	*lexer(char *commande, t_list *envp)
 {
-	int			i;
-	t_token		*last;
+	int		i;
+	t_token	*last;
 
 	i = 0;
 	last = NULL;
@@ -103,7 +103,7 @@ t_token	*lexer(char *commande, t_list *envp)
 		else if (commande[i] == '|')
 			i = handlepipetoken(i, &last);
 		else
-			i = handlecommande(i, last, commande);
+			i = handlecommande(i, &last, commande);
 	}
 	last->next = NULL;
 	tokenizer(first_token(last));
