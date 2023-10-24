@@ -37,7 +37,7 @@ void    prompt(t_list *envp)
         token = lexer(commande, envp);
         node = nodizer(token);
 
-        process(commande, envp);
+        //process(commande, envp);
         add_history(commande);
 
         free(commande);
