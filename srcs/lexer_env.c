@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_env.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <cgermain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cgermain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 15:02:52 by cgermain          #+#    #+#             */
-/*   Updated: 2023/10/19 15:02:57 by cgermain         ###   ########.fr       */
+/*   Created: 2023/09/21 15:31:31 by cgermain          #+#    #+#             */
+/*   Updated: 2023/09/25 11:13:36 by cgermain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*fill_command(char *commande,
-			char *env_value, char *str, size_t k)
+char	*fill_command(char *commande, char *env_value, char *str, size_t k)
 {
 	size_t	j;
 	size_t	i;
 
 	j = 0;
-	i = 0;
+	i = k;
 	while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"')
 		i++;
 	while (j < k)
@@ -52,8 +51,8 @@ char	*new_command(char *commande, char *env_value, int i)
 		return (commande);
 	while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"')
 		i++;
-	str = malloc(sizeof(char) * ((ft_strlen(commande)
-					- (i - k)) + ft_strlen(env_value)));
+	str = malloc(sizeof(char)
+			* ((ft_strlen(commande) - (i - k)) + ft_strlen(env_value) + 1));
 	if (!str)
 		return (NULL);
 	str = fill_command(commande, env_value, str, k);
@@ -63,9 +62,10 @@ char	*new_command(char *commande, char *env_value, int i)
 
 int	env_value_quote(int i, char **commande, t_list *envp)
 {	
-	int	j;
+	int		j;
+	char	*str;
+	char	*str1;
 
-	i++;
 	while ((*commande)[i] && (*commande)[i] != '"')
 	{
 		if ((*commande)[i] == '$')
@@ -76,26 +76,31 @@ int	env_value_quote(int i, char **commande, t_list *envp)
 				(*commande)[i] != ' ' && (*commande)[i] != '"')
 				i++;
 			if ((*commande)[i] == '"')
-				(*commande) = new_command((*commande), get_env_value(envp,
-							ft_strdup_c(&(*commande)[j], '"')), j - 1);
+				str1 = ft_strdup_c2(&(*commande)[j], '"');
 			else
-				(*commande) = new_command((*commande), get_env_value(envp,
-							ft_strdup_c(&(*commande)[j], ' ')), j - 1);
+				str1 = ft_strdup_c2(&(*commande)[j], ' ');
+			str = get_env_value(envp, str1);
+			(*commande) = new_command((*commande), str, j - 1);
 		}
 		i++;
 	}
-	if ((*commande)[i] == '"')
-		i++;
+	free(str);
+	free(str1);
 	return (i);
 }
 
 int	env_value_dollar(int i, char **commande, t_list *envp)
 {
-	i++;
-	(*commande) = new_command((*commande), get_env_value(envp,
-				ft_strdup_c(&(*commande)[i], ' ')), i - 1);
+	char	*str;
+	char	*str1;
+
+	str1 = ft_strdup_c2(&(*commande)[i], ' ');
+	str = get_env_value(envp, str1);
+	(*commande) = new_command((*commande), str, i - 1);
 	while ((*commande)[i] && (*commande)[i] != ' ')
 		i++;
+	free(str);
+	free(str1);
 	return (i);
 }
 
@@ -106,22 +111,22 @@ char	*env_value_checker(char *commande, t_list *envp)
 	i = 0;
 	while (commande[i])
 	{
-		if (commande[i] == 39)
+		i++;
+		if (commande[i - 1] == 39)
 		{
-			i++;
 			while (commande[i] && commande[i] != 39)
 				i++;
 			if (commande[i] == 39)
 			i++;
 		}
-		else if (commande[i] == '"')
+		else if (commande[i - 1] == '"')
 		{
 			i = env_value_quote(i, &commande, envp);
+			if (commande[i] == '"')
+				i++;
 		}
-		else if (commande[i] == '$')
+		else if (commande[i - 1] == '$')
 			i = env_value_dollar(i, &commande, envp);
-		else
-			i++;
 	}
 	return (commande);
 }

@@ -21,7 +21,7 @@ char	*ft_strdup_c(char *s, char c)
 	if (!result)
 		return (NULL);
 	i = 0;
-	while (s[i] && s[i] != c && s[i] != '>' && s[i] != '<')
+	while (s[i] && s[i] != c && s[i] != '>' && s[i] != '<' && s[i] != '|')
 	{
 		result[i] = s[i];
 		i++;
@@ -93,9 +93,10 @@ t_token	*lexer(char *commande, t_list *envp)
 	int		i;
 	t_token	*last;
 
+(void)envp;
 	i = 0;
 	last = NULL;
-	commande = env_value_checker(commande, envp);
+//	commande = env_value_checker(commande, envp);
 	if (error_ambig(commande))
 		return (NULL);
 	while (commande[i])

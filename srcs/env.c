@@ -77,7 +77,7 @@ static int	compare_words(char *word1, char *word2)
 	i = 0;
 	while (word1[i] == word2[i] && word1 && word2)
 		i++;
-	if (i == ft_strlen(word2))
+	if (i == ft_strlen(word2) && word1[i] == '=')
 		return (1);
 	return (0);
 }	

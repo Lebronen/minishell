@@ -29,15 +29,15 @@ void    prompt(t_list *envp)
         }
         if (!ft_strncmp(commande, "exit", 4))
         {
-            if(commande)
-                free(commande);
+            free(commande);
             break;
         }
-
+        commande = env_value_checker(commande, envp);
         token = lexer(commande, envp);
+        //print_token(token);
         node = nodizer(token);
 
-        //process(commande, envp);
+        process(commande, envp);
         add_history(commande);
 
         free(commande);

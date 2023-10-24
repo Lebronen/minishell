@@ -118,6 +118,7 @@ char	*env_value_checker(char *commande, t_list *envp);
 int error_cmd(char *commande);
 int input_error(char *str);
 int error_ambig(char *commande);
+char	*ft_strdup_c2(char *s, char c);
 
 
 
