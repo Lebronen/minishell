@@ -103,7 +103,7 @@ t_token	*lexer(char *commande, t_list *envp)
 		else if (commande[i] == '|')
 			i = handlepipetoken(i, &last);
 		else
-			i = handlecommande(i, &last, commande);
+			i = handlecommande(i, last, commande);
 	}
 	last->next = NULL;
 	tokenizer(first_token(last));

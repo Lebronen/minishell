@@ -16,8 +16,10 @@ char	*fill_command(char *commande,
 			char *env_value, char *str, size_t k)
 {
 	size_t	j;
+	size_t	i;
 
 	j = 0;
+	i = 0;
 	while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"')
 		i++;
 	while (j < k)

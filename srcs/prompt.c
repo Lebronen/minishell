@@ -29,7 +29,7 @@ void    prompt(t_list *envp)
 
         token = lexer(commande, envp);
         node = nodizer(token);
-        print_node(node);
+        //print_node(node);
 
         process(commande, envp);
         add_history(commande);
