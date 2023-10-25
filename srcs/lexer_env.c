@@ -81,11 +81,11 @@ int	env_value_quote(int i, char **commande, t_list *envp)
 				str1 = ft_strdup_c2(&(*commande)[j], ' ');
 			str = get_env_value(envp, str1);
 			(*commande) = new_command((*commande), str, j - 1);
+			free(str);
+			free(str1);
 		}
 		i++;
 	}
-	free(str);
-	free(str1);
 	return (i);
 }
 

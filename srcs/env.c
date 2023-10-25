@@ -80,19 +80,22 @@ static int	compare_words(char *word1, char *word2)
 	if (i == ft_strlen(word2) && word1[i] == '=')
 		return (1);
 	return (0);
-}	
+}
 
 char	*get_env_value(t_list *envp, char *name)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	*name2;
 
 	i = 0;
+	name2 = name_cleaner(name);
 	while (envp)
 	{
-		if (compare_words(envp->content, name))
+		if (compare_words(envp->content, name2))
 		{
-			j = ft_strlen(name) + 1;
+			j = ft_strlen(name2) + 1;
+			free(name2);
 			return (ft_strdup(&envp->content[j]));
 		}
 		envp = envp->next;

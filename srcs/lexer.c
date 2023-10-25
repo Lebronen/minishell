@@ -93,10 +93,9 @@ t_token	*lexer(char *commande, t_list *envp)
 	int		i;
 	t_token	*last;
 
-(void)envp;
+	(void)envp;
 	i = 0;
 	last = NULL;
-//	commande = env_value_checker(commande, envp);
 	if (error_ambig(commande))
 		return (NULL);
 	while (commande[i])

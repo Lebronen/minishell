@@ -37,7 +37,7 @@ char	*ft_strdup_c2(char *s, char c)
 int handledoublequotetoken(int i, t_token **last, char *commande)
 {
     i++;
-	(*last) = new_token(QUOTE, ft_strdup_c(&commande[i], 34), (*last));
+	(*last) = new_token(QUOTE, ft_strdup_c2(&commande[i], 34), (*last));
 	while (commande[i] != 34 && commande[i] != '\0')
 		i++;
 	if (commande[i] == 34)
@@ -48,7 +48,7 @@ int handledoublequotetoken(int i, t_token **last, char *commande)
 int handlesinglequotetoken(int i, t_token **last, char *commande)
 {
     i++;
-	(*last) = new_token(QUOTE, ft_strdup_c(&commande[i], 39), (*last));
+	(*last) = new_token(QUOTE, ft_strdup_c2(&commande[i], 39), (*last));
 	while (commande[i] != 39 && commande[i] != '\0')
 		i++;
 	if (commande[i] == 39)
@@ -59,7 +59,7 @@ int handlesinglequotetoken(int i, t_token **last, char *commande)
 int handlewordtoken(int i, t_token **last, char *commande)
 {
     (*last) = new_token(WORD, ft_strdup_c(&commande[i], 32), (*last)); 
-	while (commande[i] != 32 && commande[i] != '\0' && commande[i] != '>' &&commande[i] != '<')
+	while (commande[i] != 32 && commande[i] != '\0' && commande[i] != '>' && commande[i] != '<' && commande[i] != '|')
 		i++;
     return (i);
 }

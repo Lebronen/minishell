@@ -34,7 +34,7 @@ void    prompt(t_list *envp)
         }
         commande = env_value_checker(commande, envp);
         token = lexer(commande, envp);
-        //print_token(token);
+        print_token(token);
         node = nodizer(token);
 
         process(commande, envp);
