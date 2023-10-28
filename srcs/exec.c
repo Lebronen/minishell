@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/28 16:18:35 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/28 17:29:30 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,32 +62,39 @@ int	is_slash(char *s)
 }
 
 
-void    execute(char *commande, t_list *envp)
+void    execute(char **commande, t_list *envp)
 {
-    char    **cmd;
     char    *path;
-    int     i;
 	char	**tab;
     
 		tab = list_to_tab(envp);
-        cmd = ft_split(commande, ' ');
-        if (is_slash(cmd[0]))
-            path = cmd[0];
+        if (is_slash(commande[0]))
+            path = commande[0];
         else
-            path = find_path(cmd[0], tab);
-        if (!path || execve(path, cmd, tab) == -1)
-	    {  
-            i = -1;
-            while (cmd[++i])
-                free(cmd[i]);
-            free(cmd);
+            path = find_path(commande[0], tab);
+        if (!path || execve(path, commande, tab) == -1)
+	    {
             error();
 		}
 }
 
 void	process(t_node *node, t_list *envp)
 {
+	pid_t	pid;
+	int		status;
 	
+	if (!is_builtin(node->str_options))
+	{
+		pid = fork();
+		if (pid == 0)
+			execute(node->str_options, envp);
+		else if (pid > 0)
+		{
+			waitpid(pid, &status, 0);
+		}
+		else
+			perror("fork");
+	}
 	/*
 	int		nb_pipes;
 	int		nb_redout;

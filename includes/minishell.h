@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:33:32 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/28 16:16:21 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/28 17:21:06 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ typedef struct s_node
 
 
 void    prompt(t_list *envp);
-void    execute(char *commande, t_list *envp);
+void    execute(char **commande, t_list *envp);
 void	error(void);
 char	*find_path(char *cmd, char **envp);
 int     nb_str(char *s, char c);
 int 	ft_strcmp(char *s1, char *s2);
 int		ft_index(char *commande, char c);
-void    ft_pipe(char *commande, t_list *envp);
+void    ft_pipe(t_node *node, t_list *envp);
 void	process(t_node *node, t_list *envp);
 int	    open_file(char *argv, int i);
 void    ft_redirect_out(char *commande, t_list *envp);
@@ -129,5 +129,7 @@ void    unset(char *commande, t_list *envp);
 void	del(void *content);
 int 	get_next_line(char **line);
 void    ft_heredoc(char *commande, t_list *envp);
+int 	ft_strcmp(char *s1, char *s2);
+int     is_builtin(char **commande);
 
 #endif

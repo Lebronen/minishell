@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <cgermain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:02:17 by cgermain          #+#    #+#             */
-/*   Updated: 2023/10/19 15:02:25 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/10/28 17:03:25 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,13 @@ char	*get_env_value(t_list *envp, char *name)
 {
 	int		i;
 	int		j;
-	char	*name2;
 
 	i = 0;
-	name2 = name_cleaner(name);
 	while (envp)
 	{
-		if (compare_words(envp->content, name2))
+		if (compare_words(envp->content, name))
 		{
-			j = ft_strlen(name2) + 1;
-			free(name2);
+			j = ft_strlen(name) + 1;
 			return (ft_strdup(&envp->content[j]));
 		}
 		envp = envp->next;

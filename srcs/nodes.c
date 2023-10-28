@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-/*void	print_node(t_node *node)
+void	print_node(t_node *node)
 {
 	int	i;
 
@@ -42,7 +42,7 @@
 		printf("fd_out -> %d\n", node->fd_out);
 		node = node->next;
 	}
-}*/
+}
 
 char	**cmd_str(t_token *token, char **str)
 {

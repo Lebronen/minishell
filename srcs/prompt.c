@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 18:15:16 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/28 16:16:35 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/28 17:34:27 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void    prompt(t_list *envp)
         }
         commande = env_value_checker(commande, envp);
         token = lexer(commande, envp);
-        //print_token(token);
+        print_token(token);
         node = nodizer(token);
-
+        print_node(node);
         process(node, envp);
         add_history(commande);
 

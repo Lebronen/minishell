@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 15:10:40 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/14 16:58:38 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/28 16:56:18 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int nb_str(char *s, char c)
     return (i);
 }
 
-void	child_process(char *commande, t_list *envp, int *fd)
+void	child_process(char **commande, t_list *envp, int *fd)
 {
 	int		filein;
 
@@ -38,7 +38,7 @@ void	child_process(char *commande, t_list *envp, int *fd)
 	execute(commande, envp);
 }
 
-void	parent_process(char *commande, t_list *envp, int *fd)
+void	parent_process(char **commande, t_list *envp, int *fd)
 {
 	int		fileout;
 
@@ -51,41 +51,37 @@ void	parent_process(char *commande, t_list *envp, int *fd)
 	execute(commande, envp);
 }
 
-void    ft_pipe(char *commande, t_list *envp)
+void    ft_pipe(t_node *node, t_list *envp)
 {
-    char **list_commandes;
     int     fd[2];
     pid_t   pid;
-    int     i;
+    t_node  *current;
 
-    list_commandes = ft_split(commande, '|');
-    i = 0;
-    while (i < nb_str(commande, '|'))
+    current = node;
+    while (current)
     {
-        
-        if (pipe(fd) == -1)
-                error();
+        fd[0] = current->fd_in;
+       if (pipe(fd) == -1)
+               error();
             pid = fork();
             if (pid == -1)
                 error();
             if (pid == 0)
-                child_process(list_commandes[i], envp, fd);
-        i++;
+                child_process(current->str_options, envp, fd);
+        current = current->next;
     }
             pid = fork();
             if (pid == -1)
                 error();
             if (pid == 0)
-                parent_process(list_commandes[nb_str(commande, '|')], envp, fd);
-            i = 0;
-            close(fd[0]);
-            close(fd[1]);
-            while (i++ < nb_str(commande, '|') + 1)
+                parent_process(current->str_options, envp, fd);
+            current = node;
+            while (current)
             {
                 wait(NULL);
             }
 }
-
+/*
 void    ft_redirect_out(char *commande, t_list *envp)
 {
     char    **list_command;
@@ -109,7 +105,8 @@ void    ft_redirect_out(char *commande, t_list *envp)
         waitpid(pid, &status, 0);
     
 }
-
+*/
+/*
 void    ft_redirect_in(char *commande, t_list *envp)
 {
     char    **list_command;
@@ -157,3 +154,4 @@ void    ft_double(char *commande, t_list *envp)
     else
         waitpid(pid, &status, 0);
 }
+*/

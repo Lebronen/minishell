@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:57:39 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/28 14:45:12 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/28 16:58:41 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int ft_strcmp(char *s1, char *s2)
     }
     return (0);
 }
+/*
   void    ft_heredoc(char *commande, t_list *envp)
 {
     int     pipefd[2];
@@ -92,3 +93,4 @@ int ft_strcmp(char *s1, char *s2)
         free(heredoc_content);
     }
 }
+*/
