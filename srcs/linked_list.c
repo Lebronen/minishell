@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 18:04:39 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/07 18:15:28 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/28 14:28:57 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char    **list_to_tab(t_list *env)
     t_list  *current;
     int     i;
 
+    if (!env)
+        return (NULL);
     i = 0;
     current = env;
     tab = malloc((ft_lstsize(env) + 1) * sizeof(char *));
