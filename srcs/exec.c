@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/14 16:53:50 by rshay            ###   ########.fr       */
+/*   Updated: 2023/10/28 16:18:35 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,10 @@ void    execute(char *commande, t_list *envp)
 		}
 }
 
-void	process(char *commande, t_list *envp)
+void	process(t_node *node, t_list *envp)
 {
+	
+	/*
 	int		nb_pipes;
 	int		nb_redout;
 	int		nb_redin;
@@ -138,4 +140,5 @@ void	process(char *commande, t_list *envp)
 		else
 			perror("fork");
 	}
+	*/
 }

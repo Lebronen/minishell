@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgermain <cgermain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/21 15:31:31 by cgermain          #+#    #+#             */
-/*   Updated: 2023/10/03 15:07:44 by rshay            ###   ########.fr       */
+/*   Created: 2023/10/19 15:02:17 by cgermain          #+#    #+#             */
+/*   Updated: 2023/10/19 15:02:25 by cgermain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,27 +75,30 @@ static int	compare_words(char *word1, char *word2)
 	size_t	i;
 
 	i = 0;
-	while(word1[i] == word2[i] && word1 && word2)
+	while (word1[i] == word2[i] && word1 && word2)
 		i++;
-	if (i == ft_strlen(word2))
-			return(1);
+	if (i == ft_strlen(word2) && word1[i] == '=')
+		return (1);
 	return (0);
-}	
+}
 
-char	*get_env_value(char **envp, char *name)
+char	*get_env_value(t_list *envp, char *name)
 {
-	int	i;
-	int	j;
-	
+	int		i;
+	int		j;
+	char	*name2;
+
 	i = 0;
-	while(envp[i])
+	name2 = name_cleaner(name);
+	while (envp)
 	{
-		if (compare_words(envp[i], name))
+		if (compare_words(envp->content, name2))
 		{
-			j = ft_strlen(name) + 1;
-			return (ft_strdup(&envp[i][j]));
+			j = ft_strlen(name2) + 1;
+			free(name2);
+			return (ft_strdup(&envp->content[j]));
 		}
-		i++;			
+		envp = envp->next;
 	}
 	return (NULL);
 }
