@@ -97,7 +97,7 @@ t_node  *make_cmd(t_token *token);
 t_node  *make_pip(t_token *token);
 t_node  *make_rdr(t_token *token);
 t_token *previous_cmd(t_token *token);
-t_node  *nodizer(t_token *token);
+t_node  *nodizer(t_token *token, t_list *envp);
 t_node *init_tree(t_token *token);
 t_token *next_pipe(t_token *token);
 void print_node(t_node *node);
@@ -105,7 +105,7 @@ void print_tree(t_node *node);
 int     init_out(t_token *token);
 int     init_in(t_token *token);
 void 	free_lexer(t_token *token);
-void    manage_heredoc(t_node *node, t_token *token);
+void    manage_heredoc(t_node *node, t_token *token, t_list *envp);
 void    free_nodes(t_node *node);
 t_token *first_token(t_token *token);
 t_token *new_token(int type, char *str, t_token *last);
@@ -130,6 +130,7 @@ void	del(void *content);
 int 	get_next_line(char **line);
 void    ft_heredoc(char *commande, t_list *envp);
 int 	ft_strcmp(char *s1, char *s2);
+char	*heredocv2(char *commande);
 int     is_builtin(char **commande);
 
 #endif

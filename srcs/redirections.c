@@ -51,7 +51,7 @@ int	has_heredoc(t_token *token)
 	return (0);
 }
 
-int	number_heredoc(t_token *token)
+/*int last_heredoc(t_token *token)
 {
 	int	i;
 
@@ -69,14 +69,16 @@ void	manage_heredoc(t_node *node, t_token *token)
 {
 	int		i;
 	t_token	*tmp_token;
-
+	char	**heredoc_str;
+	
+	i = 0;
 	tmp_token = token;
 	if (node->fd_in != -2)
 	{
 		node->heredoc = NULL;
 		return ;
 	}
-	i = number_heredoc(token);
+	token = last_heredoc
 	node->heredoc = malloc(sizeof(char *) * (i + 1));
 	if (!node->heredoc)
 		return ;
@@ -92,6 +94,23 @@ void	manage_heredoc(t_node *node, t_token *token)
 	}
 	node->heredoc[i] = NULL;
 }
+
+int	manage_heredoc(char *endword)
+{
+	char *heredoc;
+	int fd;
+
+	heredoc = readline(">");
+	fd = open("here_doc", O_TRUNC| O_CREAT, 0644);
+	while (ft_strncmp(heredoc, endword, ft_strlen(endword)))
+	{
+			write(fd, heredoc, ft_strlen(heredoc));
+			free(heredoc);
+			heredoc = readline(">");
+	}
+	free(heredoc);
+	return (fd);
+}*/
 
 int	init_in(t_token *token)
 {
@@ -112,7 +131,7 @@ int	init_in(t_token *token)
 		{
 			if (fd != -1 && fd != -2)
 				close(fd);
-			return (-2);
+			fd = -2;
 		}
 		token = token->next;
 	}
