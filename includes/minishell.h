@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:33:32 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/28 17:21:06 by rshay            ###   ########.fr       */
+/*   Updated: 2023/11/03 16:07:33 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,8 @@ int		ft_index(char *commande, char c);
 void    ft_pipe(t_node *node, t_list *envp);
 void	process(t_node *node, t_list *envp);
 int	    open_file(char *argv, int i);
-void    ft_redirect_out(char *commande, t_list *envp);
-void    ft_redirect_in(char *commande, t_list *envp);
+void    ft_redirect(t_node *node, t_list *envp);
 char    **init_env(char **envp);
-void    ft_double(char *commande, t_list *envp);
 t_token *lexer(char *commande, t_list *envp);
 void	print_token(t_token *token);
 char	*get_env_value(t_list *envp, char *name);
@@ -127,8 +125,6 @@ char *name_cleaner(char *name);
 
 void    unset(char *commande, t_list *envp);
 void	del(void *content);
-int 	get_next_line(char **line);
-void    ft_heredoc(char *commande, t_list *envp);
 int 	ft_strcmp(char *s1, char *s2);
 char	*heredocv2(char *commande);
 int     is_builtin(char **commande);
