@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <cgermain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:02:17 by cgermain          #+#    #+#             */
-/*   Updated: 2023/10/19 15:02:25 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/11/02 15:15:56 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,11 @@ static int	compare_words(char *word1, char *word2)
 
 char	*get_env_value(t_list *envp, char *name)
 {
-	int		i;
-	int		j;
-
-	i = 0;
 	while (envp)
 	{
 		if (compare_words(envp->content, name))
 		{
-			j = ft_strlen(name) + 1;
-			return (ft_strdup(&envp->content[j]));
+			return (ft_strdup(envp->content));
 		}
 		envp = envp->next;
 	}

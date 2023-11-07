@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 18:15:16 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/28 16:16:35 by rshay            ###   ########.fr       */
+/*   Updated: 2023/11/02 16:47:21 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,17 @@ void    prompt(t_list *envp)
 {
     char    *commande;
     t_token *token;
-    t_node *node;
+    t_node  *node;
+    char    cwd[256];
+    //char    *txt;
     
     node = NULL;
     while (1)
     {
-        commande = readline("$");
+        if (getcwd(cwd, sizeof(cwd)) == NULL)
+            perror("getcwd error\n");
+        ft_strlcat(cwd, "~$", 256);
+        commande = readline(cwd);
         while (error_cmd(commande))
         {
             free(commande);
@@ -36,9 +41,9 @@ void    prompt(t_list *envp)
         commande = env_value_checker(commande, envp);
         token = lexer(commande, envp);
         node = nodizer(token, envp);
-        print_node(node);
+        //print_node(node);
 
-        //process(node, envp);
+        process(node, envp);
         add_history(commande);
 
         free(commande);

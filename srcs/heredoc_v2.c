@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_v2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:57:39 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/28 14:45:12 by rshay            ###   ########.fr       */
+/*   Updated: 2023/11/02 15:04:41 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,9 @@ void	manage_heredoc_notlast(char *endword)
 
 void	manage_heredoc(t_node *node, t_token *token, t_list *envp)
 {
-	int i;
 
 	if (node->fd_in != -2)
 		node->heredoc = NULL;
-	i = 0;
 	while (token && token->type != PIPE)
 	{
 		if (token->type_2 == ENDOF && !isitlast(token))

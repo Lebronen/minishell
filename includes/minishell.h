@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:33:32 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/28 17:21:06 by rshay            ###   ########.fr       */
+/*   Updated: 2023/11/02 15:45:42 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,6 @@ int 	get_next_line(char **line);
 void    ft_heredoc(char *commande, t_list *envp);
 int 	ft_strcmp(char *s1, char *s2);
 char	*heredocv2(char *commande);
-int     is_builtin(char **commande);
+int     is_builtin(char **commande, t_list *envp);
 
 #endif

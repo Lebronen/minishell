@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 15:10:40 by rshay             #+#    #+#             */
-/*   Updated: 2023/10/28 16:56:18 by rshay            ###   ########.fr       */
+/*   Updated: 2023/11/02 19:26:11 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,62 +25,62 @@ int nb_str(char *s, char c)
     return (i);
 }
 
-void	child_process(char **commande, t_list *envp, int *fd)
+void	child_process(t_node *node, t_list *envp, int *fd)
 {
-	int		filein;
-
-	filein = open("/dev/stdin", O_RDONLY, 0644);
-	if (filein == -1)
-		error();
 	dup2(fd[1], STDOUT_FILENO);
-	dup2(filein, STDIN_FILENO);
+	dup2(node->fd_in, STDIN_FILENO);
 	close(fd[0]);
-	execute(commande, envp);
+	execute(node->str_options, envp);
 }
 
-void	parent_process(char **commande, t_list *envp, int *fd)
+void	parent_process(t_node *node, t_list *envp, int *fd)
 {
-	int		fileout;
-
-	fileout = open("/dev/stdout", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fileout == -1)
-		error();
 	dup2(fd[0], STDIN_FILENO);
-	dup2(fileout, STDOUT_FILENO);
+	dup2(node->fd_out, STDOUT_FILENO);
 	close(fd[1]);
-	execute(commande, envp);
+	execute(node->str_options, envp);
+}
+
+void	pipe_process(t_node *node, t_list *envp)
+{
+	pid_t	pid;
+	int		fd[2];
+
+	if (pipe(fd) == -1)
+		error();
+	pid = fork();
+	if (pid == -1)
+		error();
+	if (pid == 0)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		execute(node->str_options, envp);
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+        wait(NULL);
+	}
 }
 
 void    ft_pipe(t_node *node, t_list *envp)
 {
-    int     fd[2];
-    pid_t   pid;
     t_node  *current;
-
+    
     current = node;
-    while (current)
+    dup2(current->fd_in, STDIN_FILENO);
+    while (current->next)
     {
-        fd[0] = current->fd_in;
-       if (pipe(fd) == -1)
-               error();
-            pid = fork();
-            if (pid == -1)
-                error();
-            if (pid == 0)
-                child_process(current->str_options, envp, fd);
+        pipe_process(current, envp);    
         current = current->next;
     }
-            pid = fork();
-            if (pid == -1)
-                error();
-            if (pid == 0)
-                parent_process(current->str_options, envp, fd);
-            current = node;
-            while (current)
-            {
-                wait(NULL);
-            }
+    dup2(current->fd_out, STDOUT_FILENO);
+    execute(current->str_options, envp);
+    wait(NULL);
 }
+
 /*
 void    ft_redirect_out(char *commande, t_list *envp)
 {
