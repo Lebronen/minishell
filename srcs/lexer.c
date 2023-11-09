@@ -27,21 +27,11 @@ char	*ft_strdup_c(char *s, char c)
 		i++;
 	}
 	result[i] = '\0';
-	if (s[i] == '\0' && (c == 39 || c == 34))
-	{
-		write(2, "il faut fermer les guillemets", 29);
-		return (NULL);
-	}
 	return (result);
 }
 
 int	tokenizer_first_token(t_token *token)
 {
-	if (token->type == PIPE)
-	{
-		printf("parse error near '|'\n");
-		return (0);
-	}
 	if (token->type == REDIR)
 		token->next->type_2 = PATH;
 	else

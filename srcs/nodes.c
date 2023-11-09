@@ -125,7 +125,7 @@ t_token	*next_unit(t_token *token)
 		return (NULL);
 }
 
-t_node	*nodizer(t_token *token, t_list *envp)
+t_node	*nodizer(t_token *token, t_data *data)
 {
 	t_node	*node;
 	t_node	*tmp_node;
@@ -135,7 +135,8 @@ t_node	*nodizer(t_token *token, t_list *envp)
 	node = NULL;
 	while (token)
 	{
-		node = nodizer_unit(token, envp);
+		node = nodizer_unit(token, data->envp);
+		node->data = data;
 		node->prev = prev;
 		prev = node;
 		token = next_unit(token);

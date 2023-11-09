@@ -44,6 +44,12 @@
 #define RDR 1
 #define CMD 2
 
+typedef struct	s_data
+{
+	int	last_error;
+	t_list	*envp;
+}	t_data;
+
 typedef struct s_token
 {
 	int	type;
@@ -60,13 +66,14 @@ typedef struct s_node
 	int	fd_out;
 	char **str_options;
 	char **heredoc;
+	struct s_data	*data;
 	struct s_node *prev;
 	struct s_node *next;
 
 } t_node;
 
 
-void    prompt(t_list *envp);
+void    prompt(t_data *data);
 void    execute(char **commande, t_list *envp);
 void	error(void);
 char	*find_path(char *cmd, char **envp);
@@ -96,7 +103,7 @@ t_node  *make_cmd(t_token *token);
 t_node  *make_pip(t_token *token);
 t_node  *make_rdr(t_token *token);
 t_token *previous_cmd(t_token *token);
-t_node  *nodizer(t_token *token, t_list *envp);
+t_node  *nodizer(t_token *token, t_data *data);
 t_node *init_tree(t_token *token);
 t_token *next_pipe(t_token *token);
 void print_node(t_node *node);
@@ -132,5 +139,6 @@ int     is_builtin(char **commande);
 
 void	set_shlvl(t_list *envp);
 int return_errno();
+void	free_data(t_data *data);
 
 #endif

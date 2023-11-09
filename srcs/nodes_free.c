@@ -50,3 +50,15 @@ void	free_nodes(t_node *node)
 		node = temp_node;
 	}
 }
+
+void	free_data(t_data *data)
+{
+	t_list	*temp_env;
+	while (data->envp)
+	{
+		temp_env = data->envp->next;
+		free(data->envp);
+		data->envp = temp_env;
+	}
+	free(data);
+}

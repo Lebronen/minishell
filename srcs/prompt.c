@@ -12,12 +12,12 @@
 
 #include "../includes/minishell.h"
 
-void    prompt(t_list *envp)
+void    prompt(t_data *data)
 {
     char    *commande;
     t_token *token;
     t_node *node;
-    
+
     node = NULL;
     while (1)
     {
@@ -33,12 +33,12 @@ void    prompt(t_list *envp)
             break;
         }
 
-        commande = env_value_checker(commande, envp);
-        token = lexer(commande, envp);
-        node = nodizer(token, envp);
-        //print_node(node);
+        commande = env_value_checker(commande, data->envp);
+        token = lexer(commande, data->envp);
+        node = nodizer(token, data);
+        print_node(node);
 
-        process(node, envp);
+        process(node, data->envp);
         add_history(commande);
 
         free(commande);

@@ -15,18 +15,23 @@
 int main(int argc, char **argv, char **envp)
 {
     (void)argv;
-    t_list *env;
+    t_data *data;
 
-    //env = init_env(envp);
-    env = tab_to_list(envp);
-    set_shlvl(env);
+    data = malloc(sizeof(t_data));
+    if (!data)
+        return (1);
+    data->last_error = 0;
+    data->envp = tab_to_list(envp);
+
+    set_shlvl(data->envp);
     
     if (argc == 1)
     {
-        prompt(env);
+        prompt(data);
     }
     else
     {
         ft_putstr_fd("Erreur : lancez uniquement l'executable sans argument", 2);
     }
+    free_data(data);
 }
