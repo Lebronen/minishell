@@ -37,6 +37,8 @@ char **manage_heredoc_last(char *endword, t_list *envp)
 			i++;
 			heredoc[i] = env_value_checker(readline(">"), envp);
 	}
+	i++;
+	heredoc[i] = NULL;
 	return(heredoc);
 }
 

@@ -17,7 +17,7 @@ void	free_heredoc(t_node *node)
 	int	i;
 
 	i = 0;
-	while (node->heredoc[i])
+	while (node->heredoc && node->heredoc[i])
 	{
 		free(node->heredoc[i]);
 		i++;

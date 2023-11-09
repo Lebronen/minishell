@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+int ft_strcmp(char *s1, char *s2)
+{
+    while (*s1 && *s2)
+    {
+        if (*s1 != *s2)
+            return (1);
+    }
+    if (*s1 != *s2)
+    {
+        if (*s1 != '\n' || *s2 == '\n')
+            return (0);
+            
+        return (1);
+    }
+    return (0);
+}
 
 int     is_builtin(char **commande)
 {

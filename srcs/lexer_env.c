@@ -60,6 +60,41 @@ char	*new_command(char *commande, char *env_value, int i)
 	return (str);
 }
 
+int	env_value_dollar(int i, char **commande, t_list *envp)
+{
+	char	*str;
+	char	*str1;
+
+	str1 = NULL;
+	if ((*commande)[i] == '?')
+		str = ft_itoa(return_errno());
+	else
+	{
+		str1 = ft_strdup_c2(&(*commande)[i], ' ');
+		str = get_env_value(envp, str1);
+	}
+	(*commande) = new_command((*commande), str, i - 1);
+	while ((*commande)[i] && (*commande)[i] != ' ')
+		i++;
+	if (str)
+		free(str);
+	if (str1)
+		free(str1);
+	return (i);
+}
+
+int	env_value_backslash (int i, char **commande)
+{
+	char *str;
+
+	str = ft_strdup_c(&(*commande)[i], ' ');
+	(*commande) = new_command((*commande), str, i - 1);
+	while((*commande)[i] && (*commande)[i] != ' ')
+		i++;
+	free(str);
+	return (i);
+}
+
 int	env_value_quote(int i, char **commande, t_list *envp)
 {	
 	int		j;
@@ -80,27 +115,26 @@ int	env_value_quote(int i, char **commande, t_list *envp)
 			else
 				str1 = ft_strdup_c2(&(*commande)[j], ' ');
 			str = get_env_value(envp, str1);
-			(*commande) = new_command((*commande), str, j - 1);
+			(*commande) = new_command((*commande), str, j);
 			free(str);
+			free(str1);
+		}
+		else if ((*commande)[i] == 92)
+		{
+			i++;
+			j = i;
+			while ((*commande)[i] &&
+				(*commande)[i] != ' ' && (*commande)[i] != '"')
+				i++;
+			if ((*commande)[i] == '"')
+				str1 = ft_strdup_c(&(*commande)[j], '"');
+			else
+				str1 = ft_strdup_c(&(*commande)[j], ' ');
+			(*commande) = new_command((*commande), str1, j - 1);
 			free(str1);
 		}
 		i++;
 	}
-	return (i);
-}
-
-int	env_value_dollar(int i, char **commande, t_list *envp)
-{
-	char	*str;
-	char	*str1;
-
-	str1 = ft_strdup_c2(&(*commande)[i], ' ');
-	str = get_env_value(envp, str1);
-	(*commande) = new_command((*commande), str, i - 1);
-	while ((*commande)[i] && (*commande)[i] != ' ')
-		i++;
-	free(str);
-	free(str1);
 	return (i);
 }
 
@@ -125,6 +159,8 @@ char	*env_value_checker(char *commande, t_list *envp)
 			if (commande[i] == '"')
 				i++;
 		}
+		else if (commande[i - 1] == 92)
+			i = env_value_backslash(i, &commande);
 		else if (commande[i - 1] == '$')
 			i = env_value_dollar(i, &commande, envp);
 	}

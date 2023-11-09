@@ -23,6 +23,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <fcntl.h>
+# include <errno.h>
 
 #define PIPE 0
 #define REDIR 1
@@ -128,5 +129,8 @@ void	del(void *content);
 int 	ft_strcmp(char *s1, char *s2);
 char	*heredocv2(char *commande);
 int     is_builtin(char **commande);
+
+void	set_shlvl(t_list *envp);
+int return_errno();
 
 #endif

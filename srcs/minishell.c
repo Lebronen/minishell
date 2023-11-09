@@ -19,6 +19,7 @@ int main(int argc, char **argv, char **envp)
 
     //env = init_env(envp);
     env = tab_to_list(envp);
+    set_shlvl(env);
     
     if (argc == 1)
     {

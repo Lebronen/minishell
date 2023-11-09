@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int g_error;
+
 int	error_ambig(char *commande)
 {
 	int	i;
@@ -54,7 +56,7 @@ int	error_cmd(char *commande)
 	}
 	if (c == '|' || c == '>' || c == '<')
 	{
-		write(2, "Syntax Error\n", 13);
+		write(2, "syntax error\n", 13);
 		return (1);
 	}
 	return (0);
@@ -65,5 +67,14 @@ int	input_error(char *str)
 	write(2, "'", 1);
 	ft_putstr_fd(str, 2);
 	write(2, "' : No such file or directory\n", 30);
+	g_error = 1;
 	return (-1);
+}
+
+int return_errno()
+{
+	if (g_error)
+		return (g_error);
+	else
+		return (0);
 }
