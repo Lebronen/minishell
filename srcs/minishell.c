@@ -12,6 +12,7 @@
 
 #include "../includes/minishell.h"
 
+
 int main(int argc, char **argv, char **envp)
 {
     (void)argv;
@@ -22,8 +23,8 @@ int main(int argc, char **argv, char **envp)
         return (1);
     data->last_error = 0;
     data->envp = tab_to_list(envp);
-
-    set_shlvl(data->envp);
+    signal_loop(data);
+   // set_shlvl(data->envp);
     
     if (argc == 1)
     {

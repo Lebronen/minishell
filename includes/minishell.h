@@ -47,6 +47,7 @@
 typedef struct	s_data
 {
 	int	last_error;
+	int signal;
 	t_list	*envp;
 }	t_data;
 
@@ -138,7 +139,13 @@ char	*heredocv2(char *commande);
 int     is_builtin(char **commande);
 
 void	set_shlvl(t_list *envp);
+char	*manage_shlvl(char *env, char *result);
 int return_errno();
 void	free_data(t_data *data);
+
+
+
+void	signal_loop(t_data	*data);
+int	check_signal();
 
 #endif

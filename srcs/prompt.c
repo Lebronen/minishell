@@ -12,6 +12,8 @@
 
 #include "../includes/minishell.h"
 
+
+
 void    prompt(t_data *data)
 {
     char    *commande;
@@ -19,10 +21,11 @@ void    prompt(t_data *data)
     t_node *node;
 
     node = NULL;
+
     while (1)
     {
         commande = readline("$");
-        while (error_cmd(commande))
+        while (error_cmd(commande) && data->last_error != 0)
         {
             free(commande);
             commande = readline("$");
@@ -38,7 +41,7 @@ void    prompt(t_data *data)
         node = nodizer(token, data);
         print_node(node);
 
-        process(node, data->envp);
+        //process(node, data->envp);
         add_history(commande);
 
         free(commande);
