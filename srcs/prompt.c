@@ -25,7 +25,12 @@ void    prompt(t_data *data)
     while (1)
     {
         commande = readline("$");
-        while (error_cmd(commande) && data->last_error != 0)
+        if(!commande)
+        {
+            ft_putstr_fd("exit\n", 1);
+            break;
+        }
+        while (error_cmd(commande))
         {
             free(commande);
             commande = readline("$");
@@ -48,4 +53,5 @@ void    prompt(t_data *data)
         free_lexer(token);
         free_nodes(node);
     }
+    rl_clear_history();
 }

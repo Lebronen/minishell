@@ -24,7 +24,6 @@ int main(int argc, char **argv, char **envp)
     data->last_error = 0;
     data->envp = tab_to_list(envp);
     signal_loop(data);
-   // set_shlvl(data->envp);
     
     if (argc == 1)
     {

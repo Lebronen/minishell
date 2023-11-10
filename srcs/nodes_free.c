@@ -42,7 +42,7 @@ void	free_nodes(t_node *node)
 			}
 			free(node->str_options);
 		}
-		if (node->heredoc)
+		if (node->heredoc != NULL)
 			free_heredoc(node);
 		temp_node = node->next;
 		if (node)

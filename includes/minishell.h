@@ -44,6 +44,8 @@
 #define RDR 1
 #define CMD 2
 
+extern int	g_sig_handle;
+
 typedef struct	s_data
 {
 	int	last_error;
@@ -146,6 +148,7 @@ void	free_data(t_data *data);
 
 
 void	signal_loop(t_data	*data);
+void	signal_handler_heredoc(int signum);
 int	check_signal();
 
 #endif

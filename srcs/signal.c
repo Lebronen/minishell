@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	g_errnum;
+int	g_sig_handle;
 
 void	signal_handler(int signum)
 {
@@ -22,8 +22,8 @@ void	signal_handler(int signum)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		g_sig_handle = 130;
 	}
-	g_errnum = 130;
 }
 
 void	signal_handler_child(int signum)
@@ -35,7 +35,14 @@ void	signal_handler_child(int signum)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	g_errnum = 130;
+	g_sig_handle= 130;
+}
+
+void	signal_handler_heredoc(int signum)
+{
+	(void)signum;
+	close(STDIN_FILENO);
+	
 }
 
 void	signal_loop(t_data	*data)
