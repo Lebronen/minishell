@@ -11,6 +11,11 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+void	restore_signal()
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, signal_handler);
+}
 
 int	isitlast(t_token *token)
 {
@@ -28,31 +33,27 @@ char **manage_heredoc_last(char *endword, t_list *envp)
 {
 	char **heredoc;
 	int	i;
-
+	
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, signal_handler_heredoc);
-	
 	i = 0;
 	heredoc = malloc(sizeof(char *) * 70);
 	if (!heredoc)
-		return (NULL);
-	heredoc[0] = env_value_checker(readline(">"), envp);
-	if (!heredoc[0])
 	{
-
-	}
-	if(!heredoc[0])
+		restore_signal();
 		return (NULL);
-	while (ft_strncmp(heredoc[i], endword, ft_strlen(endword)))
+	}
+	heredoc[0] = env_value_checker(readline(">"), envp);
+	while (heredoc[i] && ft_strncmp(heredoc[i], endword, ft_strlen(endword)))
 	{
 			i++;
 			heredoc[i] = env_value_checker(readline(">"), envp);
-			if (!heredoc[i])
-				return (NULL);
 	}
-	i++;
-	heredoc[i] = NULL;
-	return(heredoc);
+	restore_signal();
+	if (heredoc)
+		return(heredoc);
+	else
+		return (NULL);
 }
 
 void	manage_heredoc_notlast(char *endword)
@@ -61,34 +62,54 @@ void	manage_heredoc_notlast(char *endword)
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, signal_handler_heredoc);
-
 	heredoc = readline(">");
-	if(!heredoc)
-		return ;
-	while (ft_strncmp(heredoc, endword, ft_strlen(endword)))
+	while (heredoc && ft_strncmp(heredoc, endword, ft_strlen(endword)))
 	{
-            free(heredoc);
+			free(heredoc);
 			heredoc = readline(">");
 	}
-	free(heredoc);
+	if(heredoc)
+		free(heredoc);
+	restore_signal();
 }
 
 
 void	manage_heredoc(t_node *node, t_token *token, t_list *envp)
 {
 	int i;
-
+	int	std_in;
+	
+	rl_replace_line("", 0);
+	std_in = dup(STDIN_FILENO);
 	if (node->fd_in != -2)
+	{
+		close(std_in);
 		node->heredoc = NULL;
+		return ;
+	}
 	i = 0;
 	while (token && token->type != PIPE)
 	{
 		if (token->type_2 == ENDOF && !isitlast(token))
 			manage_heredoc_notlast(token->next->str);
-		if (token->type_2 == ENDOF && isitlast(token))
+		else if (token->type_2 == ENDOF && isitlast(token))
 			node->heredoc = manage_heredoc_last(token->next->str, envp);
+		if (g_sig_handle == 1500)
+		{
+			dup2(std_in, STDIN_FILENO);
+			close(std_in);
+			g_sig_handle = 1;
+			node->heredoc = NULL;
+			return ;
+		}
+		if (!node->heredoc[0])
+		{
+			node->heredoc = NULL;
+			printf("warning: here-document delimited by end-of-file (wanted: %s)", token->next->str);
+		}
 		token = token->next;
 	}
+	close(std_in);
 }
 
-
+//attention node->heredoc a free plus tard

@@ -12,7 +12,16 @@
 
 #include "../includes/minishell.h"
 
-
+int check_heredoc(t_node *node)
+{
+    while(node)
+    {
+        if (node->fd_in == -2 && node->heredoc == NULL)
+            return (0);
+        node = node->next;
+    }
+    return (1);    
+}
 
 void    prompt(t_data *data)
 {
@@ -20,7 +29,9 @@ void    prompt(t_data *data)
     t_token *token;
     t_node *node;
 
+
     node = NULL;
+    
 
     while (1)
     {
@@ -40,15 +51,18 @@ void    prompt(t_data *data)
             free(commande);
             break;
         }
-
         commande = env_value_checker(commande, data->envp);
         token = lexer(commande, data->envp);
         node = nodizer(token, data);
-        print_node(node);
 
-        //process(node, data->envp);
-        add_history(commande);
-
+        if(check_heredoc(node))
+        {
+            print_node(node);
+            process(node, data->envp);
+            add_history(commande);
+        }
+        else
+            printf("probleme heredoc\n");
         free(commande);
         free_lexer(token);
         free_nodes(node);

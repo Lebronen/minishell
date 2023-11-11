@@ -143,6 +143,8 @@ char	*env_value_checker(char *commande, t_list *envp)
 	int	i;
 
 	i = 0;
+	if(!commande)
+		return (NULL);
 	while (commande[i])
 	{
 		i++;
@@ -164,5 +166,5 @@ char	*env_value_checker(char *commande, t_list *envp)
 		else if (commande[i - 1] == '$')
 			i = env_value_dollar(i, &commande, envp);
 	}
-	return (commande);
+		return (commande);
 }

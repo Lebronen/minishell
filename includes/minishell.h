@@ -148,6 +148,7 @@ void	free_data(t_data *data);
 
 
 void	signal_loop(t_data	*data);
+void	signal_handler(int signum);
 void	signal_handler_heredoc(int signum);
 int	check_signal();
 
