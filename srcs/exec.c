@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/02 16:57:29 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/07 12:26:44 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,12 @@ void	process(t_node *node, t_list *envp)
 {
 	pid_t	pid;
 	int		status;
-
-	if (!node->next)
+	
+	if (node->fd_in == STDIN_FILENO && node->fd_out == STDOUT_FILENO)
 	{
-		if (!is_builtin(node->str_options, envp))
+		if (! is_builtin(node->str_options, envp))
 		{
+			
 			pid = fork();
 			if (pid == 0)
 				execute(node->str_options, envp);
@@ -98,6 +99,6 @@ void	process(t_node *node, t_list *envp)
 				perror("fork");
 		}
 	}
-	else
-		ft_pipe(node, envp);
+		else
+			ft_redirect(node, envp);
 }

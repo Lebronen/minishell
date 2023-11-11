@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 15:10:40 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/02 19:26:11 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/08 11:54:20 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,11 @@ void	pipe_process(t_node *node, t_list *envp)
 	}
 }
 
+/*
 void    ft_pipe(t_node *node, t_list *envp)
 {
     t_node  *current;
+    pid_t   pid;
     
     current = node;
     dup2(current->fd_in, STDIN_FILENO);
@@ -76,82 +78,61 @@ void    ft_pipe(t_node *node, t_list *envp)
         pipe_process(current, envp);    
         current = current->next;
     }
-    dup2(current->fd_out, STDOUT_FILENO);
-    execute(current->str_options, envp);
-    wait(NULL);
+            pid = fork();
+            if (pid == -1)
+                error();
+            if (pid == 0)
+                parent_process(current->str_options, envp, node->fd_in);
+            current = node;
+            while (current)
+            {
+                wait(NULL);
+            }
 }
+*/
 
-/*
-void    ft_redirect_out(char *commande, t_list *envp)
+void    ft_redirect(t_node *node, t_list *envp)
 {
-    char    **list_command;
     pid_t   pid;
-    int     fileout;
     int     status;
+    int     fd;
+    int     i;
 
-    list_command = ft_split(commande, '>');
+    
     pid = fork();
     if (pid == -1)
         error();
     if (pid == 0)
     {
-        fileout = open(list_command[1] + 1, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        dup2(fileout, STDOUT_FILENO);
-        execute(list_command[0], envp);
-        close(fileout);
+        if (node->fd_out != STDOUT_FILENO)
+        {    
+            dup2(node->fd_out, STDOUT_FILENO);
+            close(node->fd_out);
+        }
+        if (node->fd_in != STDIN_FILENO)
+        {
+            fd = node->fd_in;
+            if (node->fd_in == -2)
+            {
+                i= 0;
+                fd = open("/tmp/heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
+                if (fd == -1)
+                    error();
+                while (node->heredoc[i])
+                {
+                    ft_putstr_fd(node->heredoc[i], fd);
+                    i++;
+                }
+            }
+            dup2(fd, STDIN_FILENO);
+            close(fd);
+        }
+        if (is_builtin(node->str_options, envp))
+            exit(0) ;
+        execute(node->str_options, envp);
         dup2(STDOUT_FILENO, STDOUT_FILENO);
     }
     else
         waitpid(pid, &status, 0);
     
 }
-*/
-/*
-void    ft_redirect_in(char *commande, t_list *envp)
-{
-    char    **list_command;
-    pid_t   pid;
-    int     filein;
-    int     status;
-
-    list_command = ft_split(commande, '<');
-    pid = fork();
-    if (pid == -1)
-        error();
-    if (pid == 0)
-    {
-        filein = open(list_command[1] + 1, O_RDWR , S_IRUSR | S_IWUSR | O_CREAT, 0644);
-        if (filein < 0)
-            ft_printf("file not found\n");
-        if (dup2(filein, STDIN_FILENO) < 0)
-            ft_printf("dup2 error\n");
-        close(filein);
-        execute(list_command[0], envp);
-    }
-    else
-        waitpid(pid, &status, 0);
-}
-
-void    ft_double(char *commande, t_list *envp)
-{
-    char    **list_command;
-    pid_t   pid;
-    int     fileout;
-    int     status;
-
-    list_command = ft_split(commande, '>');
-    pid = fork();
-    if (pid == -1)
-        error();
-    if (pid == 0)
-    {
-        fileout = open(list_command[1] + 1, O_CREAT | O_RDWR | O_APPEND,  S_IRUSR | S_IWUSR );
-        dup2(fileout, STDOUT_FILENO);
-        execute(list_command[0], envp);
-        close(fileout);
-        dup2(STDOUT_FILENO, STDOUT_FILENO);
-    }
-    else
-        waitpid(pid, &status, 0);
-}
-*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <cgermain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:05:03 by cgermain          #+#    #+#             */
-/*   Updated: 2023/10/19 15:05:09 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/11/03 16:22:25 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@ int	init_out(t_token *token)
 {
 	int	fd;
 
-	fd = -1;
+	fd = 1;
 	while (token && token->type != PIPE)
 	{
 		if (token->type_2 == OUT)
 		{
-			if (fd != -1)
+			if (fd != 1)
 				close(fd);
-			fd = open(token->next->str, O_TRUNC | O_CREAT, 0644);
+			fd = open(token->next->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd == -1)
 				return (-1);
 		}
 		if (token->type_2 == APPEND)
 		{
-			if (fd != -1)
+			if (fd != 1)
 				close(fd);
-			fd = open(token->next->str, O_APPEND | O_CREAT, 0644);
+			fd = open(token->next->str, O_CREAT | O_RDWR | O_APPEND,  S_IRUSR | S_IWUSR, 0644);
 			if (fd == -1)
 				return (-1);
 		}
@@ -116,12 +116,12 @@ int	init_in(t_token *token)
 {
 	int	fd;
 
-	fd = -1;
+	fd = 0;
 	while (token && token->type != PIPE)
 	{
 		if (token->type_2 == IN)
 		{
-			if (fd != -1 && fd != -2)
+			if (fd != 0 && fd != -2)
 				close(fd);
 			fd = open(token->next->str, O_RDONLY);
 			if (fd == -1)
@@ -129,7 +129,7 @@ int	init_in(t_token *token)
 		}
 		else if (token->type_2 == ENDOF)
 		{
-			if (fd != -1 && fd != -2)
+			if (fd != 0 && fd != -2)
 				close(fd);
 			fd = -2;
 		}
