@@ -88,7 +88,7 @@ t_node	*make_cmd(t_token *token)
 	return (node);
 }
 
-t_node	*nodizer_unit(t_token *token, t_list *envp)
+t_node	*nodizer_unit(t_token *token, t_data *data)
 {
 	t_token	*tmp_token;
 	t_node	*node;
@@ -109,9 +109,9 @@ t_node	*nodizer_unit(t_token *token, t_list *envp)
 		node->str_options = NULL;
 		node->next = NULL;
 	}
-	node->fd_in = init_in(tmp_token);
+	node->fd_in = init_in(tmp_token, data);
 	node->fd_out = init_out(tmp_token);
-	manage_heredoc(node, tmp_token, envp);
+	manage_heredoc(node, tmp_token, data);
 	return (node);
 }
 
@@ -135,7 +135,7 @@ t_node	*nodizer(t_token *token, t_data *data)
 	node = NULL;
 	while (token)
 	{
-		node = nodizer_unit(token, data->envp);
+		node = nodizer_unit(token, data);
 		node->data = data;
 		node->prev = prev;
 		prev = node;

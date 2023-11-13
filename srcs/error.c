@@ -73,18 +73,12 @@ int	error_cmd(char *commande)
 	}
 	return (0);
 }
-//tout mettre sur syntax error ? 
 
-int	input_error(char *str)
+int	input_error(char *str, t_data *data)
 {
 	write(2, "'", 1);
 	ft_putstr_fd(str, 2);
 	write(2, "' : No such file or directory\n", 30);
+	data->last_error = 1;
 	return (-1);
-}
-
-int return_errno()
-{
-	
-		return (0);
 }

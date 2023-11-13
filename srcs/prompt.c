@@ -51,7 +51,7 @@ void    prompt(t_data *data)
             free(commande);
             break;
         }
-        commande = env_value_checker(commande, data->envp);
+        commande = env_value_checker(commande, data);
         token = lexer(commande, data->envp);
         node = nodizer(token, data);
 
@@ -61,8 +61,6 @@ void    prompt(t_data *data)
             process(node, data->envp);
             add_history(commande);
         }
-        else
-            printf("probleme heredoc\n");
         free(commande);
         free_lexer(token);
         free_nodes(node);

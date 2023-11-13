@@ -29,7 +29,7 @@ int	isitlast(t_token *token)
 	return (1);
 }
 
-char **manage_heredoc_last(char *endword, t_list *envp)
+char **manage_heredoc_last(char *endword, t_data *data)
 {
 	char **heredoc;
 	int	i;
@@ -43,14 +43,14 @@ char **manage_heredoc_last(char *endword, t_list *envp)
 		restore_signal();
 		return (NULL);
 	}
-	heredoc[0] = env_value_checker(readline(">"), envp);
+	heredoc[0] = env_value_checker(readline(">"), data);
 	while (heredoc[i] && ft_strncmp(heredoc[i], endword, ft_strlen(endword)))
 	{
 			i++;
-			heredoc[i] = env_value_checker(readline(">"), envp);
+			heredoc[i] = env_value_checker(readline(">"), data);
 	}
 	restore_signal();
-	if (heredoc)
+	if (heredoc && heredoc[i])
 		return(heredoc);
 	else
 		return (NULL);
@@ -74,12 +74,11 @@ void	manage_heredoc_notlast(char *endword)
 }
 
 
-void	manage_heredoc(t_node *node, t_token *token, t_list *envp)
+void	manage_heredoc(t_node *node, t_token *token, t_data *data)
 {
 	int i;
 	int	std_in;
 	
-	rl_replace_line("", 0);
 	std_in = dup(STDIN_FILENO);
 	if (node->fd_in != -2)
 	{
@@ -88,12 +87,12 @@ void	manage_heredoc(t_node *node, t_token *token, t_list *envp)
 		return ;
 	}
 	i = 0;
-	while (token && token->type != PIPE)
+	while (token && token->next && token->type != PIPE)
 	{
 		if (token->type_2 == ENDOF && !isitlast(token))
 			manage_heredoc_notlast(token->next->str);
 		else if (token->type_2 == ENDOF && isitlast(token))
-			node->heredoc = manage_heredoc_last(token->next->str, envp);
+			node->heredoc = manage_heredoc_last(token->next->str, data);
 		if (g_sig_handle == 1500)
 		{
 			dup2(std_in, STDIN_FILENO);
@@ -102,10 +101,11 @@ void	manage_heredoc(t_node *node, t_token *token, t_list *envp)
 			node->heredoc = NULL;
 			return ;
 		}
-		if (!node->heredoc[0])
+		else if (!node->heredoc)
 		{
 			node->heredoc = NULL;
-			printf("warning: here-document delimited by end-of-file (wanted: %s)", token->next->str);
+			printf("warning: here-document delimited by end-of-file (wanted: %s)\n", token->next->str);
+			return ;
 		}
 		token = token->next;
 	}
