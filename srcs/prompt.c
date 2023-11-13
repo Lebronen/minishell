@@ -52,7 +52,7 @@ void    prompt(t_data *data)
             break;
         }
         commande = env_value_checker(commande, data);
-        token = lexer(commande, data->envp);
+        token = lexer(commande, data);
         node = nodizer(token, data);
 
         if(check_heredoc(node))

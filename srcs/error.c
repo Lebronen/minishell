@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 
-int	error_ambig(char *commande)
+int	error_ambig(char *commande, t_data *data)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ int	error_ambig(char *commande)
 					write(2, &commande[i], 1);
 					i++;
 				}
-				write(2, " : ambiguous redirect\n", 22);
+				print_error(1, 2, " : ambiguous redirect\n", data);
 				return (1);
 			}
 		}

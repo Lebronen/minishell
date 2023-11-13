@@ -88,7 +88,7 @@ void	process(t_node *node, t_list *envp);
 int	    open_file(char *argv, int i);
 void    ft_redirect(t_node *node, t_list *envp);
 char    **init_env(char **envp);
-t_token *lexer(char *commande, t_list *envp);
+t_token *lexer(char *commande, t_data *data);
 void	print_token(t_token *token);
 char	*get_env_value(t_list *envp, char *name);
 void    cd(char *path);
@@ -128,7 +128,7 @@ char	*ft_strdup_c(char *s, char c);
 char	*env_value_checker(char *commande, t_data *data);
 int	error_cmd(char *commande, t_data *data);
 int input_error(char *str, t_data *data);
-int error_ambig(char *commande);
+int error_ambig(char *commande, t_data *data);
 char	*ft_strdup_c2(char *s, char c);
 char *name_cleaner(char *name);
 

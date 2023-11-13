@@ -111,6 +111,7 @@ t_node	*nodizer_unit(t_token *token, t_data *data)
 	}
 	node->fd_in = init_in(tmp_token, data);
 	node->fd_out = init_out(tmp_token);
+	node->heredoc = NULL;
 	manage_heredoc(node, tmp_token, data);
 	return (node);
 }
