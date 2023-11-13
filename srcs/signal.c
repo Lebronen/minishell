@@ -44,7 +44,7 @@ void	signal_handler_heredoc(int signum)
 	if(signum == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
-		g_sig_handle = 1500;
+		g_sig_handle = SIGINT;
 		close(STDIN_FILENO);
 	}
 }

@@ -80,7 +80,7 @@ void	manage_heredoc(t_node *node, t_token *token, t_data *data)
 			node->heredoc = manage_heredoc_last(token->next->str, data);
 		if (!node->heredoc)
 		{
-			if (g_sig_handle == 1500)
+			if (g_sig_handle == SIGINT)
 				ctrl_c_heredoc(std_in, data);
 			else
 				ctrl_d_heredoc(token->next->str, data);

@@ -34,7 +34,7 @@ void	ctrl_c_heredoc(int std_in, t_data *data)
 {
 	dup2(std_in, STDIN_FILENO);
 	close(std_in);
-	g_sig_handle = 1;
+	g_sig_handle = 0;
 	data->last_error = 130;
 }
 
