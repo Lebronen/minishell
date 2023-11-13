@@ -39,7 +39,7 @@ int	error_ambig(char *commande)
 	return (0);
 }
 
-int	error_cmd(char *commande)
+int	error_cmd(char *commande, t_data *data)
 {
 	int		i;
 	char	c;
@@ -61,16 +61,8 @@ int	error_cmd(char *commande)
 			quotes++;
 		i++;
 	}
-	if (d == '|' ||  c == '|' || c == '>' || c == '<')
-	{
-		write(2, "syntax error\n", 13);
-		return (1);
-	}
-	if (quotes % 2 != 0)
-	{
-		write(2, "unclosed quotes\n", 16);
-		return (1);
-	}
+	if (d == '|' ||  c == '|' || c == '>' || c == '<' || quotes % 2 != 0)
+		return(print_error(2, 2, "Syntax error\n", data));
 	return (0);
 }
 
@@ -81,4 +73,11 @@ int	input_error(char *str, t_data *data)
 	write(2, "' : No such file or directory\n", 30);
 	data->last_error = 1;
 	return (-1);
+}
+
+int	print_error(int	error_num, int fd, char *str, t_data *data )
+{
+	data->last_error = error_num;
+	ft_putstr_fd(str, fd);
+	return (1);
 }

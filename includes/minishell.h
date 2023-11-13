@@ -126,7 +126,7 @@ int handlesinglequotetoken(int i, t_token **last, char *commande);
 int	handlewordtoken(int i, t_token **last, char *commande);
 char	*ft_strdup_c(char *s, char c);
 char	*env_value_checker(char *commande, t_data *data);
-int error_cmd(char *commande);
+int	error_cmd(char *commande, t_data *data);
 int input_error(char *str, t_data *data);
 int error_ambig(char *commande);
 char	*ft_strdup_c2(char *s, char c);
@@ -147,9 +147,18 @@ void	free_data(t_data *data);
 
 
 
+
 void	signal_loop(t_data	*data);
 void	signal_handler(int signum);
 void	signal_handler_heredoc(int signum);
 int	check_signal();
+
+int	print_error(int	error_num, int fd, char *str, t_data *data );
+
+char **end_heredoc(char **heredoc, int i);
+void	restore_signal();
+int	isitlast(t_token *token);
+void	ctrl_c_heredoc(int std_in, t_data *data);
+void	ctrl_d_heredoc(char *str, t_data *data);
 
 #endif

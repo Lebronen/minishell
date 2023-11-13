@@ -11,22 +11,13 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-void	restore_signal()
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, signal_handler);
-}
 
-int	isitlast(t_token *token)
+char **end_manage_heredoc(char **heredoc, int i)
 {
-	token = token->next;
-	while(token && token->next && token->type != PIPE)
-	{
-		if (token->type == REDIR)
-			return (0);
-		token = token->next;
-	}
-	return (1);
+	free(heredoc[i]);
+	heredoc[i] = NULL;
+	restore_signal();
+	return(heredoc);
 }
 
 char **manage_heredoc_last(char *endword, t_data *data)
@@ -44,16 +35,16 @@ char **manage_heredoc_last(char *endword, t_data *data)
 		return (NULL);
 	}
 	heredoc[0] = env_value_checker(readline(">"), data);
+	if(!heredoc[0])
+		return(end_heredoc(heredoc, 0));
 	while (heredoc[i] && ft_strncmp(heredoc[i], endword, ft_strlen(endword)))
 	{
 			i++;
 			heredoc[i] = env_value_checker(readline(">"), data);
+			if (!heredoc[i])
+				return(end_heredoc(heredoc, i));
 	}
-	restore_signal();
-	if (heredoc && heredoc[i])
-		return(heredoc);
-	else
-		return (NULL);
+	return(end_manage_heredoc(heredoc, i));
 }
 
 void	manage_heredoc_notlast(char *endword)
@@ -80,36 +71,23 @@ void	manage_heredoc(t_node *node, t_token *token, t_data *data)
 	int	std_in;
 	
 	std_in = dup(STDIN_FILENO);
-	if (node->fd_in != -2)
-	{
-		close(std_in);
-		node->heredoc = NULL;
-		return ;
-	}
 	i = 0;
-	while (token && token->next && token->type != PIPE)
+	while (node->fd_in == -2 && token && token->next && token->type != PIPE)
 	{
 		if (token->type_2 == ENDOF && !isitlast(token))
 			manage_heredoc_notlast(token->next->str);
 		else if (token->type_2 == ENDOF && isitlast(token))
 			node->heredoc = manage_heredoc_last(token->next->str, data);
-		if (g_sig_handle == 1500)
+		if (!node->heredoc)
 		{
-			dup2(std_in, STDIN_FILENO);
-			close(std_in);
-			g_sig_handle = 1;
+			if (g_sig_handle == 1500)
+				ctrl_c_heredoc(std_in, data);
+			else
+				ctrl_d_heredoc(token->next->str, data);
 			node->heredoc = NULL;
-			return ;
-		}
-		else if (!node->heredoc)
-		{
-			node->heredoc = NULL;
-			printf("warning: here-document delimited by end-of-file (wanted: %s)\n", token->next->str);
 			return ;
 		}
 		token = token->next;
 	}
 	close(std_in);
 }
-
-//attention node->heredoc a free plus tard

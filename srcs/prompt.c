@@ -41,7 +41,7 @@ void    prompt(t_data *data)
             ft_putstr_fd("exit\n", 1);
             break;
         }
-        while (error_cmd(commande))
+        while (error_cmd(commande, data))
         {
             free(commande);
             commande = readline("$");
@@ -58,7 +58,7 @@ void    prompt(t_data *data)
         if(check_heredoc(node))
         {
             print_node(node);
-            process(node, data->envp);
+           // process(node, data->envp);
             add_history(commande);
         }
         free(commande);
