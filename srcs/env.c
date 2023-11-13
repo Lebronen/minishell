@@ -35,7 +35,7 @@ static char	**fill_env(char **envp, char **result)
 	while (envp[j])
 	{
 		i = 0;
-		if(!ft_strncmp(envp[j], "SHLVL=", 6))
+		if (!ft_strncmp(envp[j], "SHLVL=", 6))
 		{
 			result[j] = manage_shlvl(envp[j], result[j]);
 			j++;

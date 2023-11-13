@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 int	error_ambig(char *commande, t_data *data)
 {
 	int	i;
@@ -61,8 +60,8 @@ int	error_cmd(char *commande, t_data *data)
 			quotes++;
 		i++;
 	}
-	if (d == '|' ||  c == '|' || c == '>' || c == '<' || quotes % 2 != 0)
-		return(print_error(2, 2, "Syntax error\n", data));
+	if (d == '|' || c == '|' || c == '>' || c == '<' || quotes % 2 != 0)
+		return (print_error(2, 2, "Syntax error\n", data));
 	return (0);
 }
 
@@ -75,7 +74,7 @@ int	input_error(char *str, t_data *data)
 	return (-1);
 }
 
-int	print_error(int	error_num, int fd, char *str, t_data *data )
+int	print_error(int error_num, int fd, char *str, t_data *data )
 {
 	data->last_error = error_num;
 	ft_putstr_fd(str, fd);

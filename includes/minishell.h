@@ -91,6 +91,8 @@ char    **init_env(char **envp);
 t_token *lexer(char *commande, t_data *data);
 void	print_token(t_token *token);
 char	*get_env_value(t_list *envp, char *name);
+int		env_value_quote(int i, char **commande, t_list *envp);
+char	*new_command(char *commande, char *env_value, int i);
 void    cd(char *path);
 void    pwd();
 void    env(t_list *envp);
@@ -156,7 +158,7 @@ int	check_signal();
 int	print_error(int	error_num, int fd, char *str, t_data *data );
 
 char **end_heredoc(char **heredoc, int i);
-void	restore_signal();
+void	restore_signal(void);
 int	isitlast(t_token *token);
 void	ctrl_c_heredoc(int std_in, t_data *data);
 void	ctrl_d_heredoc(char *str, t_data *data);

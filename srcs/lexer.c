@@ -101,7 +101,7 @@ t_token	*lexer(char *commande, t_data *data)
 	return (first_token(last));
 }
 
-
+/*
 void print_token(t_token *token)
 {
 	while (token)
@@ -134,4 +134,4 @@ void print_token(t_token *token)
 		}
 		token = token->next;
 	}
-}
+}*/

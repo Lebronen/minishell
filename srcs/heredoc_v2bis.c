@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	restore_signal()
+void	restore_signal(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, signal_handler);
@@ -21,7 +21,7 @@ void	restore_signal()
 int	isitlast(t_token *token)
 {
 	token = token->next;
-	while(token && token->next && token->type != PIPE)
+	while (token && token->next && token->type != PIPE)
 	{
 		if (token->type == REDIR)
 			return (0);
@@ -45,7 +45,7 @@ void	ctrl_d_heredoc(char *str, t_data *data)
 	data->last_error = 0;
 }
 
-char **end_heredoc(char **heredoc, int i)
+char	**end_heredoc(char **heredoc, int i)
 {
 	while (i >= 0)
 	{
@@ -54,8 +54,5 @@ char **end_heredoc(char **heredoc, int i)
 	}
 	free(heredoc);
 	restore_signal();
-	return(NULL);	
+	return (NULL);
 }
-
-
-

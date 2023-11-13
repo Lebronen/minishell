@@ -14,9 +14,9 @@
 
 char	*manage_shlvl(char *env, char *result)
 {
-	int	nb;
-	int	i;
-	char *number;
+	int		nb;
+	int		i;
+	char	*number;
 
 	i = 0;
 	nb = ft_atoi(&env[6]);

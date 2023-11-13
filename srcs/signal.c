@@ -16,32 +16,29 @@ int	g_sig_handle;
 
 void	signal_handler(int signum)
 {
-	if(signum == SIGINT)
+	if (signum == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		g_sig_handle = 130;
-	}
-			
+	}	
 }
 
 void	signal_handler_child(int signum)
 {
-	if(signum == SIGINT)
+	if (signum == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	g_sig_handle= 130;
 }
 
 void	signal_handler_heredoc(int signum)
 {
-	if(signum == SIGINT)
+	if (signum == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
 		g_sig_handle = SIGINT;
@@ -52,7 +49,7 @@ void	signal_handler_heredoc(int signum)
 void	signal_loop(t_data	*data)
 {
 	(void) data;
-	signal(SIGINT,  signal_handler);
+	g_sig_handle = 0;
+	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
-

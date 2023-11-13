@@ -83,58 +83,15 @@ int	env_value_dollar(int i, char **commande, t_data *data)
 	return (i);
 }
 
-int	env_value_backslash (int i, char **commande)
+int	env_value_backslash(int i, char **commande)
 {
-	char *str;
+	char	*str;
 
 	str = ft_strdup_c(&(*commande)[i], ' ');
 	(*commande) = new_command((*commande), str, i - 1);
-	while((*commande)[i] && (*commande)[i] != ' ')
+	while ((*commande)[i] && (*commande)[i] != ' ')
 		i++;
 	free(str);
-	return (i);
-}
-
-int	env_value_quote(int i, char **commande, t_list *envp)
-{	
-	int		j;
-	char	*str;
-	char	*str1;
-
-	while ((*commande)[i] && (*commande)[i] != '"')
-	{
-		if ((*commande)[i] == '$')
-		{
-			i++;
-			j = i;
-			while ((*commande)[i] &&
-				(*commande)[i] != ' ' && (*commande)[i] != '"')
-				i++;
-			if ((*commande)[i] == '"')
-				str1 = ft_strdup_c2(&(*commande)[j], '"');
-			else
-				str1 = ft_strdup_c2(&(*commande)[j], ' ');
-			str = get_env_value(envp, str1);
-			(*commande) = new_command((*commande), str, j);
-			free(str);
-			free(str1);
-		}
-		else if ((*commande)[i] == 92)
-		{
-			i++;
-			j = i;
-			while ((*commande)[i] &&
-				(*commande)[i] != ' ' && (*commande)[i] != '"')
-				i++;
-			if ((*commande)[i] == '"')
-				str1 = ft_strdup_c(&(*commande)[j], '"');
-			else
-				str1 = ft_strdup_c(&(*commande)[j], ' ');
-			(*commande) = new_command((*commande), str1, j - 1);
-			free(str1);
-		}
-		i++;
-	}
 	return (i);
 }
 
@@ -143,7 +100,7 @@ char	*env_value_checker(char *commande, t_data *data)
 	int	i;
 
 	i = 0;
-	if(!commande)
+	if (!commande)
 		return (NULL);
 	while (commande[i])
 	{
@@ -156,15 +113,11 @@ char	*env_value_checker(char *commande, t_data *data)
 			i++;
 		}
 		else if (commande[i - 1] == '"')
-		{
 			i = env_value_quote(i, &commande, data->envp);
-			if (commande[i] == '"')
-				i++;
-		}
 		else if (commande[i - 1] == 92)
 			i = env_value_backslash(i, &commande);
 		else if (commande[i - 1] == '$')
 			i = env_value_dollar(i, &commande, data);
 	}
-		return (commande);
+	return (commande);
 }
