@@ -37,9 +37,13 @@ int	env_value_quote1(int i, char**commande, t_list *envp)
 int	env_value_quote2(int i, char **commande)
 {
 	int		j;
+	int		k;
 	char	*str1;
 
+	k = 0;
 	i++;
+	if ((*commande)[i] == '$')
+		k = 1;
 	j = i;
 	while ((*commande)[i] &&
 		(*commande)[i] != ' ' && (*commande)[i] != '"')
@@ -48,7 +52,7 @@ int	env_value_quote2(int i, char **commande)
 		str1 = ft_strdup_c(&(*commande)[j], '"');
 	else
 		str1 = ft_strdup_c(&(*commande)[j], ' ');
-	(*commande) = new_command((*commande), str1, j - 1);
+	(*commande) = new_command((*commande), str1, j - k);
 	free(str1);
 	return (i);
 }

@@ -77,7 +77,7 @@ void	manage_heredoc(t_node *node, t_token *token, t_data *data)
 			manage_heredoc_notlast(token->next->str);
 		else if (token->type_2 == ENDOF && isitlast(token))
 			node->heredoc = manage_heredoc_last(token->next->str, data);
-		if (!node->heredoc)
+		if (token->type_2 == ENDOF && isitlast(token) && !node->heredoc)
 		{
 			if (g_sig_handle == SIGINT)
 				ctrl_c_heredoc(std_in, data);
