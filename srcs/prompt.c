@@ -60,8 +60,8 @@ void	prompt(t_data *data)
 		node = nodizer(token, data);
 		if (check_heredoc(node))
         {
-            print_node(node);
-			//process(node, data->envp);
+            //print_node(node);
+			process(node, data->envp);
 		    add_history(commande);
         }
 		free_all(commande, token, node);

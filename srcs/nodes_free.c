@@ -61,5 +61,6 @@ void	free_data(t_data *data)
 		free(data->envp);
 		data->envp = temp_env;
 	}
+	free(data->envp);
 	free(data);
 }
