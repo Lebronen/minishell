@@ -25,7 +25,7 @@ int nb_str(char *s, char c)
     return (i);
 }
 
-void	child_process(char **commande, t_list *envp, int *fd)
+void	child_process(char **commande, t_data *data, int *fd)
 {
 	int		filein;
 
@@ -35,10 +35,10 @@ void	child_process(char **commande, t_list *envp, int *fd)
 	dup2(fd[1], STDOUT_FILENO);
 	dup2(filein, STDIN_FILENO);
 	close(fd[0]);
-	execute(commande, envp);
+	execute(commande, data);
 }
 
-void	parent_process(char **commande, t_list *envp, int *fd)
+void	parent_process(char **commande, t_data *data, int *fd)
 {
 	int		fileout;
 
@@ -48,10 +48,10 @@ void	parent_process(char **commande, t_list *envp, int *fd)
 	dup2(fd[0], STDIN_FILENO);
 	dup2(fileout, STDOUT_FILENO);
 	close(fd[1]);
-	execute(commande, envp);
+	execute(commande, data);
 }
 
-void    ft_pipe(t_node *node, t_list *envp)
+void    ft_pipe(t_node *node, t_data *data)
 {
     int     fd[2];
     pid_t   pid;
@@ -67,14 +67,14 @@ void    ft_pipe(t_node *node, t_list *envp)
             if (pid == -1)
                 error();
             if (pid == 0)
-                child_process(current->str_options, envp, fd);
+                child_process(current->str_options, data, fd);
         current = current->next;
     }
             pid = fork();
             if (pid == -1)
                 error();
             if (pid == 0)
-                parent_process(current->str_options, envp, fd);
+                parent_process(current->str_options, data, fd);
             current = node;
             while (current)
             {
@@ -82,7 +82,7 @@ void    ft_pipe(t_node *node, t_list *envp)
             }
 }
 
-void    ft_redirect(t_node *node, t_list *envp)
+void    ft_redirect(t_node *node, t_data *data)
 {
     pid_t   pid;
     int     status;
@@ -117,7 +117,7 @@ void    ft_redirect(t_node *node, t_list *envp)
             dup2(fd, STDIN_FILENO);
             close(fd);
         }
-        execute(node->str_options, envp);
+        execute(node->str_options, data);
         dup2(STDOUT_FILENO, STDOUT_FILENO);
     }
     else

@@ -61,7 +61,7 @@ void	prompt(t_data *data)
 		if (check_heredoc(node))
         {
             //print_node(node);
-			process(node, data->envp);
+			process(node, data);
 		    add_history(commande);
         }
 		free_all(commande, token, node);

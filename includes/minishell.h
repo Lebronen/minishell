@@ -138,16 +138,16 @@ void	print_token(t_token *token);
 
 //UTILS + FREE
 void	prompt(t_data *data);
-void	execute(char **commande, t_list *envp);
-void	error(void);
+void	execute(char **commande, t_data *data);
+void	error();
 char	*find_path(char *cmd, char **envp);
 int		nb_str(char *s, char c);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_index(char *commande, char c);
-void	ft_pipe(t_node *node, t_list *envp);
-void	process(t_node *node, t_list *envp);
+void	ft_pipe(t_node *node, t_data *data);
+void	process(t_node *node, t_data *data);
 int		open_file(char *argv, int i);
-void	ft_redirect(t_node *node, t_list *envp);
+void	ft_redirect(t_node *node, t_data *data);
 void	cd(char *path);
 void	pwd(void);
 void	echo(char *str, int option, int fd);

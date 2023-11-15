@@ -41,9 +41,10 @@ char	*find_path(char *cmd, char **envp)
 	return (0);
 }
 
-void	error(void)
+void	error(t_data *data)
 {
 	perror("Error");
+	data->last_error = 666;
 	exit(EXIT_FAILURE);
 }
 
@@ -62,23 +63,23 @@ int	is_slash(char *s)
 }
 
 
-void    execute(char **commande, t_list *envp)
+void    execute(char **commande, t_data *data)
 {
     char    *path;
 	char	**tab;
     
-		tab = list_to_tab(envp);
+		tab = list_to_tab(data->envp);
         if (is_slash(commande[0]))
             path = commande[0];
         else
             path = find_path(commande[0], tab);
         if (!path || execve(path, commande, tab) == -1)
 	    {
-            error();
+			error(data);
 		}
 }
 
-void	process(t_node *node, t_list *envp)
+void	process(t_node *node, t_data *data)
 {
 	pid_t	pid;
 	int		status;
@@ -88,14 +89,17 @@ void	process(t_node *node, t_list *envp)
 		
 		pid = fork();
 		if (pid == 0)
-			execute(node->str_options, envp);
+			execute(node->str_options, data);
 		else if (pid > 0)
 		{
 			waitpid(pid, &status, 0);
 		}
 		else
+		{
+			data->last_error = 666;
 			perror("fork");
+		}
 	}
 	else
-		ft_redirect(node, envp);
+		ft_redirect(node, data->envp);
 }
