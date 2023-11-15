@@ -101,5 +101,5 @@ void	process(t_node *node, t_data *data)
 		}
 	}
 	else
-		ft_redirect(node, data->envp);
+		ft_redirect(node, data);
 }
