@@ -6,13 +6,13 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 18:46:18 by lebronen          #+#    #+#             */
-/*   Updated: 2023/11/16 22:03:47 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:58:47 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	child_process(t_node *node, t_list *envp, int *fd)
+void	child_process(t_node *node, t_data *data, int *fd)
 {
 	pid_t	pid;
     
@@ -23,7 +23,7 @@ void	child_process(t_node *node, t_list *envp, int *fd)
 	{
         close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		execute(node->str_options, envp);
+		execute(node->str_options, data);
 	}
     else
     {
@@ -66,7 +66,7 @@ int	    nb_pipes(t_node *node)
     return (i);
 }
 
-void    ft_pipe(t_node *node, t_list *envp)
+void    ft_pipe(t_node *node, t_data *data)
 {
     int     **fd;
     int     nb;
@@ -86,13 +86,13 @@ void    ft_pipe(t_node *node, t_list *envp)
     i = 0;
     while (i < nb)
     {
-        child_process(tmp, envp, fd[i]);
+        child_process(tmp, data, fd[i]);
         i++;
         tmp = tmp->next;
     }
     free_pipes(fd, nb);
     dup2(STDIN_FILENO, STDIN_FILENO);
     dup2(STDOUT_FILENO, STDOUT_FILENO);
-    execute(tmp->str_options, envp);
+    execute(tmp->str_options, data);
     
 }

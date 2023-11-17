@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 17:06:05 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/07 12:25:38 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:42:38 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int ft_strcmp(char *s1, char *s2)
     return (0);
 }
 
-int     is_builtin(char **commande, t_list *envp)
+int     is_builtin(char **commande, t_data *data)
 {
     
     if (!ft_strncmp(commande[0], "cd", 2))
@@ -44,7 +44,7 @@ int     is_builtin(char **commande, t_list *envp)
     }
     else if (!ft_strncmp(commande[0], "env", 3))
     {
-        env(envp);
+        env(data->envp);
         return (1);
     }
     else if (!ft_strncmp(commande[0], "echo", 4))
@@ -60,12 +60,12 @@ int     is_builtin(char **commande, t_list *envp)
     }
     else if (!ft_strncmp(commande[0], "export", 6))
     {
-        export(commande[1], envp);   
+        export(commande[1], data->envp);   
         return (1);
     }
     else if (!ft_strncmp(commande[0], "unset", 5))
     {
-        unset(commande[1], envp);   
+        unset(commande[1], data->envp);   
         return (1);
     }
     return (0);

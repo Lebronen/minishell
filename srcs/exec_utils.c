@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 15:10:40 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/12 18:48:31 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:42:56 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int nb_str(char *s, char c)
     return (i);
 }
 
-void    ft_redirect(t_node *node, t_list *envp)
+void    ft_redirect(t_node *node, t_data *data)
 {
     pid_t   pid;
     int     status;
@@ -61,9 +61,9 @@ void    ft_redirect(t_node *node, t_list *envp)
             dup2(fd, STDIN_FILENO);
             close(fd);
         }
-        if (is_builtin(node->str_options, envp))
+        if (is_builtin(node->str_options, data))
             exit(0) ;
-        execute(node->str_options, envp);
+        execute(node->str_options, data);
         dup2(STDOUT_FILENO, STDOUT_FILENO);
     }
     else

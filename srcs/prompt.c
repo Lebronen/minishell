@@ -5,53 +5,71 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 18:15:16 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/11 14:10:33 by lebronen         ###   ########.fr       */
+/*   Created: 2023/11/14 12:25:00 by cgermain          #+#    #+#             */
+/*   Updated: 2023/11/17 17:00:11 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-
-
-void    prompt(t_data *data)
+int	check_heredoc(t_node *node)
 {
-    char    *commande;
-    t_token *token;
-    t_node  *node;
-    char    cwd[256];
-    //char    *txt;
-    
-    node = NULL;
+	while (node)
+	{
+		if (node->fd_in == -2 && node->heredoc == NULL)
+			return (0);
+		node = node->next;
+	}
+	return (1);
+}
 
-    while (1)
-    {
-        if (getcwd(cwd, sizeof(cwd)) == NULL)
+void	free_all(char *commande, t_token *token, t_node *node)
+{
+   
+	free(commande);
+	free_lexer(token);
+	free_nodes(node);
+}
+
+void	prompt(t_data *data)
+{
+	char	*commande;
+	t_token	*token;
+	t_node	*node;
+	char    cwd[256];
+
+	node = NULL;
+	while (1)
+	{
+		if (getcwd(cwd, sizeof(cwd)) == NULL)
             perror("getcwd error\n");
         ft_strlcat(cwd, "~$", 256);
         commande = readline(cwd);
-        while (error_cmd(commande))
+		if (!commande)
+		{
+			ft_putstr_fd("exit\n", 1);
+			break ;
+		}
+		while (error_cmd(commande, data))
+		{
+			free(commande);
+			commande = readline(cwd);
+		}
+        if  (!strncmp(commande, "exit", 4))
         {
             free(commande);
-            commande = readline("$");
+            break ;
         }
-        if (!ft_strncmp(commande, "exit", 4))
+		commande = env_value_checker(commande, data);
+		token = lexer(commande, data);
+		node = nodizer(token, data);
+		if (check_heredoc(node))
         {
-            free(commande);
-            break;
+            //print_node(node);
+			process(node, data);
+		    add_history(commande);
         }
-
-        commande = env_value_checker(commande, data->envp);
-        token = lexer(commande, data->envp);
-        node = nodizer(token, data);
-        //print_node(node);
-
-        process(node, data->envp);
-        add_history(commande);
-
-        free(commande);
-        free_lexer(token);
-        free_nodes(node);
-    }
-    rl_clear_history();
+		free_all(commande, token, node);
+	}
+    	rl_clear_history();
 }

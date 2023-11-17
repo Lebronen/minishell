@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/12 19:42:44 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:02:18 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ char	*find_path(char *cmd, char **envp)
 	return (0);
 }
 
-void	error(void)
+void	error(t_data *data)
 {
 	perror("Error");
+	data->last_error = 666;
 	exit(EXIT_FAILURE);
 }
 
@@ -62,45 +63,44 @@ int	is_slash(char *s)
 }
 
 
-void    execute(char **commande, t_list *envp)
+void    execute(char **commande, t_data *data)
 {
     char    *path;
 	char	**tab;
     
-		tab = list_to_tab(envp);
+		tab = list_to_tab(data->envp);
         if (is_slash(commande[0]))
             path = commande[0];
         else
             path = find_path(commande[0], tab);
         if (!path || execve(path, commande, tab) == -1)
 	    {
-            error();
+			error(data);
 		}
 }
 
-void	process(t_node *node, t_list *envp)
+void	process(t_node *node, t_data *data)
 {
 	pid_t	pid;
 	int		status;
 	
 	if (nb_pipes(node) > 0)
-		ft_pipe(node, envp);
+		ft_pipe(node, data);
 	if (node->fd_in == STDIN_FILENO && node->fd_out == STDOUT_FILENO)
 	{
-		if (! is_builtin(node->str_options, envp))
-		{
+		
+		pid = fork();
+		if (pid == 0)
+			execute(node->str_options, data);
+		else if (pid > 0)
 			
-			pid = fork();
-			if (pid == 0)
-				execute(node->str_options, envp);
-			else if (pid > 0)
-			{
-				waitpid(pid, &status, 0);
-			}
-			else
-				perror("fork");
+			waitpid(pid, &status, 0);
+		else
+		{
+			data->last_error = 666;
+			perror("fork");
 		}
 	}
-		else
-			ft_redirect(node, envp);
+	else
+		ft_redirect(node, data);
 }

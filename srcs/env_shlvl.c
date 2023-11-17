@@ -12,31 +12,42 @@
 
 #include "minishell.h"
 
-char	*manage_shlvl(char *env, char *result)
+void	free_env(char **env)
 {
-	int	nb;
 	int	i;
-	char *number;
+
+	i = 0;
+	while (env[i])
+	{
+		free(env[i]);
+		i++;
+	}
+	free(env);
+}
+
+void	manage_shlvl(char *env, char **result, int j)
+{
+	int		nb;
+	int		i;
+	char	*number;
 
 	i = 0;
 	nb = ft_atoi(&env[6]);
 	nb++;
 	number = ft_itoa(nb);
-	free(result);
-	result = malloc(sizeof(char) * (7 + ft_strlen(number)));
+	result[j] = malloc(sizeof(char) * (7 + ft_strlen(number)));
 	if (!result)
-		return (NULL);
+		return ;
 	while (i < 6)
 	{
-		result[i] = env[i];
+		result[j][i] = env[i];
 		i++;
 	}
 	while (number[i - 6])
 	{
-		result[i] = number[i - 6];
+		result[j][i] = number[i - 6];
 		i++;
 	}
 	free(number);
-	result[i] = '\0';
-	return (result);
+	result[j][i] = '\0';
 }

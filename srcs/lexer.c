@@ -78,15 +78,14 @@ int	handlecommande(int i, t_token **last, char *commande)
 	return (i);
 }
 
-t_token	*lexer(char *commande, t_list *envp)
+t_token	*lexer(char *commande, t_data *data)
 {
 	int		i;
 	t_token	*last;
 
-	(void)envp;
 	i = 0;
 	last = NULL;
-	if (error_ambig(commande))
+	if (error_ambig(commande, data))
 		return (NULL);
 	while (commande[i])
 	{
@@ -102,7 +101,7 @@ t_token	*lexer(char *commande, t_list *envp)
 	return (first_token(last));
 }
 
-
+/*
 void print_token(t_token *token)
 {
 	while (token)
@@ -135,4 +134,4 @@ void print_token(t_token *token)
 		}
 		token = token->next;
 	}
-}
+}*/

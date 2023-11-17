@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   env.c											  :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: cgermain <marvin@42.fr>					+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2023/09/21 15:31:31 by cgermain		  #+#	#+#			 */
-/*   Updated: 2023/09/25 11:13:36 by cgermain		 ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   nodes.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cgermain <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/14 12:24:28 by cgermain          #+#    #+#             */
+/*   Updated: 2023/11/14 12:24:32 by cgermain         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -31,6 +31,7 @@ void	print_node(t_node *node)
 		}
 		if (node->heredoc != NULL)
 		{
+			i = 0;
 			printf("heredoc:\n");
 			while (node->heredoc && node->heredoc[i])
 			{
@@ -88,7 +89,7 @@ t_node	*make_cmd(t_token *token)
 	return (node);
 }
 
-t_node	*nodizer_unit(t_token *token, t_list *envp)
+t_node	*nodizer_unit(t_token *token, t_data *data)
 {
 	t_token	*tmp_token;
 	t_node	*node;
@@ -109,9 +110,10 @@ t_node	*nodizer_unit(t_token *token, t_list *envp)
 		node->str_options = NULL;
 		node->next = NULL;
 	}
-	node->fd_in = init_in(tmp_token);
+	node->fd_in = init_in(tmp_token, data);
 	node->fd_out = init_out(tmp_token);
-	manage_heredoc(node, tmp_token, envp);
+	node->heredoc = NULL;
+	manage_heredoc(node, tmp_token, data);
 	return (node);
 }
 
@@ -135,7 +137,7 @@ t_node	*nodizer(t_token *token, t_data *data)
 	node = NULL;
 	while (token)
 	{
-		node = nodizer_unit(token, data->envp);
+		node = nodizer_unit(token, data);
 		node->data = data;
 		node->prev = prev;
 		prev = node;

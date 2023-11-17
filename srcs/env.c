@@ -35,9 +35,9 @@ static char	**fill_env(char **envp, char **result)
 	while (envp[j])
 	{
 		i = 0;
-		if(!ft_strncmp(envp[j], "SHLVL=", 6))
+		if (!ft_strncmp(envp[j], "SHLVL=", 6))
 		{
-			result[j] = manage_shlvl(envp[j], result[j]);
+			manage_shlvl(envp[j], result, j);
 			j++;
 		}
 		while (envp[j][i])
@@ -48,8 +48,7 @@ static char	**fill_env(char **envp, char **result)
 		result[j][i] = '\0';
 		j++;
 	}
-	j--;
-	result[j][i] = '\0';
+	result[j] = NULL;
 	return (result);
 }
 
@@ -67,9 +66,12 @@ char	**init_env(char **envp)
 	i--;
 	while (i >= 0)
 	{
-		result[i] = malloc((ft_strlen(envp[i]) + 1) * sizeof(char *));
-		if (!result[i])
-			return (free_array(result));
+		if (envp && strncmp(envp[i], "SHLVL=", 6))
+		{
+			result[i] = malloc((ft_strlen(envp[i]) + 1) * sizeof(char));
+			if (!result[i])
+				return (free_array(result));
+		}
 		i--;
 	}
 	return (fill_env(envp, result));

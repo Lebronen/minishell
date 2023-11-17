@@ -31,7 +31,8 @@ int	init_out(t_token *token)
 		{
 			if (fd != 1)
 				close(fd);
-			fd = open(token->next->str, O_CREAT | O_RDWR | O_APPEND,  S_IRUSR | S_IWUSR, 0644);
+			fd = open(token->next->str, O_CREAT | O_RDWR | O_APPEND,
+					S_IRUSR | S_IWUSR, 0644);
 			if (fd == -1)
 				return (-1);
 		}
@@ -51,8 +52,7 @@ int	has_heredoc(t_token *token)
 	return (0);
 }
 
-
-int	init_in(t_token *token)
+int	init_in(t_token *token, t_data *data)
 {
 	int	fd;
 
@@ -65,7 +65,7 @@ int	init_in(t_token *token)
 				close(fd);
 			fd = open(token->next->str, O_RDONLY);
 			if (fd == -1)
-				return (input_error(token->next->str));
+				return (input_error(token->next->str, data));
 		}
 		else if (token->type_2 == ENDOF)
 		{
