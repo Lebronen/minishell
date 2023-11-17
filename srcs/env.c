@@ -58,6 +58,8 @@ char	**init_env(char **envp)
 	int		i;
 
 	i = 0;
+	if (!envp[0])
+		return(create_envp());
 	while (envp[i])
 		i++;
 	result = malloc(sizeof(char *) * (i + 1));
