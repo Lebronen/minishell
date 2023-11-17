@@ -35,6 +35,11 @@ static char	**fill_env(char **envp, char **result)
 	while (envp[j])
 	{
 		i = 0;
+		if(!ft_strncmp(envp[j], "SHLVL=", 6))
+		{
+			result[j] = manage_shlvl(envp[j], result[j]);
+			j++;
+		}
 		while (envp[j][i])
 		{
 			result[j][i] = envp[j][i];
@@ -44,7 +49,7 @@ static char	**fill_env(char **envp, char **result)
 		j++;
 	}
 	j--;
-	envp[j][i] = '\0';
+	result[j][i] = '\0';
 	return (result);
 }
 

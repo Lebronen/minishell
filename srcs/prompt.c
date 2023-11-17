@@ -6,13 +6,15 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 18:15:16 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/07 11:39:55 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:10:33 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void    prompt(t_list *envp)
+
+
+void    prompt(t_data *data)
 {
     char    *commande;
     t_token *token;
@@ -21,6 +23,7 @@ void    prompt(t_list *envp)
     //char    *txt;
     
     node = NULL;
+
     while (1)
     {
         if (getcwd(cwd, sizeof(cwd)) == NULL)
@@ -38,16 +41,17 @@ void    prompt(t_list *envp)
             break;
         }
 
-        commande = env_value_checker(commande, envp);
-        token = lexer(commande, envp);
-        node = nodizer(token, envp);
+        commande = env_value_checker(commande, data->envp);
+        token = lexer(commande, data->envp);
+        node = nodizer(token, data);
         //print_node(node);
 
-        process(node, envp);
+        process(node, data->envp);
         add_history(commande);
 
         free(commande);
         free_lexer(token);
         free_nodes(node);
     }
+    rl_clear_history();
 }

@@ -17,7 +17,7 @@ void	free_heredoc(t_node *node)
 	int	i;
 
 	i = 0;
-	while (node->heredoc[i])
+	while (node->heredoc && node->heredoc[i])
 	{
 		free(node->heredoc[i]);
 		i++;
@@ -42,11 +42,23 @@ void	free_nodes(t_node *node)
 			}
 			free(node->str_options);
 		}
-		if (node->heredoc)
+		if (node->heredoc != NULL)
 			free_heredoc(node);
 		temp_node = node->next;
 		if (node)
 			free(node);
 		node = temp_node;
 	}
+}
+
+void	free_data(t_data *data)
+{
+	t_list	*temp_env;
+	while (data->envp)
+	{
+		temp_env = data->envp->next;
+		free(data->envp);
+		data->envp = temp_env;
+	}
+	free(data);
 }

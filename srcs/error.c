@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+
 int	error_ambig(char *commande)
 {
 	int	i;
@@ -42,23 +43,37 @@ int	error_cmd(char *commande)
 {
 	int		i;
 	char	c;
+	char	d;
+	int		quotes;
 
+	quotes = 0;
 	i = 0;
 	if (!commande[i])
 		return (1);
+	while (commande[i] == ' ')
+		i++;
+	d = commande[i];
 	while (commande[i])
 	{
 		if (commande[i] != ' ')
 			c = commande[i];
+		if (commande[i] == '"' || commande[i] == '\'')
+			quotes++;
 		i++;
 	}
-	if (c == '|' || c == '>' || c == '<')
+	if (d == '|' ||  c == '|' || c == '>' || c == '<')
 	{
-		write(2, "Syntax Error\n", 13);
+		write(2, "syntax error\n", 13);
+		return (1);
+	}
+	if (quotes % 2 != 0)
+	{
+		write(2, "unclosed quotes\n", 16);
 		return (1);
 	}
 	return (0);
 }
+//tout mettre sur syntax error ? 
 
 int	input_error(char *str)
 {
@@ -66,4 +81,10 @@ int	input_error(char *str)
 	ft_putstr_fd(str, 2);
 	write(2, "' : No such file or directory\n", 30);
 	return (-1);
+}
+
+int return_errno()
+{
+	
+		return (0);
 }

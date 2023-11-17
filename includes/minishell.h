@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:33:32 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/07 12:26:05 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/16 21:35:11 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <fcntl.h>
+# include <errno.h>
 
 #define PIPE 0
 #define REDIR 1
@@ -43,6 +44,15 @@
 #define RDR 1
 #define CMD 2
 
+extern int	g_sig_handle;
+
+typedef struct	s_data
+{
+	int	last_error;
+	int signal;
+	t_list	*envp;
+}	t_data;
+
 typedef struct s_token
 {
 	int	type;
@@ -59,13 +69,14 @@ typedef struct s_node
 	int	fd_out;
 	char **str_options;
 	char **heredoc;
+	struct s_data	*data;
 	struct s_node *prev;
 	struct s_node *next;
 
 } t_node;
 
 
-void    prompt(t_list *envp);
+void    prompt(t_data *data);
 void    execute(char **commande, t_list *envp);
 void	error(void);
 char	*find_path(char *cmd, char **envp);
@@ -73,6 +84,7 @@ int     nb_str(char *s, char c);
 int 	ft_strcmp(char *s1, char *s2);
 int		ft_index(char *commande, char c);
 void    ft_pipe(t_node *node, t_list *envp);
+int	    nb_pipes(t_node *node);
 void	process(t_node *node, t_list *envp);
 int	    open_file(char *argv, int i);
 void    ft_redirect(t_node *node, t_list *envp);
@@ -95,7 +107,7 @@ t_node  *make_cmd(t_token *token);
 t_node  *make_pip(t_token *token);
 t_node  *make_rdr(t_token *token);
 t_token *previous_cmd(t_token *token);
-t_node  *nodizer(t_token *token, t_list *envp);
+t_node  *nodizer(t_token *token, t_data *data);
 t_node *init_tree(t_token *token);
 t_token *next_pipe(t_token *token);
 void 	print_node(t_node *node);
@@ -126,5 +138,18 @@ int 	ft_strcmp(char *s1, char *s2);
 char	*heredocv2(char *commande);
 //int     is_builtin_exec(char **commande, t_list *envp);
 int 	is_builtin(char **commande, t_list *envp);
+void    close_pipes(int **fd, int nb);
+void    free_pipes(int **fd, int nb);
+
+void	set_shlvl(t_list *envp);
+char	*manage_shlvl(char *env, char *result);
+int return_errno();
+void	free_data(t_data *data);
+
+
+
+void	signal_loop(t_data	*data);
+void	signal_handler_heredoc(int signum);
+int	check_signal();
 
 #endif

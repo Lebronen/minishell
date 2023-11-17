@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 15:10:40 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/08 11:54:20 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/12 18:48:31 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,72 +24,6 @@ int nb_str(char *s, char c)
     }
     return (i);
 }
-
-void	child_process(t_node *node, t_list *envp, int *fd)
-{
-	dup2(fd[1], STDOUT_FILENO);
-	dup2(node->fd_in, STDIN_FILENO);
-	close(fd[0]);
-	execute(node->str_options, envp);
-}
-
-void	parent_process(t_node *node, t_list *envp, int *fd)
-{
-	dup2(fd[0], STDIN_FILENO);
-	dup2(node->fd_out, STDOUT_FILENO);
-	close(fd[1]);
-	execute(node->str_options, envp);
-}
-
-void	pipe_process(t_node *node, t_list *envp)
-{
-	pid_t	pid;
-	int		fd[2];
-
-	if (pipe(fd) == -1)
-		error();
-	pid = fork();
-	if (pid == -1)
-		error();
-	if (pid == 0)
-	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		execute(node->str_options, envp);
-	}
-	else
-	{
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
-        wait(NULL);
-	}
-}
-
-/*
-void    ft_pipe(t_node *node, t_list *envp)
-{
-    t_node  *current;
-    pid_t   pid;
-    
-    current = node;
-    dup2(current->fd_in, STDIN_FILENO);
-    while (current->next)
-    {
-        pipe_process(current, envp);    
-        current = current->next;
-    }
-            pid = fork();
-            if (pid == -1)
-                error();
-            if (pid == 0)
-                parent_process(current->str_options, envp, node->fd_in);
-            current = node;
-            while (current)
-            {
-                wait(NULL);
-            }
-}
-*/
 
 void    ft_redirect(t_node *node, t_list *envp)
 {

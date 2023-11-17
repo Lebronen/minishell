@@ -27,11 +27,6 @@ char	*ft_strdup_c2(char *s, char c)
 		i++;
 	}
 	result[i] = '\0';
-	if (s[i] == '\0' && (c == 39 || c == 34))
-	{
-		write(2, "il faut fermer les guillemets", 29);
-		return (NULL);
-	}
 	return (result);
 }
 int handledoublequotetoken(int i, t_token **last, char *commande)
