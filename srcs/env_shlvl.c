@@ -51,3 +51,8 @@ void	manage_shlvl(char *env, char **result, int j)
 	free(number);
 	result[j][i] = '\0';
 }
+/*
+char **create_envp(void)
+{
+	
+}*/
