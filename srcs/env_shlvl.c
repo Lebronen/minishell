@@ -52,12 +52,11 @@ void	manage_shlvl(char *env, char **result, int j)
 	result[j][i] = '\0';
 }
 
-
-char *manage_pwd(void)
+char	*manage_pwd(void)
 {
-	char 	str[256];
-	char 	cwd[256];
-	int i;
+	char	str[256];
+	char	cwd[256];
+	int		i;
 
 	i = 0;
 	str[0] = 'P';
@@ -70,11 +69,10 @@ char *manage_pwd(void)
 	return (ft_strdup(str));
 }
 
-
-char **create_envp(void)
+char	**create_envp(void)
 {
-	char **envp;
-	
+	char	**envp;
+
 	envp = malloc(sizeof(char *) * 3);
 	if (!envp)
 		return (NULL);
