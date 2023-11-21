@@ -93,16 +93,15 @@ static int	compare_words(char *word1, char *word2)
 
 char	*get_env_value(t_list *envp, char *name)
 {
-	int		i;
 	int		j;
 
-	i = 0;
+	j = 0;
 	while (envp)
 	{
 		if (compare_words(envp->content, name))
 		{
 			j = ft_strlen(name) + 1;
-			return (ft_strdup(&envp->content[j]));
+			return (ft_strdup((&envp->content)[j]));
 		}
 		envp = envp->next;
 	}
