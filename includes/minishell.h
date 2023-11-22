@@ -95,6 +95,7 @@ char	*get_env_value(t_list *envp, char *name);
 int		env_value_quote(int i, char **commande, t_list *envp);
 char	*new_command(char *commande, char *env_value, int i);
 char	**init_env(char **envp);
+char **create_envp(void);
 
 //ERRORS
 int		print_error(int error_num, int fd, char *str, t_data *data);
