@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/17 17:02:18 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:31:48 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ void	process(t_node *node, t_data *data)
 	int		status;
 	
 	if (nb_pipes(node) > 0)
-		ft_pipe(node, data);
-	if (node->fd_in == STDIN_FILENO && node->fd_out == STDOUT_FILENO)
+		ft_pipe(node);
+	else if (node->fd_in == STDIN_FILENO && node->fd_out == STDOUT_FILENO)
 	{
 		
 		pid = fork();

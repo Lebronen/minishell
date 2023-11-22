@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:49:46 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/17 16:58:11 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:23:28 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,9 @@ char	*find_path(char *cmd, char **envp);
 int		nb_str(char *s, char c);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_index(char *commande, char c);
-void	ft_pipe(t_node *node, t_data *data);
+void	ft_pipe(t_node *node);
 void    close_pipes(int **fd, int nb);
+void wait_for_childrens(int nb);
 void    free_pipes(int **fd, int nb);
 int		nb_pipes(t_node *node);
 void	process(t_node *node, t_data *data);
