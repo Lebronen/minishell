@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_shlvl.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:53:44 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/03 15:53:50 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:57:15 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,7 @@ char	*manage_pwd(void)
 {
 	char	str[256];
 	char	cwd[256];
-	int		i;
 
-	i = 0;
 	str[0] = 'P';
 	str[1] = 'W';
 	str[2] = 'D';

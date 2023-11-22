@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:25:00 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/17 17:00:11 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:57:51 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	prompt(t_data *data)
 		node = nodizer(token, data);
 		if (check_heredoc(node))
         {
-            print_node(node);
+            //print_node(node);
 			process(node, data);
 		    add_history(commande);
         }
