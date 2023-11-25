@@ -83,7 +83,10 @@ void	process(t_node *node, t_data *data)
 {
 	pid_t	pid;
 	int		status;
+	int		fd;
+	int		i;
 	
+	i= 0;
 	if (nb_pipes(node) > 0)
 		ft_pipe(node);
 	else if (node->fd_in == STDIN_FILENO && node->fd_out == STDOUT_FILENO)
@@ -93,8 +96,11 @@ void	process(t_node *node, t_data *data)
 		if (pid == 0)
 			execute(node->str_options, data);
 		else if (pid > 0)
-			
+		{
+			signal(SIGINT, SIG_IGN);
 			waitpid(pid, &status, 0);
+			signal(SIGINT, signal_handler);
+		}
 		else
 		{
 			data->last_error = 666;
@@ -102,5 +108,23 @@ void	process(t_node *node, t_data *data)
 		}
 	}
 	else
+	{
+		if (node->fd_in == -2)
+            {
+                fd = open("./icidoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
+                if (fd == -1)
+                    error(data);
+                while (node->heredoc[i])
+                {
+                    ft_putstr_fd(node->heredoc[i], fd);
+                    write(fd,"\n", 1);
+                    i++;
+				
+                }
+				close(fd);
+				fd = open("./icidoc", O_RDONLY);
+				node->fd_in = fd;
+            }
 		ft_redirect(node, data);
+	}
 }
