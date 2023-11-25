@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:49:46 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/22 16:23:28 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/24 09:50:21 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_node
 
 
 //ENVIRONMENT
-void	env(t_list *envp);
+int	env(t_list *envp);
 char	**add_env(char *ligne, t_list *envp);
 char	**supp_env(char *ligne, t_list *envp);
 t_list	*tab_to_list(char **tab);
@@ -150,21 +150,21 @@ int		ft_strcmp(char *s1, char *s2);
 int		ft_index(char *commande, char c);
 void	ft_pipe(t_node *node);
 void    close_pipes(int **fd, int nb);
-void wait_for_childrens(int nb);
+void 	wait_for_childrens(int nb);
 void    free_pipes(int **fd, int nb);
 int		nb_pipes(t_node *node);
 void	process(t_node *node, t_data *data);
 int		open_file(char *argv, int i);
 void	ft_redirect(t_node *node, t_data *data);
-void	cd(char *path);
-void	pwd(void);
-void	echo(char *str, int option, int fd);
-void	export(char *commande, t_list *env);
+int		cd(char *path);
+int		pwd(void);
+int		echo(char *str, int option, int fd);
+int		export(char *commande, t_list *env);
 int		init_out(t_token *token);
 int		init_in(t_token *token, t_data *data);
 void	free_lexer(t_token *token);
 void	manage_heredoc(t_node *node, t_token *token, t_data *data);
-void	unset(char *commande, t_list *envp);
+int		unset(char *commande, t_list *envp);
 void	del(void *content);
 int		ft_strcmp(char *s1, char *s2);
 int		is_builtin(char **commande, t_data *data);

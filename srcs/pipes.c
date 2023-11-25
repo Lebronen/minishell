@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 18:46:18 by lebronen          #+#    #+#             */
-/*   Updated: 2023/11/22 18:35:54 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/25 14:54:40 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,15 @@ void    child_process(t_node *tmp, int *fd1, int *fd2, int i)
         error();
     if (pid == 0)
     {
-        if (i == 0 )
-        {
-            if (tmp->fd_in != STDIN_FILENO)
-                dup2(tmp->fd_in, STDIN_FILENO);
-        }
-        else 
+        if (i) 
             dup2(fd2[0], STDIN_FILENO);
-        dup2(fd1[1], STDOUT_FILENO);
+        if (tmp->fd_out != STDOUT_FILENO)
+        {
+            dup2(tmp->fd_out, STDOUT_FILENO);
+            close(tmp->fd_out);
+        }
+        else
+            dup2(fd1[1], STDOUT_FILENO);
         close(fd1[0]);
         close(fd1[1]);
         if (i)
@@ -49,9 +50,10 @@ void    parent_process(t_node *tmp, int *fd1, int *fd2, int i)
         error();
     if (pid == 0)
     {
-        if (tmp->fd_out != STDOUT_FILENO)
-            dup2(tmp->fd_out, STDOUT_FILENO);
-        dup2(fd1[0], STDIN_FILENO);
+        if (tmp->fd_in != STDIN_FILENO)
+            dup2(tmp->fd_in, STDIN_FILENO);
+        else
+            dup2(fd1[0], STDIN_FILENO);
         close(fd1[0]);
         close(fd1[1]);
         if (i > 1)

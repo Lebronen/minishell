@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 15:10:40 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/17 16:42:56 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/25 15:14:41 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void    ft_redirect(t_node *node, t_data *data)
             if (node->fd_in == -2)
             {
                 i= 0;
-                fd = open("/tmp/heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
+                fd = open("./icidoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
                 if (fd == -1)
                     error();
                 while (node->heredoc[i])
@@ -64,7 +64,6 @@ void    ft_redirect(t_node *node, t_data *data)
         if (is_builtin(node->str_options, data))
             exit(0) ;
         execute(node->str_options, data);
-        dup2(STDOUT_FILENO, STDOUT_FILENO);
     }
     else
         waitpid(pid, &status, 0);
