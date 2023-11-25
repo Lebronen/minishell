@@ -87,6 +87,8 @@ void	process(t_node *node, t_data *data)
 	int		i;
 	
 	i= 0;
+	if (is_builtin(node->str_options, data))
+		return;
 	if (nb_pipes(node) > 0)
 		ft_pipe(node);
 	else if (node->fd_in == STDIN_FILENO && node->fd_out == STDOUT_FILENO)
@@ -103,7 +105,7 @@ void	process(t_node *node, t_data *data)
 		}
 		else
 		{
-			data->last_error = 666;
+			data->last_error = errno;
 			perror("fork");
 		}
 	}

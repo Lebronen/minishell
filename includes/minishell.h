@@ -50,6 +50,7 @@ extern int	g_sig_handle;
 typedef struct s_data
 {
 	int		last_error;
+	int		is_env;
 	int		signal;
 	t_list	*envp;
 }	t_data;
@@ -77,7 +78,7 @@ typedef struct s_node
 
 
 //ENVIRONMENT
-int	env(t_list *envp);
+int	env(t_data *data);
 char	**add_env(char *ligne, t_list *envp);
 char	**supp_env(char *ligne, t_list *envp);
 t_list	*tab_to_list(char **tab);
@@ -94,8 +95,8 @@ char	*env_value_checker(char *commande, t_data *data);
 char	*get_env_value(t_list *envp, char *name);
 int		env_value_quote(int i, char **commande, t_list *envp);
 char	*new_command(char *commande, char *env_value, int i);
-char	**init_env(char **envp);
-char **create_envp(void);
+char	**init_env(char **envp, t_data *data);
+char **create_envp(t_data *data);
 
 //ERRORS
 int		print_error(int error_num, int fd, char *str, t_data *data);

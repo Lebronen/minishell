@@ -46,16 +46,16 @@ int	pwd(void)
 	return (0);
 }
 
-int	env(t_list *envp)
+int	env(t_data *data)
 {
 	t_list	*current;
 
-	if (!envp)
+	if (!data->envp)
 	{
 		ft_printf("env error\n");
 		return (127);
 	}
-	current = envp;
+	current = data->envp;
 	while (current)
 	{
 		ft_printf("%s\n", current->content);

@@ -22,7 +22,7 @@ int	main(int argc, char **argv, char **envp)
 	if (!data)
 		return (1);
 	data->last_error = 0;
-	env2 = init_env(envp);
+	env2 = init_env(envp, data);
 	data->envp = tab_to_list(env2);
 	signal_loop(data);
 	if (argc == 1)

@@ -44,7 +44,7 @@ int     is_builtin(char **commande, t_data *data)
     }
     else if (!ft_strncmp(commande[0], "env", 3))
     {
-        data->last_error = env(data->envp);
+        data->last_error = env(data);
         return (1);
     }
     else if (!ft_strncmp(commande[0], "echo", 4))
