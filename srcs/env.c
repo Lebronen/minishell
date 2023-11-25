@@ -101,7 +101,7 @@ char	*get_env_value(t_list *envp, char *name)
 		if (compare_words(envp->content, name))
 		{
 			j = ft_strlen(name) + 1;
-			return (ft_strdup((&envp->content)[j]));
+			return (ft_strdup((envp->content) + j));
 		}
 		envp = envp->next;
 	}
