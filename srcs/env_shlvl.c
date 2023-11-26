@@ -67,10 +67,11 @@ char	*manage_pwd(void)
 	return (ft_strdup(str));
 }
 
-char	**create_envp(void)
+char	**create_envp(t_data *data)
 {
 	char	**envp;
 
+	data->is_env = 0;
 	envp = malloc(sizeof(char *) * 3);
 	if (!envp)
 		return (NULL);

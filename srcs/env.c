@@ -52,14 +52,15 @@ static char	**fill_env(char **envp, char **result)
 	return (result);
 }
 
-char	**init_env(char **envp)
+char	**init_env(char **envp, t_data *data)
 {
 	char	**result;
 	int		i;
 
 	i = 0;
 	if (!envp[0])
-		return(create_envp());
+		return(create_envp(data));
+	data->is_env = 1;
 	while (envp[i])
 		i++;
 	result = malloc(sizeof(char *) * (i + 1));

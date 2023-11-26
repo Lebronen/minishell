@@ -30,7 +30,6 @@ void    ft_redirect(t_node *node, t_data *data)
     pid_t   pid;
     int     status;
     int     fd;
-    int     i;
 
     
     pid = fork();
@@ -49,8 +48,6 @@ void    ft_redirect(t_node *node, t_data *data)
             dup2(fd, STDIN_FILENO);
             close(fd);
         }
-        if (is_builtin(node->str_options, data))
-            exit(0) ;
         execute(node->str_options, data);
     }
     else

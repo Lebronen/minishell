@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 18:46:18 by lebronen          #+#    #+#             */
-/*   Updated: 2023/11/25 14:54:40 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/26 16:17:28 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,16 @@ void    ft_pipe(t_node *node)
    i = 0;
    while (i < nb)
    {
+    if (is_only_builtin(tmp->str_options))
+    {
+        if (!i)
+        {
+            tube2[0] = STDIN_FILENO;
+        }
+        
+    }
+    else
+    {
         if (i % 2 == 0)
         {
             pipe(tube1);
@@ -104,15 +114,19 @@ void    ft_pipe(t_node *node)
             pipe(tube2);
             child_process(tmp, tube2, tube1, i);
         }
+    }
         i++;
         tmp = tmp->next;
     }
-    if (i % 2)
-        parent_process(tmp, tube1, tube2, i);
-    else
-        parent_process(tmp, tube2, tube1, i);
-    close(tube1[0]);
-    close(tube1[1]);
+    if (!is_only_builtin(tmp->str_options))
+    {    
+        if (i % 2)
+            parent_process(tmp, tube1, tube2, i);
+        else
+            parent_process(tmp, tube2, tube1, i);
+        close(tube1[0]);
+        close(tube1[1]);
+    }
     if (nb > 1)
     {
         close(tube2[0]);
