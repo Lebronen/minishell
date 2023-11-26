@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/24 09:48:56 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/26 16:29:33 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ int	cd(char *path)
 	struct stat	buf;
 	mode_t		mode;
 
+	if (!path)
+	{
+		
+		path = "/home/lebronen";
+	}
 	stat(path, &buf);
 	mode = buf.st_mode;
 	if (chdir(path) < 0)

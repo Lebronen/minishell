@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/26 16:15:31 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/26 19:07:04 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,15 @@ void    execute(char **commande, t_data *data)
         if (is_slash(commande[0]))
             path = commande[0];
         else
+		{
             path = find_path(commande[0], tab);
+			//else
+			//{
+				//path = malloc((5 + ft_strlen(commande[0])) * sizeof(char));
+				//ft_memmove(path, "/bin/", 5);
+				//ft_memmove(path + 5, commande[0], ft_strlen(path));
+			//}
+		}
         if (!path || execve(path, commande, tab) == -1)
 	    {
 			error(data);

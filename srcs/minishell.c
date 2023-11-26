@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:24:43 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/14 12:24:46 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/11/26 19:07:30 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	main(int argc, char **argv, char **envp)
 	signal_loop(data);
 	if (argc == 1)
 	{
+		if (!data->is_env)
+			export("PATH=/bin/", data->envp);
 		prompt(data);
 	}
 	else
