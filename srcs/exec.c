@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/26 19:07:04 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:14:48 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,7 @@ void	process(t_node *node, t_data *data)
 {
 	pid_t	pid;
 	int		status;
-	int		fd;
-	int		i;
 	
-	i= 0;
 	if (nb_pipes(node) > 0)
 		ft_pipe(node);
 	else if (is_builtin(node->str_options, data))
@@ -120,21 +117,7 @@ void	process(t_node *node, t_data *data)
 	else
 	{
 		if (node->fd_in == -2)
-            {
-                fd = open("/tmp/icidoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
-                if (fd == -1)
-                    error(data);
-                while (node->heredoc[i])
-                {
-                    ft_putstr_fd(node->heredoc[i], fd);
-					write(fd, "\n", 1);
-                    i++;
-				
-                }
-				close(fd);
-				fd = open("/tmp/icidoc", O_RDONLY);
-				node->fd_in = fd;
-            }
+			node->fd_in = ft_heredoc(node, data);
 		ft_redirect(node, data);
 	}
 }

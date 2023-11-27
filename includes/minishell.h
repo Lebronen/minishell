@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:49:46 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/26 15:47:23 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:10:06 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,5 +171,6 @@ int		ft_strcmp(char *s1, char *s2);
 int		is_builtin(char **commande, t_data *data);
 void	free_data(t_data *data);
 int 	is_only_builtin(char **commande);
+int     ft_heredoc(t_node *node, t_data *data);
 
 #endif

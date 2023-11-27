@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 17:06:05 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/26 15:45:12 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:52:15 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int is_also_builtin(char **commande, t_data *data)
 {
     if (!ft_strncmp(commande[0], "echo", 4))
     {
+        if (!commande[1])
+            return (1);
         if (!ft_strncmp(commande[1], "-n", 2))
         {
             if (commande[2])
