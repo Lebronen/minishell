@@ -67,7 +67,8 @@ void    execute(char **commande, t_data *data)
 {
     char    *path;
 	char	**tab;
-    
+
+		signal(SIGINT, signal_handler_child);
 		tab = list_to_tab(data->envp);
         if (is_slash(commande[0]))
             path = commande[0];
@@ -95,21 +96,20 @@ void	process(t_node *node, t_data *data)
 	int		i;
 	
 	i= 0;
+
 	if (nb_pipes(node) > 0)
 		ft_pipe(node);
 	else if (is_builtin(node->str_options, data))
 		return;
 	else if (node->fd_in == STDIN_FILENO && node->fd_out == STDOUT_FILENO)
 	{
-		
 		pid = fork();
 		if (pid == 0)
 			execute(node->str_options, data);
 		else if (pid > 0)
 		{
-			signal(SIGINT, SIG_IGN);
+			g_sig_handle = 9;
 			waitpid(pid, &status, 0);
-			signal(SIGINT, signal_handler);
 		}
 		else
 		{
