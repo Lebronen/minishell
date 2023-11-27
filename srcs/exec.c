@@ -68,9 +68,9 @@ void    execute(char **commande, t_data *data)
     char    *path;
 	char	**tab;
 
-		signal(SIGINT, signal_handler_child);
-		tab = list_to_tab(data->envp);
-        if (is_slash(commande[0]))
+	
+	tab = list_to_tab(data->envp);
+    if (is_slash(commande[0]))
             path = commande[0];
         else
 		{
@@ -108,8 +108,12 @@ void	process(t_node *node, t_data *data)
 			execute(node->str_options, data);
 		else if (pid > 0)
 		{
-			g_sig_handle = 9;
+			if (!ft_strncmp(node->str_options[0], "./minishell", 12))
+				signal(SIGINT, SIG_IGN);
+			else
+				g_sig_handle = 9;
 			waitpid(pid, &status, 0);
+			g_sig_handle = 0;
 		}
 		else
 		{
