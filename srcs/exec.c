@@ -96,6 +96,10 @@ void	process(t_node *node, t_data *data)
 	int		i;
 	
 	i= 0;
+	if (!ft_strncmp(node->str_options[0], "./minishell", 12))
+		signal(SIGINT, SIG_IGN);
+	else
+		g_sig_handle = 9;
 
 	if (nb_pipes(node) > 0)
 		ft_pipe(node);
@@ -108,12 +112,9 @@ void	process(t_node *node, t_data *data)
 			execute(node->str_options, data);
 		else if (pid > 0)
 		{
-			if (!ft_strncmp(node->str_options[0], "./minishell", 12))
-				signal(SIGINT, SIG_IGN);
-			else
-				g_sig_handle = 9;
+
 			waitpid(pid, &status, 0);
-			g_sig_handle = 0;
+
 		}
 		else
 		{
@@ -141,4 +142,5 @@ void	process(t_node *node, t_data *data)
             }
 		ft_redirect(node, data);
 	}
+	g_sig_handle = 0;
 }
