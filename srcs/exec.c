@@ -68,7 +68,6 @@ void    execute(char **commande, t_data *data)
     char    *path;
 	char	**tab;
 
-	
 	tab = list_to_tab(data->envp);
     if (is_slash(commande[0]))
             path = commande[0];
@@ -100,8 +99,10 @@ void	process(t_node *node, t_data *data)
 	if (!ft_strncmp(node->str_options[0], "./minishell", 12))
 		signal(SIGINT, SIG_IGN);
 	else
+	{
 		signal(SIGINT, signal_handler_exec);
-
+		signal(SIGQUIT, signal_handler_exec);
+	}
 	if (nb_pipes(node) > 0)
 		ft_pipe(node);
 	else if (is_builtin(node->str_options, data))
@@ -145,6 +146,7 @@ void	process(t_node *node, t_data *data)
 	}
 	if (g_sig_handle == SIGINT)
 		data->last_error = 130;
-	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, signal_handler);
+	if (g_sig_handle == SIGQUIT)
+		data->last_error = 131;
+
 }
