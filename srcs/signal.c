@@ -19,20 +19,17 @@ void	signal_handler(int signum)
 	if (signum == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
-		if (g_sig_handle == 9)
-			return;
-		
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}	
 }
 
-void	signal_handler_child(int signum)
+void	signal_handler_exec(int signum)
 {
 	(void)signum;
 	ft_putstr_fd("\n", 1);
-	return ;
+		return ;
 }
 
 void	signal_handler_heredoc(int signum)

@@ -99,7 +99,7 @@ void	process(t_node *node, t_data *data)
 	if (!ft_strncmp(node->str_options[0], "./minishell", 12))
 		signal(SIGINT, SIG_IGN);
 	else
-		g_sig_handle = 9;
+		signal(SIGINT, signal_handler_exec);
 
 	if (nb_pipes(node) > 0)
 		ft_pipe(node);
@@ -142,5 +142,6 @@ void	process(t_node *node, t_data *data)
             }
 		ft_redirect(node, data);
 	}
-	g_sig_handle = 0;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, signal_handler);
 }
