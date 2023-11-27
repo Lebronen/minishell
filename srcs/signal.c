@@ -22,12 +22,14 @@ void	signal_handler(int signum)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		g_sig_handle = SIGINT;
 	}	
 }
 
 void	signal_handler_exec(int signum)
 {
 	(void)signum;
+	g_sig_handle = SIGINT;
 	ft_putstr_fd("\n", 1);
 		return ;
 }

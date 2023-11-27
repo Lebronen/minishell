@@ -84,6 +84,7 @@ void    execute(char **commande, t_data *data)
 		}
         if (!path || execve(path, commande, tab) == -1)
 	    {
+			data->last_error = errno;
 			error(data);
 		}
 }
@@ -142,6 +143,8 @@ void	process(t_node *node, t_data *data)
             }
 		ft_redirect(node, data);
 	}
+	if (g_sig_handle == SIGINT)
+		data->last_error = 130;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, signal_handler);
 }
