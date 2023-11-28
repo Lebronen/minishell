@@ -100,6 +100,9 @@ char	**init_env(char **envp, t_data *data);
 char **create_envp(t_data *data);
 int	env_value_dollar(int i, char **commande, t_data *data);
 int	env_value_backslash(int i, char **commande);
+char *manage_with_quote(char *commande);
+int	has_quote(char *commande);
+
 
 //ERRORS
 int		print_error(int error_num, int fd, char *str, t_data *data);

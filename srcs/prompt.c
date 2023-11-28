@@ -58,7 +58,8 @@ void	prompt(t_data *data)
 		init_node(&commande, &token, &node, data);
 		if (check_heredoc(node))
 		{
-			process(node, data);
+			print_node(node);
+			//process(node, data);
 			add_history(commande);
 		}
 		free_all(commande, token, node);
