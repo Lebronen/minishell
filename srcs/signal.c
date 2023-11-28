@@ -32,7 +32,7 @@ void	signal_handler_exec(int signum)
 	{
 		g_sig_handle = SIGINT;
 		ft_putstr_fd("\n", 1);
-			return ;
+		return ;
 	}
 	else if (signum == SIGQUIT)
 	{
