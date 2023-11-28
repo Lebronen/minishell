@@ -103,6 +103,8 @@ int		print_error(int error_num, int fd, char *str, t_data *data);
 int		error_cmd(char *commande, t_data *data);
 int		input_error(char *str, t_data *data);
 int		error_ambig(char *commande, t_data *data);
+int		no_command(char *commande);
+char	*manage_error_cmd(char *commande, char *cwd);
 
 //REDIRECTIONS + HEREDOCS
 void	ctrl_c_heredoc(int std_in, t_data *data);
@@ -139,6 +141,8 @@ t_token	*next_pipe(t_token *token);
 void	print_node(t_node *node);
 t_token	*lexer(char *commande, t_data *data);
 void	print_token(t_token *token);
+void	init_node(char	**commande, t_token **token,
+							t_node **node, t_data *data);
 
 //EXECint is_only_builtin(char **commande)
 

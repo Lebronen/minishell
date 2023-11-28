@@ -23,22 +23,15 @@ int	check_heredoc(t_node *node)
 	return (1);
 }
 
-char *init_read(void)
+void	init_read(void)
 {
-		char    cwd[256];
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, SIG_IGN);
-		signal(SIGINT, signal_handler);
-		
-		if (getcwd(cwd, sizeof(cwd)) == NULL)
-            perror("getcwd error\n");
-        ft_strlcat(cwd, "~$", 256);
-		return(ft_strdup(cwd));
-} 
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, signal_handler);
+}
 
-void	free_all(char *commande, t_token *token, t_node *node, char *cwd)
+void	free_all(char *commande, t_token *token, t_node *node)
 {
-   	free(cwd);
 	free(commande);
 	free_lexer(token);
 	free_nodes(node);
@@ -49,38 +42,26 @@ void	prompt(t_data *data)
 	char	*commande;
 	t_token	*token;
 	t_node	*node;
-	char *cwd;
-	
+	char	cwd[256];
 
-	node = NULL;
 	while (1)
 	{
-		cwd = init_read();
-        commande = readline(cwd);
-		if (!commande)
-		{
-			ft_putstr_fd("exit\n", 1);
+		init_read();
+		if (getcwd(cwd, sizeof(cwd)) == NULL)
+			print_error(errno, 2, "cwd error \n", data);
+		ft_strlcat(cwd, "~$", 256);
+		commande = readline(cwd);
+		if (no_command(commande))
 			break ;
-		}
 		while (error_cmd(commande, data))
-		{
-			free(commande);
-			commande = readline(cwd);
-		}
-        if  (!strncmp(commande, "exit", 4))
-        {
-            free(commande);
-            break ;
-        }
-		commande = env_value_checker(commande, data);
-		token = lexer(commande, data);
-		node = nodizer(token, data);
+			commande = manage_error_cmd(commande, cwd);
+		init_node(&commande, &token, &node, data);
 		if (check_heredoc(node))
-        {
+		{
 			process(node, data);
-		    add_history(commande);
-        }
-		free_all(commande, token, node, cwd);
+			add_history(commande);
+		}
+		free_all(commande, token, node);
 	}
-    	rl_clear_history();
+	rl_clear_history();
 }
