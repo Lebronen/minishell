@@ -115,6 +115,7 @@ char	*heredocv2(char *commande);
 void	restore_signal(void);
 void	signal_loop(t_data	*data);
 void	signal_handler(int signum);
+void	signal_handler_child(int signum);
 void	signal_handler_heredoc(int signum);
 int		check_signal(void);
 

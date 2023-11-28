@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 18:46:18 by lebronen          #+#    #+#             */
-/*   Updated: 2023/11/26 16:17:28 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:34:37 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,19 @@ void    child_process(t_node *tmp, int *fd1, int *fd2, int i)
         error();
     if (pid == 0)
     {
-        if (i) 
-            dup2(fd2[0], STDIN_FILENO);
         if (tmp->fd_out != STDOUT_FILENO)
         {
             dup2(tmp->fd_out, STDOUT_FILENO);
             close(tmp->fd_out);
+        }
+        if (i) 
+            dup2(fd2[0], STDIN_FILENO);
+        if (tmp->fd_in != STDIN_FILENO)
+        {
+            if (tmp->fd_in == -2)
+                tmp->fd_in = ft_heredoc(tmp, tmp->data);
+            dup2(tmp->fd_in, STDIN_FILENO);
+            close(tmp->fd_in);
         }
         else
             dup2(fd1[1], STDOUT_FILENO);

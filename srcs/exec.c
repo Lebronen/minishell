@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/27 14:14:48 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:21:24 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,13 @@ void    execute(char **commande, t_data *data)
 {
     char    *path;
 	char	**tab;
-    
+
+		signal(SIGINT, signal_handler_child);
 		tab = list_to_tab(data->envp);
         if (is_slash(commande[0]))
             path = commande[0];
         else
-		{
             path = find_path(commande[0], tab);
-			//else
-			//{
-				//path = malloc((5 + ft_strlen(commande[0])) * sizeof(char));
-				//ft_memmove(path, "/bin/", 5);
-				//ft_memmove(path + 5, commande[0], ft_strlen(path));
-			//}
-		}
         if (!path || execve(path, commande, tab) == -1)
 	    {
 			error(data);
@@ -94,19 +87,17 @@ void	process(t_node *node, t_data *data)
 	
 	if (nb_pipes(node) > 0)
 		ft_pipe(node);
-	else if (is_builtin(node->str_options, data))
-		return;
 	else if (node->fd_in == STDIN_FILENO && node->fd_out == STDOUT_FILENO)
 	{
-		
+		if (is_builtin(node->str_options, data))
+			return;
 		pid = fork();
 		if (pid == 0)
 			execute(node->str_options, data);
 		else if (pid > 0)
 		{
-			signal(SIGINT, SIG_IGN);
+			g_sig_handle = 9;
 			waitpid(pid, &status, 0);
-			signal(SIGINT, signal_handler);
 		}
 		else
 		{
