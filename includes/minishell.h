@@ -90,13 +90,16 @@ void	manage_shlvl(char *env, char **result, int j);
 void	free_env(char **env);
 char	*ft_strdup_c(char *s, char c);
 char	*ft_strdup_c2(char *s, char c);
+char	*ft_strdup_c3(char *s, char c);
 char	*name_cleaner(char *name);
 char	*env_value_checker(char *commande, t_data *data);
 char	*get_env_value(t_list *envp, char *name);
-int		env_value_quote(int i, char **commande, t_list *envp);
+int		env_value_quote(int i, char **commande, t_data *data);
 char	*new_command(char *commande, char *env_value, int i);
 char	**init_env(char **envp, t_data *data);
 char **create_envp(t_data *data);
+int	env_value_dollar(int i, char **commande, t_data *data);
+int	env_value_backslash(int i, char **commande);
 
 //ERRORS
 int		print_error(int error_num, int fd, char *str, t_data *data);

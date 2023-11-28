@@ -30,6 +30,26 @@ char	*ft_strdup_c2(char *s, char c)
 	return (result);
 }
 
+char	*ft_strdup_c3(char *s, char c)
+{
+	char	*result;
+	int		i;
+
+	result = malloc((ft_strlen(s) + 1) * sizeof(char));
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (s[i] && s[i] != c && s[i] != ' ' && s[i] != '"' && s[i] != '\'')
+	{
+		result[i] = s[i];
+		i++;
+	}
+	result[i] = '\0';
+	return (result);
+}
+
+
+
 int	handledoublequotetoken(int i, t_token **last, char *commande)
 {
 	i++;
@@ -54,7 +74,10 @@ int	handlesinglequotetoken(int i, t_token **last, char *commande)
 
 int	handlewordtoken(int i, t_token **last, char *commande)
 {
-	(*last) = new_token(WORD, ft_strdup_c(&commande[i], 32), (*last));
+	if ((commande[i] == '$'))
+		(*last) = new_token(WORD, ft_strdup(""), (*last));
+	else
+		(*last) = new_token(WORD, ft_strdup_c(&commande[i], 32), (*last));
 	while (commande[i] != 32 && commande[i] != '\0'
 		&& commande[i] != '>' && commande[i] != '<' && commande[i] != '|')
 		i++;

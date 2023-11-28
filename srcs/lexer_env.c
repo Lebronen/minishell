@@ -19,7 +19,8 @@ char	*fill_command(char *commande, char *env_value, char *str, size_t k)
 
 	j = 0;
 	i = k;
-	while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"')
+	i++;
+	while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"' && commande[i] != '$')
 		i++;
 	while (j < k)
 	{
@@ -49,7 +50,7 @@ char	*new_command(char *commande, char *env_value, int i)
 	k = i;
 	if (!env_value)
 		return (commande);
-	while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"')
+	while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"' && commande[i] != '$')
 		i++;
 	str = malloc(sizeof(char)
 			* ((ft_strlen(commande) - (i - k)) + ft_strlen(env_value) + 1));
@@ -70,12 +71,17 @@ int	env_value_dollar(int i, char **commande, t_data *data)
 		str = ft_itoa(data->last_error);
 	else
 	{
-		str1 = ft_strdup_c2(&(*commande)[i], ' ');
+		str1 = ft_strdup_c3(&(*commande)[i], '$');
 		str = get_env_value(data->envp, str1);
 	}
 	(*commande) = new_command((*commande), str, i - 1);
-	while ((*commande)[i] && (*commande)[i] != ' ')
+	while ((*commande)[i] && (*commande)[i] != ' ' && (*commande)[i] == '$')
 		i++;
+	if ((*commande)[i] == '$')
+	{
+		i--;
+		printf("saluuuuut\n");
+	}
 	if (str)
 		free(str);
 	if (str1)
@@ -115,7 +121,7 @@ char	*env_value_checker(char *commande, t_data *data)
 			i++;
 		}
 		else if (commande[i - 1] == '"')
-			i = env_value_quote(i, &commande, data->envp);
+			i = env_value_quote(i, &commande, data);
 		else if (commande[i - 1] == 92)
 			i = env_value_backslash(i, &commande);
 		else if (commande[i - 1] == '$')
