@@ -38,29 +38,49 @@ int	error_ambig(char *commande, t_data *data)
 	return (0);
 }
 
+int	error_cmd2(char *commande, int i, t_data *data)
+{
+	if (commande[i] == '\0'
+		|| (commande[i] == ':' && commande[i + 1] == '\0'))
+	{
+		data->last_error = 0;
+		return (1);
+	}
+	else if (commande[i] == '!' && commande[i + 1] == '\0')
+	{
+		data->last_error = 1;
+		return (1);
+	}
+	else if (commande[i] == '|')
+	{
+		return (print_error(2, 2, "Syntax error\n", data));
+	}
+	return (0);
+}
+
 int	error_cmd(char *commande, t_data *data)
 {
 	int		i;
 	char	c;
-	char	d;
 	int		quotes;
 
 	quotes = 0;
 	i = 0;
 	if (!commande[i])
 		return (1);
-	while (commande[i] == ' ')
+	while (commande[i] == ' ' || commande[i] == 9 || commande[i] == 11)
 		i++;
-	d = commande[i];
+	if (error_cmd2(commande, i, data))
+		return (1);
 	while (commande[i])
 	{
-		if (commande[i] != ' ')
+		if (commande[i] != ' ' || commande[i] != 9)
 			c = commande[i];
 		if (commande[i] == '"' || commande[i] == '\'')
 			quotes++;
 		i++;
 	}
-	if (d == '|' || c == '|' || c == '>' || c == '<' || quotes % 2 != 0)
+	if (c == '|' || c == '>' || c == '<' || quotes % 2 != 0)
 		return (print_error(2, 2, "Syntax error\n", data));
 	return (0);
 }
