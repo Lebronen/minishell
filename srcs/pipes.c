@@ -18,7 +18,7 @@ void	child_process(t_node *tmp, int *fd1, int *fd2, int i)
 
 	pid = fork();
 	if (pid == -1)
-		error();
+		error(tmp->data);
 	if (pid == 0)
 	{
 		if (tmp->fd_in != STDIN_FILENO)

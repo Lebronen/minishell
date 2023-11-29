@@ -152,7 +152,7 @@ int		init_node(char	**commande, t_token **token,
 //UTILS + FREE
 void	prompt(t_data *data);
 void	execute(char **commande, t_data *data);
-void	error(void);
+void	error(t_data *data);
 char	*find_path(char *cmd, char **envp);
 int		nb_str(char *s, char c);
 int		ft_strcmp(char *s1, char *s2);
@@ -169,6 +169,7 @@ int		cd(char *path);
 int		pwd(void);
 int		echo(char *str, int option, int fd);
 int		export(char *commande, t_list *env);
+void	ft_exit(char **commande, t_data *data);
 int		init_out(t_token *token);
 int		init_in(t_token *token, t_data *data);
 void	free_lexer(t_token *token);
@@ -176,7 +177,7 @@ void	manage_heredoc(t_node *node, t_token *token, t_data *data);
 int		unset(char *commande, t_list *envp);
 void	del(void *content);
 int		ft_strcmp(char *s1, char *s2);
-int		is_builtin_exec(char **commande, t_data *data);
+void	is_builtin_exec(char **commande, t_data *data);
 int		is_builtin(char **commande);
 void	free_data(t_data *data);
 int		is_only_builtin(char **commande);

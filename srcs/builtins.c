@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/29 17:05:04 by rshay            ###   ########.fr       */
+/*   Updated: 2023/11/29 18:11:01 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,15 @@ int	echo(char *str, int option, int fd)
 	if (!option)
 		ft_putchar_fd('\n', fd);
 	return (0);
+}
+
+void	ft_exit(char **commande, t_data *data)
+{
+	int	err;
+
+	err = data->last_error;
+	if (commande[1])
+		err = ft_atoi(commande[1]);
+	data->malloc_error = 2;
+	exit(err);
 }

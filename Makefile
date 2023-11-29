@@ -28,7 +28,7 @@ MAGENTA		=	\033[0;95m
 CYAN		=	\033[0;96m
 WHITE		=	\033[0;97m
 
-SRC_FILES	=	minishell prompt prompt_utils exec exec_utils utils2 error env lexer lexer_utils lexer_types lexer_types2 lexer_env lexer_envbis builtins \
+SRC_FILES	=	minishell prompt prompt_utils exec exec_utils error env lexer lexer_utils lexer_types lexer_types2 lexer_env lexer_envbis builtins utils2 \
 				 linked_list nodes nodes_free redirections heredoc_v2 heredoc_v2bis builtins_utils env_shlvl signal pipes pipe_utils exec_utils2 builtins2 \
 				 lexer_types3 
 
