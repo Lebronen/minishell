@@ -93,7 +93,6 @@ void	ft_last_cmd(t_node *node, int *fd1, int *fd2, int nb)
 	}
 	if (nb % 2)
 			nb -= parent_process(node, fd1, fd2, nb);
-
 	else
 			nb -= parent_process(node, fd2, fd1, nb);
 	if (nb)
@@ -122,7 +121,7 @@ void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb)
 	while (i < nb)
 	{
 		if (is_only_builtin(tmp->str_options))
-		{;
+		{
 			if (!j)
 				fd2[0] = STDIN_FILENO;
 		}
@@ -133,9 +132,6 @@ void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb)
 		}
 		i++;
 		tmp = tmp->next;
-			
 	}
 	ft_last_cmd(tmp, fd1, fd2, nb);
-		printf("%d", tmp->data->last_error);
-
 }

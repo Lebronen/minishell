@@ -56,7 +56,6 @@ void	is_builtin_exec(char **commande, t_data *data)
 		ft_exit(commande, data);
 	else
 		is_also_builtin(commande, data);
-	
 }
 
 int	is_only_builtin(char **commande)

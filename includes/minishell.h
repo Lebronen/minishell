@@ -68,7 +68,6 @@ typedef struct s_token
 }	t_token;
 
 typedef struct s_node
-
 {
 	int				fd_in;
 	int				fd_out;

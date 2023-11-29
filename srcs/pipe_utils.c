@@ -15,7 +15,7 @@
 int	wait_for_childrens(int nb)
 {
 	int	i;
-	int status;
+	int	status;
 
 	i = 0;
 	while (i <= nb)
