@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 12:49:21 by cgermain          #+#    #+#             */
-/*   Updated: 2023/10/24 12:49:30 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:11:39 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	error_ambig(char *commande, t_data *data)
 					write(2, &commande[i], 1);
 					i++;
 				}
-				print_error(1, 2, " : ambiguous redirect\n", data);
+				print_error(1, NULL, " : ambiguous redirect\n", data);
 				return (1);
 			}
 		}
@@ -53,7 +53,7 @@ int	error_cmd2(char *commande, int i, t_data *data)
 	}
 	else if (commande[i] == '|')
 	{
-		return (print_error(2, 2, "Syntax error\n", data));
+		return (print_error(2, NULL, "Syntax error\n", data));
 	}
 	return (0);
 }

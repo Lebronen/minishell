@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:14:32 by lebronen          #+#    #+#             */
-/*   Updated: 2023/11/29 19:02:51 by rshay            ###   ########.fr       */
+/*   Updated: 2023/11/29 19:19:57 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,13 @@ void	execute(char **commande, t_data *data)
 		path = find_path(commande[0], tab);
 	if (!path || execve(path, commande, tab) == -1)
 	{
-		data->last_error = errno;
-		error(data);
+		if (!path)
+		{
+			print_error(127, commande[0], " Command not found\n", data);
+		}
+		else if (commande[0][0] == '/')
+			print_error(127, commande[0], " No such file or directory\n", data);
+		exit(errno);
 	}
 }
 

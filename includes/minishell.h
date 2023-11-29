@@ -105,7 +105,7 @@ int		has_quote(char *commande);
 size_t	boost_i(char *commande, size_t i);
 
 //ERRORS
-int		print_error(int error_num, int fd, char *str, t_data *data);
+int		print_error(int error_num, char *nom, char *str, t_data *data);
 int		error_cmd(char *commande, t_data *data);
 int		input_error(char *str, t_data *data);
 int		error_ambig(char *commande, t_data *data);

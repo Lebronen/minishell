@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:25:00 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/29 18:23:20 by rshay            ###   ########.fr       */
+/*   Updated: 2023/11/29 19:10:42 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	free_all(char *commande, t_token *token, t_node *node)
 void	prompt(t_data *data)
 {
 	char	*commande;
-minishell compiled!
+
 	t_token	*token;
 	t_node	*node;
 	char	cwd[256];
