@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+size_t	boost_i(char *commande, size_t i)
+{
+	i++;
+	while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"'
+		&& commande[i] != '$' && commande[i] != 39)
+		i++;
+	return (i);
+}
 
 int	env_value_quote1(int i, char**commande, t_data *data)
 {
@@ -25,8 +33,6 @@ int	env_value_quote1(int i, char**commande, t_data *data)
 			if ((*commande)[i] == 39)
 			i++;
 		}
-		else if ((*commande)[i - 1] == 92)
-			i = env_value_backslash(i, commande);
 		else if ((*commande)[i - 1] == '$')
 			i = env_value_dollar(i, commande, data);
 	}
@@ -62,4 +68,3 @@ int	env_value_quote(int i, char **commande, t_data *data)
 			i = env_value_quote1(i, commande, data);
 	return (i);
 }
-

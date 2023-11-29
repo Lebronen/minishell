@@ -22,13 +22,29 @@ int	no_command(char *commande)
 	return (0);
 }
 
-void	init_node(char	**commande, t_token **token,
+int	init_node(char	**commande, t_token **token,
 							t_node **node, t_data *data)
 {
 	*node = NULL;
 	*commande = env_value_checker(*commande, data);
+	if (!*commande)
+	{
+		ft_putstr_fd("Error : malloc failed\n", 2);
+		return (0);
+	}
 	*token = lexer(*commande, data);
+	if (!token)
+	{
+		ft_putstr_fd("Error : malloc failed\n", 2);
+		return (0);
+	}
 	*node = nodizer(*token, data);
+	if (!*node)
+	{
+		ft_putstr_fd("Error : malloc failed\n", 2);
+		return (0);
+	}
+	return (1);
 }
 
 char	*manage_error_cmd(char *commande, char *cwd)

@@ -23,18 +23,23 @@ int	check_heredoc(t_node *node)
 	return (1);
 }
 
-void	init_read(void)
+void	init_read(t_token **token, t_node **node)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, signal_handler);
+	*token = NULL;
+	*node = NULL;
 }
 
 void	free_all(char *commande, t_token *token, t_node *node)
 {
-	free(commande);
-	free_lexer(token);
-	free_nodes(node);
+	if (commande)
+		free(commande);
+	if (token)
+		free_lexer(token);
+	if (node)
+		free_nodes(node);
 }
 
 void	prompt(t_data *data)
@@ -46,7 +51,7 @@ void	prompt(t_data *data)
 
 	while (1)
 	{
-		init_read();
+		init_read(&token, &node);
 		if (getcwd(cwd, sizeof(cwd)) == NULL)
 			print_error(errno, 2, "cwd error \n", data);
 		ft_strlcat(cwd, "~$", 256);
@@ -55,10 +60,8 @@ void	prompt(t_data *data)
 			break ;
 		while (error_cmd(commande, data))
 			commande = manage_error_cmd(commande, cwd);
-		init_node(&commande, &token, &node, data);
-		if (check_heredoc(node))
+		if (init_node(&commande, &token, &node, data) && check_heredoc(node))
 		{
-			print_node(node);
 			//process(node, data);
 			add_history(commande);
 		}

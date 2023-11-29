@@ -48,8 +48,6 @@ char	*ft_strdup_c3(char *s, char c)
 	return (result);
 }
 
-
-
 int	handledoublequotetoken(int i, t_token **last, char *commande)
 {
 	i++;
@@ -72,16 +70,14 @@ int	handlesinglequotetoken(int i, t_token **last, char *commande)
 	return (i);
 }
 
-
-
 int	handlewordtoken(int i, t_token **last, char *commande)
 {
-	if ((commande[i] == '$'))
+	if (commande[i] == '$')
 		(*last) = new_token(WORD, ft_strdup(""), (*last));
 	else if (has_quote(&commande[i]))
 	{
 		(*last) = new_token(WORD, manage_with_quote(&commande[i]), (*last));
-		return(has_quote(&commande[i]) + i +1);
+		return (has_quote(&commande[i]) + i +1);
 	}
 	else
 		(*last) = new_token(WORD, ft_strdup_c(&commande[i], 32), (*last));

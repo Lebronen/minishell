@@ -50,8 +50,10 @@ extern int	g_sig_handle;
 typedef struct s_data
 {
 	int		last_error;
+	int		malloc_error;
 	int		is_env;
 	int		signal;
+	char *path;
 	t_list	*envp;
 }	t_data;
 
@@ -78,7 +80,7 @@ typedef struct s_node
 
 
 //ENVIRONMENT
-int	env(t_data *data);
+int		env(t_data *data);
 char	**add_env(char *ligne, t_list *envp);
 char	**supp_env(char *ligne, t_list *envp);
 t_list	*tab_to_list(char **tab);
@@ -97,11 +99,12 @@ char	*get_env_value(t_list *envp, char *name);
 int		env_value_quote(int i, char **commande, t_data *data);
 char	*new_command(char *commande, char *env_value, int i);
 char	**init_env(char **envp, t_data *data);
-char **create_envp(t_data *data);
-int	env_value_dollar(int i, char **commande, t_data *data);
-int	env_value_backslash(int i, char **commande);
-char *manage_with_quote(char *commande);
-int	has_quote(char *commande);
+char	**create_envp(t_data *data);
+int		env_value_dollar(int i, char **commande, t_data *data);
+int		env_value_backslash(int i, char **commande);
+char	*manage_with_quote(char *commande);
+int		has_quote(char *commande);
+size_t	boost_i(char *commande, size_t i);
 
 
 //ERRORS
@@ -147,7 +150,7 @@ t_token	*next_pipe(t_token *token);
 void	print_node(t_node *node);
 t_token	*lexer(char *commande, t_data *data);
 void	print_token(t_token *token);
-void	init_node(char	**commande, t_token **token,
+int	init_node(char	**commande, t_token **token,
 							t_node **node, t_data *data);
 
 //EXECint is_only_builtin(char **commande)
