@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:49:46 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/29 11:13:37 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:38:56 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,9 +158,8 @@ int		nb_str(char *s, char c);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_index(char *commande, char c);
 void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb);
-void    close_pipes(int **fd, int nb);
+void    close_pipes(int *fd1, int *fd2, int i);
 void 	wait_for_childrens(int nb);
-void    free_pipes(int **fd, int nb);
 int		nb_pipes(t_node *node);
 void	process(t_node *node, t_data *data);
 int		open_file(char *argv, int i);
@@ -182,7 +181,10 @@ int 	is_builtin(char **commande);
 void	free_data(t_data *data);
 int 	is_only_builtin(char **commande);
 int     ft_heredoc(t_node *node, t_data *data);
-void    exec_cmd(t_node *node, t_data *data, int nb);
+void    exec_cmd(t_node *node, t_data *data);
 void    execloop(t_node *node);
+void    pipe_process(t_node *tmp, int *fd1, int *fd2, int nb);
+void    pipe_loop(t_node *tmp, int *fd1, int *fd2, int j);
+void	child_process(t_node *tmp, int *fd1, int *fd2, int i);
 
 #endif

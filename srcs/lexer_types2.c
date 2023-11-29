@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_types2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <cgermain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:03:29 by cgermain          #+#    #+#             */
-/*   Updated: 2023/10/19 15:03:32 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/11/29 14:47:28 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	handlesinglequotetoken(int i, t_token **last, char *commande)
 
 int	handlewordtoken(int i, t_token **last, char *commande)
 {
-	if ((commande[i] == '$'))
+	if (commande[i] == '$')
 		(*last) = new_token(WORD, ft_strdup(""), (*last));
 	else
 		(*last) = new_token(WORD, ft_strdup_c(&commande[i], 32), (*last));

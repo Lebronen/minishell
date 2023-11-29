@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:14:32 by lebronen          #+#    #+#             */
-/*   Updated: 2023/11/28 16:16:15 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:42:59 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int	is_slash(char *s)
 	return (0);
 }
 
-
 void	execute(char **commande, t_data *data)
 {
 	char	*path;
@@ -70,19 +69,18 @@ void	execute(char **commande, t_data *data)
 
 	tab = list_to_tab(data->envp);
 	if (is_slash(commande[0]))
-	path = commande[0];
-	 else
-	path = find_path(commande[0], tab);
-	 if (!path || execve(path, commande, tab) == -1)
-		{
-			data->last_error = errno;
-			error(data);
-		}
+		path = commande[0];
+	else
+		path = find_path(commande[0], tab);
+	if (!path || execve(path, commande, tab) == -1)
+	{
+		data->last_error = errno;
+		error(data);
+	}
 }
 
 void	process(t_node *node, t_data *data)
 {
-
 	if (!ft_strncmp(node->str_options[0], "./minishell", 12))
 		signal(SIGINT, SIG_IGN);
 	else
