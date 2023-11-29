@@ -85,6 +85,12 @@ int	nb_pipes(t_node *node)
 
 void	ft_last_cmd(t_node *node, int *fd1, int *fd2, int nb)
 {
+	if (is_dir(node->str_options[0]))
+	{
+		node->data->last_error = 126;
+		ft_printf("%s: Is a  directory\n", node->str_options[0]);
+		return ;
+	}
 	if (nb % 2)
 			nb -= parent_process(node, fd1, fd2, nb);
 	else
