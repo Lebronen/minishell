@@ -23,8 +23,9 @@ int	check_heredoc(t_node *node)
 	return (1);
 }
 
-void	init_read(t_token **token, t_node **node)
+void	init_read(t_token **token, t_node **node, t_data *data)
 {
+	data->last_error = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, signal_handler);
@@ -51,7 +52,7 @@ void	prompt(t_data *data)
 
 	while (1)
 	{
-		init_read(&token, &node);
+		init_read(&token, &node, data);
 		if (getcwd(cwd, sizeof(cwd)) == NULL)
 			print_error(errno, 2, "cwd error \n", data);
 		ft_strlcat(cwd, "~$", 256);
