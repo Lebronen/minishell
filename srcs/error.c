@@ -66,7 +66,7 @@ int	error_cmd(char *commande, t_data *data)
 
 	quotes = 0;
 	i = 0;
-	if (!commande[i])
+	if (!commande[i] || error_ambig(commande, data))
 		return (1);
 	while (commande[i] == ' ' || commande[i] == 9 || commande[i] == 11)
 		i++;
