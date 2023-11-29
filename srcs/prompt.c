@@ -16,6 +16,8 @@ int	check_heredoc(t_node *node)
 {
 	while (node)
 	{
+		if (node->fd_in == -1 || node->fd_out == -1)
+			return (0);
 		if (node->fd_in == -2 && node->heredoc == NULL)
 			return (0);
 		node = node->next;
@@ -23,9 +25,8 @@ int	check_heredoc(t_node *node)
 	return (1);
 }
 
-void	init_read(t_token **token, t_node **node, t_data *data)
+void	init_read(t_token **token, t_node **node)
 {
-	data->last_error = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, signal_handler);
@@ -46,13 +47,14 @@ void	free_all(char *commande, t_token *token, t_node *node)
 void	prompt(t_data *data)
 {
 	char	*commande;
+minishell compiled!
 	t_token	*token;
 	t_node	*node;
 	char	cwd[256];
 
 	while (1)
 	{
-		init_read(&token, &node, data);
+		init_read(&token, &node);
 		if (getcwd(cwd, sizeof(cwd)) == NULL)
 			print_error(errno, 2, "cwd error \n", data);
 		ft_strlcat(cwd, "~$", 256);
@@ -63,6 +65,7 @@ void	prompt(t_data *data)
 			commande = manage_error_cmd(commande, cwd);
 		if (init_node(&commande, &token, &node, data) && check_heredoc(node))
 		{
+			data->last_error = 0;
 			process(node, data);
 			add_history(commande);
 		}
