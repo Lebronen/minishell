@@ -59,7 +59,7 @@ char	**init_env(char **envp, t_data *data)
 
 	i = 0;
 	if (!envp[0])
-		return(create_envp(data));
+		return (create_envp(data));
 	data->is_env = 1;
 	while (envp[i])
 		i++;

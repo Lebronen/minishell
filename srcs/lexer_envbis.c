@@ -12,25 +12,24 @@
 
 #include "minishell.h"
 
-int	env_value_quote1(int i, char**commande, t_list *envp)
-{
-	int		j;
-	char	*str;
-	char	*str1;
 
-	i++;
-	j = i;
-	while ((*commande)[i] &&
-		(*commande)[i] != ' ' && (*commande)[i] != '"')
+int	env_value_quote1(int i, char**commande, t_data *data)
+{
+	while ((*commande)[i] != '"')
+	{
 		i++;
-	if ((*commande)[i] == '"')
-		str1 = ft_strdup_c2(&(*commande)[j], '"');
-	else
-		str1 = ft_strdup_c2(&(*commande)[j], ' ');
-	str = get_env_value(envp, str1);
-	(*commande) = new_command((*commande), str, j - 1);
-	free(str);
-	free(str1);
+		if ((*commande)[i - 1] == 39)
+		{
+			while ((*commande)[i] && (*commande)[i] != 39)
+				i++;
+			if ((*commande)[i] == 39)
+			i++;
+		}
+		else if ((*commande)[i - 1] == 92)
+			i = env_value_backslash(i, commande);
+		else if ((*commande)[i - 1] == '$')
+			i = env_value_dollar(i, commande, data);
+	}
 	return (i);
 }
 
@@ -57,17 +56,10 @@ int	env_value_quote2(int i, char **commande)
 	return (i);
 }
 
-int	env_value_quote(int i, char **commande, t_list *envp)
+int	env_value_quote(int i, char **commande, t_data *data)
 {	
 	while ((*commande)[i] && (*commande)[i] != '"')
-	{
-		if ((*commande)[i] == '$')
-			i = env_value_quote1(i, commande, envp);
-		else if ((*commande)[i] == 92)
-			i = env_value_quote2(i, commande);
-		i++;
-	}
-	if ((*commande)[i] == '"')
-		i++;
+			i = env_value_quote1(i, commande, data);
 	return (i);
 }
+

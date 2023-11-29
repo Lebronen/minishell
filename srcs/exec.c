@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/27 14:21:24 by lebronen         ###   ########.fr       */
+/*   Created: 2023/11/28 16:14:32 by lebronen          #+#    #+#             */
+/*   Updated: 2023/11/28 16:16:15 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,52 +63,36 @@ int	is_slash(char *s)
 }
 
 
-void    execute(char **commande, t_data *data)
+void	execute(char **commande, t_data *data)
 {
-    char    *path;
+	char	*path;
 	char	**tab;
 
-		signal(SIGINT, signal_handler_child);
-		tab = list_to_tab(data->envp);
-        if (is_slash(commande[0]))
-            path = commande[0];
-        else
-            path = find_path(commande[0], tab);
-        if (!path || execve(path, commande, tab) == -1)
-	    {
+	tab = list_to_tab(data->envp);
+	if (is_slash(commande[0]))
+	path = commande[0];
+	 else
+	path = find_path(commande[0], tab);
+	 if (!path || execve(path, commande, tab) == -1)
+		{
+			data->last_error = errno;
 			error(data);
 		}
 }
 
 void	process(t_node *node, t_data *data)
 {
-	pid_t	pid;
-	int		status;
-	
-	if (nb_pipes(node) > 0)
-		ft_pipe(node);
-	else if (node->fd_in == STDIN_FILENO && node->fd_out == STDOUT_FILENO)
-	{
-		if (is_builtin(node->str_options, data))
-			return;
-		pid = fork();
-		if (pid == 0)
-			execute(node->str_options, data);
-		else if (pid > 0)
-		{
-			g_sig_handle = 9;
-			waitpid(pid, &status, 0);
-		}
-		else
-		{
-			data->last_error = errno;
-			perror("fork");
-		}
-	}
+
+	if (!ft_strncmp(node->str_options[0], "./minishell", 12))
+		signal(SIGINT, SIG_IGN);
 	else
 	{
-		if (node->fd_in == -2)
-			node->fd_in = ft_heredoc(node, data);
-		ft_redirect(node, data);
+		signal(SIGINT, signal_handler_exec);
+		signal(SIGQUIT, signal_handler_exec);
 	}
+	execloop(node);
+	if (g_sig_handle == SIGINT)
+		data->last_error = 130;
+	if (g_sig_handle == SIGQUIT)
+		data->last_error = 131;
 }

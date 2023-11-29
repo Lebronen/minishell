@@ -15,7 +15,7 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
-	char 	**env2;
+	char	**env2;
 
 	(void)argv;
 	data = malloc(sizeof(t_data));

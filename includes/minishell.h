@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:49:46 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/27 14:10:06 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:13:37 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,19 +90,24 @@ void	manage_shlvl(char *env, char **result, int j);
 void	free_env(char **env);
 char	*ft_strdup_c(char *s, char c);
 char	*ft_strdup_c2(char *s, char c);
+char	*ft_strdup_c3(char *s, char c);
 char	*name_cleaner(char *name);
 char	*env_value_checker(char *commande, t_data *data);
 char	*get_env_value(t_list *envp, char *name);
-int		env_value_quote(int i, char **commande, t_list *envp);
+int		env_value_quote(int i, char **commande, t_data *data);
 char	*new_command(char *commande, char *env_value, int i);
 char	**init_env(char **envp, t_data *data);
 char **create_envp(t_data *data);
+int	env_value_dollar(int i, char **commande, t_data *data);
+int	env_value_backslash(int i, char **commande);
 
 //ERRORS
 int		print_error(int error_num, int fd, char *str, t_data *data);
 int		error_cmd(char *commande, t_data *data);
 int		input_error(char *str, t_data *data);
 int		error_ambig(char *commande, t_data *data);
+int		no_command(char *commande);
+char	*manage_error_cmd(char *commande, char *cwd);
 
 //REDIRECTIONS + HEREDOCS
 void	ctrl_c_heredoc(int std_in, t_data *data);
@@ -115,7 +120,7 @@ char	*heredocv2(char *commande);
 void	restore_signal(void);
 void	signal_loop(t_data	*data);
 void	signal_handler(int signum);
-void	signal_handler_child(int signum);
+void	signal_handler_exec(int signum);
 void	signal_handler_heredoc(int signum);
 int		check_signal(void);
 
@@ -139,6 +144,8 @@ t_token	*next_pipe(t_token *token);
 void	print_node(t_node *node);
 t_token	*lexer(char *commande, t_data *data);
 void	print_token(t_token *token);
+void	init_node(char	**commande, t_token **token,
+							t_node **node, t_data *data);
 
 //EXECint is_only_builtin(char **commande)
 
@@ -150,14 +157,15 @@ char	*find_path(char *cmd, char **envp);
 int		nb_str(char *s, char c);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_index(char *commande, char c);
-void	ft_pipe(t_node *node);
+void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb);
 void    close_pipes(int **fd, int nb);
 void 	wait_for_childrens(int nb);
 void    free_pipes(int **fd, int nb);
 int		nb_pipes(t_node *node);
 void	process(t_node *node, t_data *data);
 int		open_file(char *argv, int i);
-void	ft_redirect(t_node *node, t_data *data);
+void	ft_redirect_in(t_node *node, t_data *data);
+void	ft_redirect_out(t_node *node);
 int		cd(char *path);
 int		pwd(void);
 int		echo(char *str, int option, int fd);
@@ -169,9 +177,12 @@ void	manage_heredoc(t_node *node, t_token *token, t_data *data);
 int		unset(char *commande, t_list *envp);
 void	del(void *content);
 int		ft_strcmp(char *s1, char *s2);
-int		is_builtin(char **commande, t_data *data);
+int		is_builtin_exec(char **commande, t_data *data);
+int 	is_builtin(char **commande);
 void	free_data(t_data *data);
 int 	is_only_builtin(char **commande);
 int     ft_heredoc(t_node *node, t_data *data);
+void    exec_cmd(t_node *node, t_data *data, int nb);
+void    execloop(t_node *node);
 
 #endif

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/19 15:10:40 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/27 14:10:01 by lebronen         ###   ########.fr       */
+/*   Created: 2023/11/28 16:05:27 by lebronen          #+#    #+#             */
+/*   Updated: 2023/11/29 11:16:17 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int nb_str(char *s, char c)
     i = 0;
     while (*s++)
     {
-        if (c == *s)
-            i++;
+    if (c == *s)
+    i++;
     }
     return (i);
 }
 
-int     ft_heredoc(t_node *node, t_data *data)
+int  ft_heredoc(t_node *node, t_data *data)
 {
     int fd;
     int i;
@@ -33,45 +33,58 @@ int     ft_heredoc(t_node *node, t_data *data)
     i = 0;
     fd = open("/tmp/icidoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
     if (fd == -1)
-        error(data);
+    error(data);
     while (node->heredoc[i])
     {
-        ft_putstr_fd(node->heredoc[i], fd);
-        write(fd, "\n", 1);
-        i++;
-    
+    ft_putstr_fd(node->heredoc[i], fd);
+    write(fd, "\n", 1);
+    i++;
+
     }
     close(fd);
     fd = open("/tmp/icidoc", O_RDONLY);
     return (fd);
 }
 
-void    ft_redirect(t_node *node, t_data *data)
+void    ft_redirect_in(t_node *node, t_data *data)
 {
-    pid_t   pid;
-    int     status;
-    int     fd;
+    int fd;
 
-    
-    pid = fork();
-    if (pid == -1)
-        error();
-    if (pid == 0)
+    if (node->fd_in != STDIN_FILENO)
     {
-        if (node->fd_out != STDOUT_FILENO)
-        {    
-            dup2(node->fd_out, STDOUT_FILENO);
-            close(node->fd_out);
-        }
-        if (node->fd_in != STDIN_FILENO)
-        {
-            fd = node->fd_in;
-            dup2(fd, STDIN_FILENO);
-            close(fd);
-        }
-        execute(node->str_options, data);
+        fd = node->fd_in;
+        if (fd == -2)
+            fd = ft_heredoc(node, data);
+        dup2(fd, STDIN_FILENO);
+        close(fd);
     }
-    else
-        waitpid(pid, &status, 0);
+
+}
+
+void    ft_redirect_out(t_node *node)
+{
+     if (node->fd_out != STDOUT_FILENO)
+    {   
+        dup2(node->fd_out, STDOUT_FILENO);
+        close(node->fd_out);
+    }
+}
+
+void    exec_cmd(t_node *node, t_data *data, int nb)
+{
     
+    if (nb && is_only_builtin(node->str_options))
+        return ;
+    execute(node->str_options, data);
+}
+
+void    execloop(t_node *node)
+{
+    int  tube1[2];
+    int  tube2[2]; 
+    int  nb;
+        
+   nb = nb_pipes(node);
+   ft_pipe(node, tube1, tube2, nb);
+   
 }
