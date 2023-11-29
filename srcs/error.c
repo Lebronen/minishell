@@ -29,7 +29,7 @@ int	error_ambig(char *commande, t_data *data)
 					write(2, &commande[i], 1);
 					i++;
 				}
-				print_error(1, 2, " : ambiguous redirect\n", data);
+				print_error(1, NULL, " : ambiguous redirect\n", data);
 				return (1);
 			}
 		}
@@ -53,7 +53,7 @@ int	error_cmd2(char *commande, int i, t_data *data)
 	}
 	else if (commande[i] == '|')
 	{
-		return (print_error(2, 2, "Syntax error\n", data));
+		return (print_error(2, NULL, "Syntax error\n", data));
 	}
 	return (0);
 }
@@ -66,7 +66,7 @@ int	error_cmd(char *commande, t_data *data)
 
 	quotes = 0;
 	i = 0;
-	if (!commande[i])
+	if (!commande[i] || error_ambig(commande, data))
 		return (1);
 	while (commande[i] == ' ' || commande[i] == 9 || commande[i] == 11)
 		i++;

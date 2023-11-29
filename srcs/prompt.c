@@ -47,7 +47,6 @@ void	free_all(char *commande, t_token *token, t_node *node)
 void	prompt(t_data *data)
 {
 	char	*commande;
-minishell compiled!
 	t_token	*token;
 	t_node	*node;
 	char	cwd[256];
