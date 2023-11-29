@@ -81,7 +81,7 @@ int	error_cmd(char *commande, t_data *data)
 		i++;
 	}
 	if (c == '|' || c == '>' || c == '<' || quotes % 2 != 0)
-		return (print_error(2, "", "Syntax error\n", data));
+		return (print_error(2, NULL, "Syntax error\n", data));
 	return (0);
 }
 
@@ -97,9 +97,12 @@ int	input_error(char *str, t_data *data)
 int	print_error(int error_num, char *name, char *str, t_data *data )
 {
 	data->last_error = error_num;
-	ft_putstr_fd("'", 2);
-	ft_putstr_fd("':", 2);
-	ft_putstr_fd(name, 2);
+	if (name)
+	{
+		ft_putstr_fd("'", 2);
+		ft_putstr_fd(name, 2);
+		ft_putstr_fd("':", 2);
+	}
 	ft_putstr_fd(str, 2);
 	return (1);
 }

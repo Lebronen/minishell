@@ -56,7 +56,7 @@ minishell compiled!
 	{
 		init_read(&token, &node);
 		if (getcwd(cwd, sizeof(cwd)) == NULL)
-			print_error(errno, 2, "cwd error \n", data);
+			print_error(errno, NULL, "cwd error \n", data);
 		ft_strlcat(cwd, "~$", 256);
 		commande = readline(cwd);
 		if (no_command(commande))
