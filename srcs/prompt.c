@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:25:00 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/25 14:33:21 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:20:37 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	prompt(t_data *data)
 			commande = manage_error_cmd(commande, cwd);
 		if (init_node(&commande, &token, &node, data) && check_heredoc(node))
 		{
-			//process(node, data);
+			process(node, data);
 			add_history(commande);
 		}
 		free_all(commande, token, node);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 15:42:53 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/26 19:07:04 by lebronen         ###   ########.fr       */
+/*   Created: 2023/11/28 16:14:32 by lebronen          #+#    #+#             */
+/*   Updated: 2023/11/29 17:31:36 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,40 +62,30 @@ int	is_slash(char *s)
 	return (0);
 }
 
-
-void    execute(char **commande, t_data *data)
+void	execute(char **commande, t_data *data)
 {
-    char    *path;
+	char	*path;
 	char	**tab;
 
 	tab = list_to_tab(data->envp);
-    if (is_slash(commande[0]))
-            path = commande[0];
-        else
-		{
-            path = find_path(commande[0], tab);
-			//else
-			//{
-				//path = malloc((5 + ft_strlen(commande[0])) * sizeof(char));
-				//ft_memmove(path, "/bin/", 5);
-				//ft_memmove(path + 5, commande[0], ft_strlen(path));
-			//}
-		}
-        if (!path || execve(path, commande, tab) == -1)
-	    {
-			data->last_error = errno;
-			error(data);
-		}
+	if (is_slash(commande[0]))
+		path = commande[0];
+	else if (!data->is_env)
+	{
+		path = ft_strdup(data->path);
+		ft_strlcat(path, commande[0], ft_strlen(commande[0]) + 6);
+	}
+	else
+		path = find_path(commande[0], tab);
+	if (!path || execve(path, commande, tab) == -1)
+	{
+		data->last_error = errno;
+		error(data);
+	}
 }
 
 void	process(t_node *node, t_data *data)
 {
-	pid_t	pid;
-	int		status;
-	int		fd;
-	int		i;
-	
-	i= 0;
 	if (!ft_strncmp(node->str_options[0], "./minishell", 12))
 		signal(SIGINT, SIG_IGN);
 	else
@@ -103,50 +93,9 @@ void	process(t_node *node, t_data *data)
 		signal(SIGINT, signal_handler_exec);
 		signal(SIGQUIT, signal_handler_exec);
 	}
-	if (nb_pipes(node) > 0)
-		ft_pipe(node);
-	else if (is_builtin(node->str_options, data))
-		return;
-	else if (node->fd_in == STDIN_FILENO && node->fd_out == STDOUT_FILENO)
-	{
-		pid = fork();
-		if (pid == 0)
-			execute(node->str_options, data);
-		else if (pid > 0)
-		{
-
-			waitpid(pid, &status, 0);
-
-		}
-		else
-		{
-			data->last_error = errno;
-			perror("fork");
-		}
-	}
-	else
-	{
-		if (node->fd_in == -2)
-            {
-                fd = open("/tmp/icidoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
-                if (fd == -1)
-                    error(data);
-                while (node->heredoc[i])
-                {
-                    ft_putstr_fd(node->heredoc[i], fd);
-					write(fd, "\n", 1);
-                    i++;
-				
-                }
-				close(fd);
-				fd = open("/tmp/icidoc", O_RDONLY);
-				node->fd_in = fd;
-            }
-		ft_redirect(node, data);
-	}
+	execloop(node);
 	if (g_sig_handle == SIGINT)
 		data->last_error = 130;
 	if (g_sig_handle == SIGQUIT)
 		data->last_error = 131;
-
 }

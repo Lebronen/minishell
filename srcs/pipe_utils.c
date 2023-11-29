@@ -1,51 +1,78 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
+/*																			*/
+/*														:::	  ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/16 21:33:18 by lebronen          #+#    #+#             */
-/*   Updated: 2023/11/22 17:45:46 by lebronen         ###   ########.fr       */
-/*                                                                            */
+/*													+:+ +:+		 +:+	 */
+/*   By: rshay <rshay@student.42.fr>				+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/11/16 21:33:18 by lebronen		  #+#	#+#			 */
+/*   Updated: 2023/11/29 16:57:53 by rshay            ###   ########.fr       */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void wait_for_childrens(int nb)
+void	wait_for_childrens(int nb)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (i <= nb)
-    {
-        wait(NULL);
-        i++;
-    }
+	i = 0;
+	while (i <= nb)
+	{
+		wait(NULL);
+		i++;
+	}
 }
 
-void    free_pipes(int **fd, int nb)
+void	pipe_process(t_node *tmp, int *fd1, int *fd2, int nb)
 {
-    int i;
+	pid_t	pid;
 
-    i = 0;
-    while (i < nb)
-    {
-        free(fd[i]);
-        i++;
-    }
-    free(fd);
+	pid = fork();
+	if (pid == 0)
+	{
+		if (tmp->fd_in != STDIN_FILENO)
+			ft_redirect_in(tmp, tmp->data);
+		else
+		{
+			if (nb)
+			{
+				dup2(fd1[0], STDIN_FILENO);
+				close(fd1[0]);
+				close(fd1[1]);
+				if (nb > 1)
+				{	
+					close(fd2[0]);
+					close(fd2[1]);
+				}
+			}
+		}
+		ft_redirect_out(tmp);
+		exec_cmd(tmp, tmp->data);
+	}
 }
 
-void    close_pipes(int **fd, int nb)
+void	close_pipes(int *fd1, int *fd2, int i)
 {
-    int i;
+	close(fd1[0]);
+	close(fd1[1]);
+	if (i)
+	{	
+		close(fd2[0]);
+		close(fd2[1]);
+	}
+}
 
-    i = 0;
-    while (i < nb)
-    {
-        close(fd[i][0]);
-        close(fd[i][1]);
-        i++;
-    }
+void	pipe_loop(t_node *tmp, int *fd1, int *fd2, int j)
+{
+	if (j % 2 == 0)
+	{
+		pipe(fd1);
+		child_process(tmp, fd1, fd2, j);
+	}
+	else
+	{
+		pipe(fd2);
+		child_process(tmp, fd2, fd1, j);
+	}
 }
