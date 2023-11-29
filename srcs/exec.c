@@ -85,7 +85,7 @@ void	execute(char **commande, t_data *data)
 		}
 		else if (commande[0][0] == '/')
 			print_error(127, commande[0], " No such file or directory\n", data);
-		exit(errno);
+		exit(127);
 	}
 }
 

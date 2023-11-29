@@ -64,7 +64,6 @@ void	prompt(t_data *data)
 			commande = manage_error_cmd(commande, cwd);
 		if (init_node(&commande, &token, &node, data) && check_heredoc(node))
 		{
-			data->last_error = 0;
 			process(node, data);
 			add_history(commande);
 		}

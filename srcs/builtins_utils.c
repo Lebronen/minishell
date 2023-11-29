@@ -45,7 +45,7 @@ void	is_also_builtin(char **commande, t_data *data)
 void	is_builtin_exec(char **commande, t_data *data)
 {
 	if (!ft_strcmp(commande[0], "cd"))
-		cd(commande[1]);
+		data->last_error = cd(commande[1]);
 	else if (!ft_strcmp(commande[0], "pwd"))
 		data->last_error = pwd();
 	else if (!ft_strcmp(commande[0], "env"))
@@ -56,6 +56,7 @@ void	is_builtin_exec(char **commande, t_data *data)
 		ft_exit(commande, data);
 	else
 		is_also_builtin(commande, data);
+	
 }
 
 int	is_only_builtin(char **commande)
@@ -80,7 +81,7 @@ int	is_builtin(char **commande)
 		return (1);
 	if (!strcmp(commande[0], "export") || !strcmp(commande[0], "unset"))
 		return (1);
-	if (!strcmp(commande[0], "exit"))
+	if (!strcmp(commande[0], "exit") || !strcmp(commande[0], "echo"))
 		return (1);
 	else
 		return (0);

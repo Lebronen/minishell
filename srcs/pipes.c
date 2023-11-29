@@ -62,7 +62,7 @@ int	parent_process(t_node *tmp, int *fd1, int *fd2, int nb)
 		{
 			is_builtin_exec(tmp->str_options, tmp->data);
 		}
-		return (1);
+		return (0);
 	}
 	pipe_process(tmp, fd1, fd2, nb);
 	return (0);
@@ -93,6 +93,7 @@ void	ft_last_cmd(t_node *node, int *fd1, int *fd2, int nb)
 	}
 	if (nb % 2)
 			nb -= parent_process(node, fd1, fd2, nb);
+
 	else
 			nb -= parent_process(node, fd2, fd1, nb);
 	if (nb)
@@ -105,7 +106,8 @@ void	ft_last_cmd(t_node *node, int *fd1, int *fd2, int nb)
 			close(fd2[1]);
 		}
 	}
-	wait_for_childrens(nb);
+	if (!is_only_builtin(node->str_options))
+		node->data->last_error = wait_for_childrens(nb);
 }
 
 void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb)
@@ -120,7 +122,7 @@ void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb)
 	while (i < nb)
 	{
 		if (is_only_builtin(tmp->str_options))
-		{
+		{;
 			if (!j)
 				fd2[0] = STDIN_FILENO;
 		}
@@ -131,6 +133,9 @@ void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb)
 		}
 		i++;
 		tmp = tmp->next;
+			
 	}
 	ft_last_cmd(tmp, fd1, fd2, nb);
+		printf("%d", tmp->data->last_error);
+
 }

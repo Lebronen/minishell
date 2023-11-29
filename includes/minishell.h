@@ -50,6 +50,7 @@ extern int	g_sig_handle;
 typedef struct s_data
 {
 	int		last_error;
+	int		*error_ptr;
 	int		malloc_error;
 	int		is_env;
 	int		signal;
@@ -67,6 +68,7 @@ typedef struct s_token
 }	t_token;
 
 typedef struct s_node
+
 {
 	int				fd_in;
 	int				fd_out;
@@ -160,7 +162,7 @@ int		ft_strcmp(char *s1, char *s2);
 int		ft_index(char *commande, char c);
 void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb);
 void	close_pipes(int *fd1, int *fd2, int i);
-void	wait_for_childrens(int nb);
+int		wait_for_childrens(int nb);
 int		nb_pipes(t_node *node);
 void	process(t_node *node, t_data *data);
 int		open_file(char *argv, int i);
