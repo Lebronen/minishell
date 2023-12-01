@@ -169,7 +169,7 @@ void	ft_redirect_in(t_node *node, t_data *data);
 void	ft_redirect_out(t_node *node);
 int		cd(char *path);
 int		pwd(void);
-int		echo(char *str, int option, int fd);
+int		echo(char **str, int option, int fd);
 int		export(char *commande, t_list *env);
 void	ft_exit(char **commande, t_data *data);
 int		init_out(t_token *token);

@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/29 18:11:01 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/01 15:33:35 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	cd(char *path)
 	mode_t		mode;
 
 	if (!path)
-		path = "/home/lebronen";
+		path = getenv("HOME");
 	stat(path, &buf);
 	mode = buf.st_mode;
 	if (chdir(path) < 0)
@@ -66,12 +66,20 @@ int	env(t_data *data)
 	return (0);
 }
 
-int	echo(char *str, int option, int fd)
+int	echo(char **str, int option, int fd)
 {
-	if (write(fd, str, ft_strlen(str)) == -1)
+	int	i;
+
+	i = 0;
+	while (str[i] && !strcmp(str[i], "-n"))
+		i++;
+	while (str[i])
 	{
-		ft_printf("write error\n");
-		return (1);
+		if (write(fd, str[i], ft_strlen(str[i])) == -1)
+			ft_printf("write error\n");
+		if (str[i + 1])
+			write(fd, " ", 1);
+		i++;
 	}
 	if (!option)
 		ft_putchar_fd('\n', fd);

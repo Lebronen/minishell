@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/29 17:03:11 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/01 15:10:45 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	export(char *commande, t_list *envp)
 	{
 		new = ft_lstdupnew(commande);
 		ft_lstadd_back(&envp, new);
+		if (!ft_strncmp(commande, "PATH", 4))
+			return (1);
 	}
 	return (0);
 }
