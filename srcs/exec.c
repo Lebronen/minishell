@@ -103,4 +103,5 @@ void	process(t_node *node, t_data *data)
 		data->last_error = 130;
 	if (g_sig_handle == SIGQUIT)
 		data->last_error = 131;
+	g_sig_handle = 0;
 }

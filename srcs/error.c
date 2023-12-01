@@ -17,7 +17,7 @@ int	error_ambig(char *commande, t_data *data)
 	int	i;
 
 	i = 0;
-	while (commande[i])
+	while (commande && commande[i])
 	{
 		if (commande[i] == '<' || commande[i] == '>')
 		{
@@ -66,6 +66,8 @@ int	error_cmd(char *commande, t_data *data)
 
 	quotes = 0;
 	i = 0;
+	if (!commande)
+		return (1);
 	if (!commande[i] || error_ambig(commande, data))
 		return (1);
 	while (commande[i] == ' ' || commande[i] == 9 || commande[i] == 11)

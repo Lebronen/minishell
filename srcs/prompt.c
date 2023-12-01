@@ -49,25 +49,24 @@ void	prompt(t_data *data)
 	char	*commande;
 	t_token	*token;
 	t_node	*node;
-	char	cwd[256];
 
 	while (1)
 	{
 		init_read(&token, &node);
-		if (getcwd(cwd, sizeof(cwd)) == NULL)
-			print_error(errno, NULL, "cwd error \n", data);
-		ft_strlcat(cwd, "~$", 256);
-		commande = readline(cwd);
+		commande = readline("Minishell~$");
 		if (no_command(commande))
 			break ;
 		while (error_cmd(commande, data))
-			commande = manage_error_cmd(commande, cwd);
-		if (init_node(&commande, &token, &node, data) && check_heredoc(node))
 		{
-			data->last_error = 0;
-			process(node, data);
+			commande = manage_error_cmd(commande);
+			if (no_command(commande))
+				break ;
 		}
+		if (!commande)
+			break ;
 		add_history(commande);
+		if (init_node(&commande, &token, &node, data) && check_heredoc(node))
+			process(node, data);
 		free_all(commande, token, node);
 	}
 	rl_clear_history();

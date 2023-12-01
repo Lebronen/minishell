@@ -111,7 +111,7 @@ int		error_cmd(char *commande, t_data *data);
 int		input_error(char *str, t_data *data);
 int		error_ambig(char *commande, t_data *data);
 int		no_command(char *commande);
-char	*manage_error_cmd(char *commande, char *cwd);
+char	*manage_error_cmd(char *commande);
 
 //REDIRECTIONS + HEREDOCS
 void	ctrl_c_heredoc(int std_in, t_data *data);

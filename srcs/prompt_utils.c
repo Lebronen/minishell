@@ -44,11 +44,12 @@ int	init_node(char	**commande, t_token **token,
 		ft_putstr_fd("Error : malloc failed\n", 2);
 		return (0);
 	}
+	data->last_error = 0;
 	return (1);
 }
 
-char	*manage_error_cmd(char *commande, char *cwd)
+char	*manage_error_cmd(char *commande)
 {
 	free(commande);
-	return (readline(cwd));
+	return (readline("Minishell~$"));
 }
