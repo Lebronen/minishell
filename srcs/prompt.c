@@ -66,8 +66,8 @@ void	prompt(t_data *data)
 		{
 			data->last_error = 0;
 			process(node, data);
-			add_history(commande);
 		}
+		add_history(commande);
 		free_all(commande, token, node);
 	}
 	rl_clear_history();

@@ -31,12 +31,9 @@ void	is_also_builtin(char **commande, t_data *data)
 		if (!commande[1])
 			write(1, "\n", 1);
 		else if (!ft_strcmp(commande[1], "-n"))
-		{
-			if (commande[2])
-				data->last_error = echo(commande + 2, 1, 1);
-		}
+			data->last_error = echo(commande, 1, 1);
 		else
-			data->last_error = echo(commande + 1, 0, 1);
+			data->last_error = echo(commande, 0, 1);
 	}
 	else if (!ft_strcmp(commande[0], "unset"))
 		data->last_error = unset(commande[1], data->envp);

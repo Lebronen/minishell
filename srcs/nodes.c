@@ -12,40 +12,6 @@
 
 #include "minishell.h"
 
-/*
-void	print_node(t_node *node)
-{
-	int	i;
-
-	i = 0;
-	while (node)
-	{
-		i = 0;
-		if (node->str_options != NULL)
-		{
-			printf("CMD:\n");
-			while (node->str_options && node->str_options[i])
-			{
-				printf("%s\n", node->str_options[i]);
-				i++;
-			}
-		}
-		if (node->heredoc != NULL)
-		{
-			i = 0;
-			printf("heredoc:\n");
-			while (node->heredoc && node->heredoc[i])
-			{
-				printf("%s\n", node->heredoc[i]);
-				i++;
-			}
-		}
-		printf("fd_in -> %d\n", node->fd_in);
-		printf("fd_out -> %d\n", node->fd_out);
-		node = node->next;
-	}
-}
-*/
 char	**cmd_str(t_token *token, char **str)
 {
 	int	i;
