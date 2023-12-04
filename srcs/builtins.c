@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/29 17:05:04 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/04 15:00:55 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	cd(char *path)
+int	cd(char *path, t_list *env)
 {
 	struct stat	buf;
 	mode_t		mode;
+	char		cwd[256];
 
 	if (!path)
 		path = "/home/lebronen";
 	stat(path, &buf);
 	mode = buf.st_mode;
+	getcwd(cwd, sizeof(buf));
 	if (chdir(path) < 0)
 	{
 		if (access(path, F_OK))
@@ -31,7 +33,7 @@ int	cd(char *path)
 			ft_printf("cd: permission denied: %s\n", path);
 		return (1);
 	}
-	return (0);
+	return (update_pwd(cwd, env));
 }
 
 int	pwd(void)

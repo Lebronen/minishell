@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   nodes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:24:28 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/14 12:24:32 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:01:30 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 void	print_node(t_node *node)
 {
 	int	i;
@@ -44,7 +44,7 @@ void	print_node(t_node *node)
 		node = node->next;
 	}
 }
-
+*/
 char	**cmd_str(t_token *token, char **str)
 {
 	int	i;

@@ -51,7 +51,7 @@ int	is_builtin_exec(char **commande, t_data *data)
 {
 	if (!ft_strcmp(commande[0], "cd"))
 	{
-		cd(commande[1]);
+		cd(commande[1], data->envp);
 		return (1);
 	}
 	else if (!ft_strcmp(commande[0], "pwd"))

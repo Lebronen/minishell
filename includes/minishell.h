@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:49:46 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/29 16:38:56 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/04 14:57:56 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,8 @@ void	process(t_node *node, t_data *data);
 int		open_file(char *argv, int i);
 void	ft_redirect_in(t_node *node, t_data *data);
 void	ft_redirect_out(t_node *node);
-int		cd(char *path);
+int		cd(char *path, t_list *env);
+int		update_pwd(char *cwd, t_list *envp);
 int		pwd(void);
 int		echo(char *str, int option, int fd);
 int		export(char *commande, t_list *env);
