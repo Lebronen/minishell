@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/04 14:59:25 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/04 22:23:25 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	export(char *commande, t_list *envp)
 	{
 		new = ft_lstdupnew(commande);
 		ft_lstadd_back(&envp, new);
+		if (!ft_strncmp(commande, "PATH", 4))
+			return (1);
 	}
 	return (0);
 }
@@ -78,4 +80,31 @@ int	update_pwd(char *cwd, t_list *envp)
 	free(oldpwd);
 	free(current);
 	return (0);
+}
+
+int	n_parsing(char **str)
+{
+	int	i;
+	int	non;
+	int	j;
+
+	i = 1;
+	non = 1;
+	while (str[i] && !ft_strcmp(str[i], "-n"))
+	{
+		j = 2;
+		while (str[i][j])
+		{
+			if (str[i][j] != 'n')
+			{
+				non = 0;
+				break ;
+			}
+			j++;
+		}
+		if (!non)
+			break ;
+		i++;
+	}
+	return (i);
 }

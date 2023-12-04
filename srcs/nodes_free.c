@@ -62,5 +62,7 @@ void	free_data(t_data *data)
 		data->envp = temp_env;
 	}
 	free(data->envp);
+	if (data->path)
+		free(data->path);
 	free(data);
 }

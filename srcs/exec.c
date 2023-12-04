@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:14:32 by lebronen          #+#    #+#             */
-/*   Updated: 2023/11/29 16:42:59 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/01 15:04:54 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,22 @@ void	execute(char **commande, t_data *data)
 	tab = list_to_tab(data->envp);
 	if (is_slash(commande[0]))
 		path = commande[0];
+	else if (!data->is_env)
+	{
+		path = ft_strdup(data->path);
+		ft_strlcat(path, commande[0], ft_strlen(commande[0]) + 6);
+	}
 	else
 		path = find_path(commande[0], tab);
 	if (!path || execve(path, commande, tab) == -1)
 	{
-		data->last_error = errno;
-		error(data);
+		if (!path)
+		{
+			print_error(127, commande[0], " Command not found\n", data);
+		}
+		else if (commande[0][0] == '/')
+			print_error(127, commande[0], " No such file or directory\n", data);
+		exit(127);
 	}
 }
 
@@ -93,4 +103,5 @@ void	process(t_node *node, t_data *data)
 		data->last_error = 130;
 	if (g_sig_handle == SIGQUIT)
 		data->last_error = 131;
+	g_sig_handle = 0;
 }

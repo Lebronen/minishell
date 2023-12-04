@@ -6,45 +6,12 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:24:28 by cgermain          #+#    #+#             */
-/*   Updated: 2023/12/04 15:01:30 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/04 22:22:23 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-void	print_node(t_node *node)
-{
-	int	i;
 
-	i = 0;
-	while (node)
-	{
-		i = 0;
-		if (node->str_options != NULL)
-		{
-			printf("CMD:\n");
-			while (node->str_options && node->str_options[i])
-			{
-				printf("%s\n", node->str_options[i]);
-				i++;
-			}
-		}
-		if (node->heredoc != NULL)
-		{
-			i = 0;
-			printf("heredoc:\n");
-			while (node->heredoc && node->heredoc[i])
-			{
-				printf("%s\n", node->heredoc[i]);
-				i++;
-			}
-		}
-		printf("fd_in -> %d\n", node->fd_in);
-		printf("fd_out -> %d\n", node->fd_out);
-		node = node->next;
-	}
-}
-*/
 char	**cmd_str(t_token *token, char **str)
 {
 	int	i;

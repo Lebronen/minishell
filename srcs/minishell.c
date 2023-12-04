@@ -12,6 +12,36 @@
 
 #include "../includes/minishell.h"
 
+int	init_data(char **env2, t_data *data)
+{
+	data->last_error = 0;
+	data->malloc_error = 0;
+	data->envp = tab_to_list(env2);
+	if (!data->envp)
+	{
+		free_data(data);
+		free_env(env2);
+		ft_putstr_fd("Error : malloc failed\n", 2);
+		return (0);
+	}
+	data->path = ft_strdup("/bin/");
+	if (!data->path)
+	{
+		free_data(data);
+		free_env(env2);
+		ft_putstr_fd("Error : malloc failed\n", 2);
+		return (0);
+	}
+	return (1);
+}
+
+int	exit_error(t_data *data)
+{
+	ft_putstr_fd("Error : env malloc failed\n", 2);
+	free(data);
+	return (1);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
@@ -21,20 +51,16 @@ int	main(int argc, char **argv, char **envp)
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
-	data->last_error = 0;
 	env2 = init_env(envp, data);
-	data->envp = tab_to_list(env2);
+	if (!env2)
+		return (exit_error(data));
+	if (!init_data(env2, data))
+		return (1);
 	signal_loop(data);
 	if (argc == 1)
-	{
-		if (!data->is_env)
-			export("PATH=/bin/", data->envp);
 		prompt(data);
-	}
 	else
-	{
-		ft_putstr_fd("Error : launch without args", 2);
-	}
+		ft_putstr_fd("Error : launch without args\n", 2);
 	free_env(env2);
 	free_data(data);
 }

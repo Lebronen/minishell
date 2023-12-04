@@ -18,7 +18,7 @@ void	child_process(t_node *tmp, int *fd1, int *fd2, int i)
 
 	pid = fork();
 	if (pid == -1)
-		error();
+		error(tmp->data);
 	if (pid == 0)
 	{
 		if (tmp->fd_in != STDIN_FILENO)
@@ -62,7 +62,7 @@ int	parent_process(t_node *tmp, int *fd1, int *fd2, int nb)
 		{
 			is_builtin_exec(tmp->str_options, tmp->data);
 		}
-		return (1);
+		return (0);
 	}
 	pipe_process(tmp, fd1, fd2, nb);
 	return (0);
@@ -85,6 +85,12 @@ int	nb_pipes(t_node *node)
 
 void	ft_last_cmd(t_node *node, int *fd1, int *fd2, int nb)
 {
+	if (is_dir(node->str_options[0]))
+	{
+		node->data->last_error = 126;
+		ft_printf("%s: Is a  directory\n", node->str_options[0]);
+		return ;
+	}
 	if (nb % 2)
 			nb -= parent_process(node, fd1, fd2, nb);
 	else
@@ -99,7 +105,8 @@ void	ft_last_cmd(t_node *node, int *fd1, int *fd2, int nb)
 			close(fd2[1]);
 		}
 	}
-	wait_for_childrens(nb);
+	if (!is_only_builtin(node->str_options))
+		node->data->last_error = wait_for_childrens(nb);
 }
 
 void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb)

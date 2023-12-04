@@ -12,16 +12,18 @@
 
 #include "minishell.h"
 
-void	wait_for_childrens(int nb)
+int	wait_for_childrens(int nb)
 {
 	int	i;
+	int	status;
 
 	i = 0;
 	while (i <= nb)
 	{
-		wait(NULL);
+		wait(&status);
 		i++;
 	}
+	return (WEXITSTATUS(status));
 }
 
 void	pipe_process(t_node *tmp, int *fd1, int *fd2, int nb)
@@ -65,6 +67,12 @@ void	close_pipes(int *fd1, int *fd2, int i)
 
 void	pipe_loop(t_node *tmp, int *fd1, int *fd2, int j)
 {
+	if (is_dir(tmp->str_options[0]))
+	{
+		tmp->data->last_error = 126;
+		ft_printf("%s: Is a  directory\n", tmp->str_options[0]);
+		return ;
+	}
 	if (j % 2 == 0)
 	{
 		pipe(fd1);

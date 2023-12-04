@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/04 15:00:55 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/04 22:21:17 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	cd(char *path, t_list *env)
 	char		cwd[256];
 
 	if (!path)
-		path = "/home/lebronen";
+		path = getenv("HOME");
 	stat(path, &buf);
 	mode = buf.st_mode;
 	getcwd(cwd, sizeof(buf));
@@ -68,14 +68,31 @@ int	env(t_data *data)
 	return (0);
 }
 
-int	echo(char *str, int option, int fd)
+int	echo(char **str, int option, int fd)
 {
-	if (write(fd, str, ft_strlen(str)) == -1)
+	int	i;
+
+	i = n_parsing(str);
+	while (str[i])
 	{
-		ft_printf("write error\n");
-		return (1);
+		if (write(fd, str[i], ft_strlen(str[i])) == -1)
+			ft_printf("write error\n");
+		if (str[i + 1])
+			write(fd, " ", 1);
+		i++;
 	}
 	if (!option)
 		ft_putchar_fd('\n', fd);
 	return (0);
+}
+
+void	ft_exit(char **commande, t_data *data)
+{
+	int	err;
+
+	err = data->last_error;
+	if (commande[1])
+		err = ft_atoi(commande[1]);
+	data->malloc_error = 2;
+	exit(err);
 }
