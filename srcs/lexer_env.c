@@ -78,7 +78,8 @@ int	env_value_dollar(int i, char **commande, t_data *data)
 		str = get_env_value(data->envp, str1);
 	}
 	(*commande) = new_command((*commande), str, i - 1);
-	while ((*commande)[i] && (*commande)[i] != ' ' && (*commande)[i] != '$')
+	while ((*commande)[i] && (*commande)[i] != ' '
+		&& (*commande)[i] != '$' && (*commande)[i] != '"')
 		i++;
 	if (str)
 		free(str);
