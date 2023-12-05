@@ -52,9 +52,9 @@ t_node	*make_cmd(t_token *token)
 	while (token->next && (token->next->type_2 == OPTION
 			|| token->next->type_2 == ARG))
 	{
-			if (!ft_strcmp(token->next->str, ""))
-				i++;
-			token = token->next;
+		if (!ft_strcmp(token->next->str, ""))
+			i++;
+		token = token->next;
 	}
 	node->str_options = malloc((i + 2) * sizeof(char *));
 	if (!node->str_options)
