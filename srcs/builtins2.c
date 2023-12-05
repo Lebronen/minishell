@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/04 22:23:25 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/05 16:30:46 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	export(char *commande, t_list *envp)
 	{
 		if (!ft_strncmp(current->content, commande, ft_index(commande, '=')))
 		{
-			current->content = ft_strdup(commande);
+			current->content = commande;
 			here = 1;
 		}
 		current = current->next;
@@ -63,22 +63,17 @@ int	update_pwd(char *cwd, t_list *envp)
 	char	*oldpwd;
 	char	*current;
 	char	nwd[256];
+	char	*tmp;
 
-	oldpwd = malloc(9);
-	current = malloc(6);
-	ft_strlcpy(oldpwd, "OLDPWD=\0", 9);
-	ft_strlcpy(current, "PWD=\0", 6);
-	oldpwd = realloc(oldpwd, ft_strlen(oldpwd) + ft_strlen(cwd));
-	ft_strlcat(oldpwd, cwd, 10 + ft_strlen(cwd));
-	oldpwd[10 + ft_strlen(cwd)] = '\0';
+	tmp = ft_strdup("OLDPWD=");
+	oldpwd = ft_strjoin(tmp, cwd);
 	getcwd(nwd, sizeof(nwd));
-	current = realloc(current, ft_strlen(current) + ft_strlen(nwd));
-	ft_strlcat(current, nwd, 6 + ft_strlen(nwd));
-	current[6 + ft_strlen(nwd)] = '\0';
+	free(tmp);
+	tmp = ft_strdup("PWD=");
+	current = ft_strjoin(tmp, nwd);
 	export(oldpwd, envp);
 	export(current, envp);
-	free(oldpwd);
-	free(current);
+	free(tmp);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/04 22:21:17 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:51:32 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	echo(char **str, int option, int fd)
 	int	i;
 
 	i = n_parsing(str);
+	if (i == 1)
+		option = 0;
 	while (str[i])
 	{
 		if (write(fd, str[i], ft_strlen(str[i])) == -1)

@@ -120,7 +120,8 @@ void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb)
 	tmp = node;
 	while (i < nb)
 	{
-		if (is_only_builtin(tmp->str_options))
+		if (!tmp->str_options || !tmp->str_options[0]
+			|| is_only_builtin(tmp->str_options))
 		{
 			if (!j)
 				fd2[0] = STDIN_FILENO;
@@ -133,5 +134,6 @@ void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb)
 		i++;
 		tmp = tmp->next;
 	}
-	ft_last_cmd(tmp, fd1, fd2, nb);
+	if (tmp->str_options && tmp->str_options[0])
+		ft_last_cmd(tmp, fd1, fd2, nb);
 }
