@@ -113,8 +113,6 @@ char	*env_value_checker(char *commande, t_data *data)
 		i++;
 		if (commande[i - 1] == '$')
 			i = env_value_dollar(i, &commande, data);
-		else if (commande[i - 1] == '$' && (!commande[i] || commande[i] == ' '))
-			i++;
 		else if (commande[i - 1] == 39)
 		{
 			while (commande[i] && commande[i] != 39)
