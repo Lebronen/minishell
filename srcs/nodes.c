@@ -16,14 +16,21 @@ char	**cmd_str(t_token *token, char **str)
 {
 	int	i;
 
-	i = 1;
-	str[0] = ft_strdup(token->str);
+	i = 0;
+	if (token->str[0])
+	{
+		str[0] = ft_strdup(token->str);
+		i++;
+	}
 	token = token->next;
 	while (token && (token->type_2 == OPTION || token->type_2 == ARG))
 	{
-		str[i] = ft_strdup(token->str);
+		if (token->str[0])
+		{
+			str[i] = ft_strdup(token->str);
+			i++;
+		}
 		token = token->next;
-		i++;
 	}
 	str[i] = NULL;
 	if (str)
@@ -45,8 +52,9 @@ t_node	*make_cmd(t_token *token)
 	while (token->next && (token->next->type_2 == OPTION
 			|| token->next->type_2 == ARG))
 	{
-		i++;
-		token = token->next;
+			if (!ft_strcmp(token->next->str, ""))
+				i++;
+			token = token->next;
 	}
 	node->str_options = malloc((i + 2) * sizeof(char *));
 	if (!node->str_options)
