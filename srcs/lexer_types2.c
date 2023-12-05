@@ -72,7 +72,8 @@ int	handlesinglequotetoken(int i, t_token **last, char *commande)
 
 int	handlewordtoken(int i, t_token **last, char *commande)
 {
-	if (commande[i] == '$')
+	if (commande[i] == '$' && commande[i + 1]
+		&& commande [i + 1] != ' ' && commande [i + 1] != '"')
 		(*last) = new_token(WORD, ft_strdup(""), (*last));
 	else if (has_quote(&commande[i]))
 	{
