@@ -30,7 +30,7 @@ WHITE		=	\033[0;97m
 
 SRC_FILES	=	minishell prompt prompt_utils exec exec_utils error env lexer lexer_utils lexer_types lexer_types2 lexer_env lexer_envbis builtins utils2 \
 				 linked_list nodes nodes_free redirections heredoc_v2 heredoc_v2bis builtins_utils env_shlvl signal pipes pipe_utils exec_utils2 builtins2 \
-				 lexer_types3 is_dir
+				 lexer_types3 is_dir builtin_utils2
 
 SRC_B_FILES	=	minishell prompt exec
 

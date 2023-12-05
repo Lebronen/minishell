@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:49:46 by cgermain          #+#    #+#             */
-/*   Updated: 2023/12/04 14:57:56 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:58:28 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,11 +173,13 @@ int		pwd(void);
 int		echo(char **str, int option, int fd);
 int		n_parsing(char **str);
 int		export(char *commande, t_list *env);
+void	loop_export(char **commande, t_data *data);
 void	ft_exit(char **commande, t_data *data);
 int		init_out(t_token *token);
 int		init_in(t_token *token, t_data *data);
 void	free_lexer(t_token *token);
 void	manage_heredoc(t_node *node, t_token *token, t_data *data);
+void	loop_unset(char **commande, t_data *data);
 int		unset(char *commande, t_list *envp);
 void	del(void *content);
 int		ft_strcmp(char *s1, char *s2);

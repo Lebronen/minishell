@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/05 16:30:46 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/05 16:57:10 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,21 @@ int	n_parsing(char **str)
 		i++;
 	}
 	return (i);
+}
+
+void	loop_export(char **commande, t_data *data)
+{
+	int		i;
+	char	*str;
+
+	i = 1;
+	while (commande[i])
+	{
+		if (ft_index(commande[i], '=') != -1)
+		{	
+			str = ft_strdup(commande[i]);
+			data->is_env += export(str, data->envp);
+		}
+		i++;
+	}
 }
