@@ -38,6 +38,55 @@ int	error_ambig(char *commande, t_data *data)
 	return (0);
 }
 
+int	error_cmd4(char *cmd, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '>')
+		{
+			if (cmd[i - 1] && cmd[i - 1] == '<')
+				return (print_error(2, NULL, "Syntax error\n", data));
+			else if (cmd[i - 1] && cmd[i - 1] == '>')
+				if (cmd[i - 2] && (cmd[i - 2] == '>' || cmd[i - 2] == '<'))
+					return (print_error(2, NULL, "Syntax error\n", data));
+		}
+		else if (cmd[i] == '<')
+		{
+			if (cmd[i - 1] && cmd[i - 1] == '>')
+				return (print_error(2, NULL, "Syntax error\n", data));
+			else if (cmd[i - 1] && cmd[i - 1] == '<')
+				if (cmd[i - 2] && (cmd[i - 2] == '>' || cmd[i - 2] == '<'))
+					return (print_error(2, NULL, "Syntax error\n", data));
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	error_cmd3(char *commande, t_data *data)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (commande[i])
+	{
+		if (commande[i] == '|')
+		{
+			j = i - 1;
+			while (commande[j] && (commande[j] == ' ' || commande[j] == 9))
+				j--;
+			if (commande[j] == '<' || commande[j] == '>')
+				return (print_error(2, NULL, "Syntax error\n", data));
+		}
+		i++;
+	}
+	return (error_cmd4(commande, data));
+}
+
 int	error_cmd2(char *commande, int i, t_data *data)
 {
 	if (commande[i] == '\0'
@@ -55,7 +104,7 @@ int	error_cmd2(char *commande, int i, t_data *data)
 	{
 		return (print_error(2, NULL, "Syntax error\n", data));
 	}
-	return (0);
+	return (error_cmd3(commande, data));
 }
 
 int	error_cmd(char *commande, t_data *data)
@@ -76,7 +125,7 @@ int	error_cmd(char *commande, t_data *data)
 		return (1);
 	while (commande[i])
 	{
-		if (commande[i] != ' ' || commande[i] != 9)
+		if (commande[i] != ' ' && commande[i] != 9)
 			c = commande[i];
 		if (commande[i] == '"' || commande[i] == '\'')
 			quotes++;
@@ -85,26 +134,4 @@ int	error_cmd(char *commande, t_data *data)
 	if (c == '|' || c == '>' || c == '<' || quotes % 2 != 0)
 		return (print_error(2, NULL, "Syntax error\n", data));
 	return (0);
-}
-
-int	input_error(char *str, t_data *data)
-{
-	write(2, "'", 1);
-	ft_putstr_fd(str, 2);
-	write(2, "' : No such file or directory\n", 30);
-	data->last_error = 1;
-	return (-1);
-}
-
-int	print_error(int error_num, char *name, char *str, t_data *data )
-{
-	data->last_error = error_num;
-	if (name)
-	{
-		ft_putstr_fd("'", 2);
-		ft_putstr_fd(name, 2);
-		ft_putstr_fd("':", 2);
-	}
-	ft_putstr_fd(str, 2);
-	return (1);
 }

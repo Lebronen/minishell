@@ -22,6 +22,28 @@ int	no_command(char *commande)
 	return (0);
 }
 
+int	input_error(char *str, t_data *data)
+{
+	write(2, "'", 1);
+	ft_putstr_fd(str, 2);
+	write(2, "' : No such file or directory\n", 30);
+	data->last_error = 1;
+	return (-1);
+}
+
+int	print_error(int error_num, char *name, char *str, t_data *data )
+{
+	data->last_error = error_num;
+	if (name)
+	{
+		ft_putstr_fd("'", 2);
+		ft_putstr_fd(name, 2);
+		ft_putstr_fd("':", 2);
+	}
+	ft_putstr_fd(str, 2);
+	return (1);
+}
+
 int	init_node(char	**commande, t_token **token,
 							t_node **node, t_data *data)
 {
