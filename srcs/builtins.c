@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/05 15:51:32 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/06 17:11:34 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,24 @@ int	echo(char **str, int option, int fd)
 void	ft_exit(char **commande, t_data *data)
 {
 	int	err;
+	int	i;
 
+	i = 0;
 	err = data->last_error;
 	if (commande[1])
+	{
 		err = ft_atoi(commande[1]);
+		while (commande[1][i])
+		{
+			if (!ft_isdigit(commande[1][i]))
+			{
+				err = 2;
+				ft_printf("exit: %s: numeric argument required\n", commande[1]);
+				break ;
+			}
+			i++;
+		}
+	}
 	data->malloc_error = 2;
 	exit(err);
 }
