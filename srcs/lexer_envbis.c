@@ -23,7 +23,7 @@ size_t	boost_i(char *commande, size_t i)
 
 int	env_value_quote1(int i, char**commande, t_data *data)
 {
-	while ((*commande)[i] != '"')
+	while ((*commande)[i] && (*commande)[i] != '"')
 	{
 		i++;
 		if ((*commande)[i - 1] == 39)

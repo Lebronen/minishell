@@ -58,6 +58,7 @@ void	prompt(t_data *data)
 			break ;
 		while (error_cmd(commande, data))
 		{
+			add_history(commande);
 			commande = manage_error_cmd(commande);
 			if (no_command(commande))
 				break ;

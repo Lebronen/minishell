@@ -43,22 +43,22 @@ int	error_cmd4(char *cmd, t_data *data)
 	int	i;
 
 	i = 0;
-	while (cmd[i])
+	while (cmd && cmd[i])
 	{
 		if (cmd[i] == '>')
 		{
-			if (cmd[i - 1] && cmd[i - 1] == '<')
+			if (cmd[i + 1] && cmd[i + 1] == '<')
 				return (print_error(2, NULL, "Syntax error\n", data));
-			else if (cmd[i - 1] && cmd[i - 1] == '>')
-				if (cmd[i - 2] && (cmd[i - 2] == '>' || cmd[i - 2] == '<'))
+			else if (cmd[i + 1] && cmd[i + 1] == '>')
+				if (cmd[i + 2] && (cmd[i + 2] == '>' || cmd[i - 2] == '<'))
 					return (print_error(2, NULL, "Syntax error\n", data));
 		}
 		else if (cmd[i] == '<')
 		{
-			if (cmd[i - 1] && cmd[i - 1] == '>')
+			if (cmd[i + 1] && cmd[i + 1] == '>')
 				return (print_error(2, NULL, "Syntax error\n", data));
-			else if (cmd[i - 1] && cmd[i - 1] == '<')
-				if (cmd[i - 2] && (cmd[i - 2] == '>' || cmd[i - 2] == '<'))
+			else if (cmd[i + 1] && cmd[i + 1] == '<')
+				if (cmd[i + 2] && (cmd[i + 2] == '>' || cmd[i + 2] == '<'))
 					return (print_error(2, NULL, "Syntax error\n", data));
 		}
 		i++;
@@ -111,9 +111,11 @@ int	error_cmd(char *commande, t_data *data)
 {
 	int		i;
 	char	c;
-	int		quotes;
+	int		quotes1;
+	int		quotes2;
 
-	quotes = 0;
+	quotes1 = 0;
+	quotes2 = 0;
 	i = 0;
 	if (!commande)
 		return (1);
@@ -127,11 +129,13 @@ int	error_cmd(char *commande, t_data *data)
 	{
 		if (commande[i] != ' ' && commande[i] != 9)
 			c = commande[i];
-		if (commande[i] == '"' || commande[i] == '\'')
-			quotes++;
+		if (commande[i] == '"')
+			quotes1++;
+		if ((quotes1 % 2 == 0) && commande[i] == '\'')
+			quotes2++;
 		i++;
 	}
-	if (c == '|' || c == '>' || c == '<' || quotes % 2 != 0)
+	if (c == '|' || c == '>' || c == '<' || quotes1 % 2 != 0 || quotes2 % 2 != 0)
 		return (print_error(2, NULL, "Syntax error\n", data));
 	return (0);
 }

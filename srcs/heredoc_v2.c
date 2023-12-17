@@ -69,7 +69,7 @@ void	manage_heredoc(t_node *node, t_token *token, t_data *data)
 	int	std_in;
 
 	std_in = dup(STDIN_FILENO);
-	while (node->fd_in == -2 && token && token->next && token->type != PIPE)
+	while (node && token && token->next && token->type != PIPE)
 	{
 		if (token->type_2 == ENDOF && !isitlast(token))
 			manage_heredoc_notlast(token->next->str);

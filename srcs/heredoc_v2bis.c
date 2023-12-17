@@ -20,10 +20,13 @@ void	restore_signal(void)
 
 int	isitlast(t_token *token)
 {
+	int	type;
+
+	type = token->type_2;
 	token = token->next;
 	while (token && token->next && token->type != PIPE)
 	{
-		if (token->type == REDIR)
+		if (token->type_2 == type)
 			return (0);
 		token = token->next;
 	}

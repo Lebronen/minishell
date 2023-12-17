@@ -85,10 +85,10 @@ t_node	*nodizer_unit(t_token *token, t_data *data)
 		node->str_options = NULL;
 		node->next = NULL;
 	}
-	node->fd_in = init_in(tmp_token, data);
-	node->fd_out = init_out(tmp_token);
 	node->heredoc = NULL;
 	manage_heredoc(node, tmp_token, data);
+	node->fd_in = init_in(tmp_token, data);
+	node->fd_out = init_out(tmp_token);
 	return (node);
 }
 
