@@ -105,7 +105,10 @@ char	*env_value_checker(char *commande, t_data *data)
 
 	i = 0;
 	if (g_sig_handle == SIGINT)
+	{
 			data->last_error = 130;
+			g_sig_handle = 0;
+	}
 	if (!commande)
 		return (NULL);
 	while (commande[i])
