@@ -19,7 +19,7 @@ void	loop_unset(char **commande, t_data *data)
 	i = 1;
 	while (commande[i])
 	{
-		data->last_error = unset(commande[i], data->envp);
+		data->last_error = unset(commande[i], data);
 		i++;
 	}
 }

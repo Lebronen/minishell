@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/05 16:57:10 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/17 16:45:19 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ int	export(char *commande, t_list *envp)
 	return (0);
 }
 
-int	unset(char *commande, t_list *envp)
+int	unset(char *commande, t_data *data)
 {
 	t_list	*current;
 	t_list	*next;
-
-	current = envp;
+	
+	if (!ft_strcmp(commande, "PATH"))
+		data->is_path = 0;
+	current = data->envp;
 	while (current && current ->next)
 	{
 		if (!ft_strncmp(current->next->content, commande, ft_strlen(commande)))
@@ -110,12 +112,15 @@ void	loop_export(char **commande, t_data *data)
 	char	*str;
 
 	i = 1;
+	if (!commande[1])
+		only_export(data);
 	while (commande[i])
 	{
 		if (ft_index(commande[i], '=') != -1)
 		{	
 			str = ft_strdup(commande[i]);
 			data->is_env += export(str, data->envp);
+			data->is_path = data->is_env;
 		}
 		i++;
 	}

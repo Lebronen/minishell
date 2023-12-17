@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:24:43 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/26 19:07:30 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/17 15:55:23 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	init_data(char **env2, t_data *data)
 {
 	data->last_error = 0;
 	data->malloc_error = 0;
+	data->is_path = 1;
 	data->envp = tab_to_list(env2);
 	if (!data->envp)
 	{

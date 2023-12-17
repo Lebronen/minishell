@@ -53,6 +53,7 @@ typedef struct s_data
 	int		*error_ptr;
 	int		malloc_error;
 	int		is_env;
+	int		is_path;
 	int		signal;
 	char	*path;
 	t_list	*envp;
@@ -180,7 +181,7 @@ int		init_in(t_token *token, t_data *data);
 void	free_lexer(t_token *token);
 void	manage_heredoc(t_node *node, t_token *token, t_data *data);
 void	loop_unset(char **commande, t_data *data);
-int		unset(char *commande, t_list *envp);
+int		unset(char *commande, t_data *data);
 void	del(void *content);
 int		ft_strcmp(char *s1, char *s2);
 void	is_builtin_exec(char **commande, t_data *data);
@@ -193,5 +194,6 @@ void	execloop(t_node *node);
 void	pipe_process(t_node *tmp, int *fd1, int *fd2, int nb);
 void	pipe_loop(t_node *tmp, int *fd1, int *fd2, int j);
 void	child_process(t_node *tmp, int *fd1, int *fd2, int i);
+int 	only_export(t_data *data);
 
 #endif

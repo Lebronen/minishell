@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   builtins3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 18:04:17 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/17 16:44:56 by rshay            ###   ########.fr       */
+/*   Created: 2023/12/17 15:58:26 by rshay             #+#    #+#             */
+/*   Updated: 2023/12/17 15:58:29 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	del(void *content)
+int only_export(t_data *data)
 {
-	content = NULL;
-	free(content);
-}
+	t_list	*current;
 
-int	ft_index(char *commande, char c)
-{
-	int	i;
-
-	i = 0;
-	while (commande[i] && commande[i] != c)
-		i++;
-	if (!commande[i])
-		return (-1);
-	return (i);
+	if (!data->envp)
+	{
+		ft_printf("env error\n");
+		return (127);
+	}
+	current = data->envp;
+	while (current)
+	{
+		ft_printf("export %s\n", current->content);
+		current = current->next;
+	}
+	return (0);
 }

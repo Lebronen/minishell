@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:14:32 by lebronen          #+#    #+#             */
-/*   Updated: 2023/12/05 16:32:11 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/17 15:57:05 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	execute(char **commande, t_data *data)
 	char	*path;
 	char	**tab;
 
+	path = NULL;
 	tab = list_to_tab(data->envp);
 	if (is_slash(commande[0]))
 		path = commande[0];
@@ -75,7 +76,7 @@ void	execute(char **commande, t_data *data)
 		path = ft_strdup(data->path);
 		ft_strlcat(path, commande[0], ft_strlen(commande[0]) + 6);
 	}
-	else
+	else if (data->is_path)
 		path = find_path(commande[0], tab);
 	if (!path || execve(path, commande, tab) == -1)
 	{
