@@ -66,7 +66,12 @@ int	env_value_dollar(int i, char **commande, t_data *data)
 
 	str1 = NULL;
 	if ((*commande)[i] == '?')
-		str = ft_itoa(data->last_error);
+	{ 
+		if (data->last_error)
+			str = ft_itoa(data->last_error);
+		else 
+			str = ft_itoa(0);
+	}
 	else
 	{
 		str1 = ft_strdup_c3(&(*commande)[i], '$');
