@@ -59,8 +59,8 @@ void	signal_loop(t_data	*data)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	sigint_react(t_data *data)
+void	restore_signal(void)
 {
-	data->last_error = 130;
-	g_sig_handle = 0;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, signal_handler);
 }
