@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>				+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/09/30 18:04:39 by rshay			 #+#	#+#			 */
-/*   Updated: 2023/11/29 17:01:22 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/18 22:48:58 by rshay            ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -54,13 +54,6 @@ t_list	*ft_lstdupnew(char *content)
 {
 	t_list	*new;
 
-	/*
-	new = malloc(sizeof(t_list));
-	if (!new)
-		return (NULL);
-	new->content = ft_strdup(content);
-	new->next = NULL;
-	*/
 	new = ft_lstnew(content);
 	return (new);
 }

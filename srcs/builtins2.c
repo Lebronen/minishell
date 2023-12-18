@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/18 22:40:22 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/18 22:50:24 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	export(char *commande, t_data *data)
 	{
 		new = ft_lstdupnew(commande);
 		ft_lstadd_back(&(data->envp), new);
-		data->envlen += 1;
 		if (!ft_strncmp(commande, "PATH", 4))
 			return (1);
 	}
@@ -45,7 +44,7 @@ int	unset(char *commande, t_data *data)
 	t_list	*current;
 	t_list	*next;
 	int		i;
-	
+
 	i = 0;
 	if (!ft_strcmp(commande, "PATH"))
 		data->is_path = 0;
@@ -55,11 +54,8 @@ int	unset(char *commande, t_data *data)
 		if (!ft_strncmp(current->next->content, commande, ft_strlen(commande)))
 		{
 			next = current->next->next;
-			if (i >= data->envlen - 2)
-			{
-				ft_printf("free content\n");
+			if (i >= data->envlen - 1)
 				free(current->next->content);
-			}
 			free(current->next);
 			current->next = next;
 		}

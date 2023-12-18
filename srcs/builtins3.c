@@ -6,13 +6,13 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 15:58:26 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/17 15:58:29 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/18 22:49:53 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int only_export(t_data *data)
+int	only_export(t_data *data)
 {
 	t_list	*current;
 
