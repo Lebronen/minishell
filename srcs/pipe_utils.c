@@ -18,6 +18,7 @@ int	wait_for_childrens(int nb)
 	int	status;
 
 	i = 0;
+	status = 0;
 	while (i <= nb)
 	{
 		wait(&status);
