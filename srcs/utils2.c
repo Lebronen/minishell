@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 18:04:17 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/17 16:44:56 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/18 22:24:13 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	del(void *content)
-{
-	content = NULL;
-	free(content);
-}
 
 int	ft_index(char *commande, char c)
 {
@@ -53,4 +47,14 @@ int	syntax_error(t_data *data, char *commande, int i)
 		return (print_error(2, NULL, "Syntax error\n", data));
 	else
 		return (0);
+}
+
+int	tablen(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
 }

@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/17 16:45:19 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/18 22:40:22 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	export(char *commande, t_list *envp)
+int	export(char *commande, t_data *data)
 {
 	t_list	*current;
 	t_list	*new;
 	int		here;
 
 	here = 0;
-	current = envp;
+	current = data->envp;
 	while (current)
 	{
 		if (!ft_strncmp(current->content, commande, ft_index(commande, '=')))
@@ -32,7 +32,8 @@ int	export(char *commande, t_list *envp)
 	if (!here)
 	{
 		new = ft_lstdupnew(commande);
-		ft_lstadd_back(&envp, new);
+		ft_lstadd_back(&(data->envp), new);
+		data->envlen += 1;
 		if (!ft_strncmp(commande, "PATH", 4))
 			return (1);
 	}
@@ -43,7 +44,9 @@ int	unset(char *commande, t_data *data)
 {
 	t_list	*current;
 	t_list	*next;
+	int		i;
 	
+	i = 0;
 	if (!ft_strcmp(commande, "PATH"))
 		data->is_path = 0;
 	current = data->envp;
@@ -52,15 +55,22 @@ int	unset(char *commande, t_data *data)
 		if (!ft_strncmp(current->next->content, commande, ft_strlen(commande)))
 		{
 			next = current->next->next;
-			ft_lstdelone(current->next, &del);
+			if (i >= data->envlen - 2)
+			{
+				ft_printf("free content\n");
+				free(current->next->content);
+			}
+			free(current->next);
 			current->next = next;
 		}
 		current = current->next;
+		i++;
 	}
+	data->envlen -= 1;
 	return (0);
 }
 
-int	update_pwd(char *cwd, t_list *envp)
+int	update_pwd(char *cwd, t_data *data)
 {
 	char	*oldpwd;
 	char	*current;
@@ -73,8 +83,8 @@ int	update_pwd(char *cwd, t_list *envp)
 	free(tmp);
 	tmp = ft_strdup("PWD=");
 	current = ft_strjoin(tmp, nwd);
-	export(oldpwd, envp);
-	export(current, envp);
+	export(oldpwd, data);
+	export(current, data);
 	free(tmp);
 	return (0);
 }
@@ -119,7 +129,7 @@ void	loop_export(char **commande, t_data *data)
 		if (ft_index(commande[i], '=') != -1)
 		{	
 			str = ft_strdup(commande[i]);
-			data->is_env += export(str, data->envp);
+			data->is_env += export(str, data);
 			data->is_path = data->is_env;
 		}
 		i++;

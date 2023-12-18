@@ -57,6 +57,7 @@ typedef struct s_data
 	int		signal;
 	char	*path;
 	t_list	*envp;
+	int		envlen;
 }	t_data;
 
 typedef struct s_token
@@ -85,6 +86,7 @@ char	**add_env(char *ligne, t_list *envp);
 char	**supp_env(char *ligne, t_list *envp);
 t_list	*tab_to_list(char **tab);
 char	**tabcpy(char **tab);
+int		tablen(char **tab);
 char	**list_to_tab(t_list *env);
 t_list	*ft_lstdupnew(char *content);
 void	set_shlvl(t_list *envp);
@@ -171,12 +173,12 @@ void	process(t_node *node, t_data *data);
 int		open_file(char *argv, int i);
 void	ft_redirect_in(t_node *node, t_data *data);
 void	ft_redirect_out(t_node *node);
-int		cd(char *path, t_list *env);
-int		update_pwd(char *cwd, t_list *envp);
+int		cd(char *path, t_data *data);
+int		update_pwd(char *cwd, t_data *data);
 int		pwd(void);
 int		echo(char **str, int option, int fd);
 int		n_parsing(char **str);
-int		export(char *commande, t_list *env);
+int		export(char *commande, t_data *data);
 void	loop_export(char **commande, t_data *data);
 void	ft_exit(char **commande, t_data *data);
 int		init_out(t_token *token);

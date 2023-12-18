@@ -61,6 +61,6 @@ t_list	*ft_lstdupnew(char *content)
 	new->content = ft_strdup(content);
 	new->next = NULL;
 	*/
-	new = ft_lstnew(ft_strdup(content));
+	new = ft_lstnew(content);
 	return (new);
 }

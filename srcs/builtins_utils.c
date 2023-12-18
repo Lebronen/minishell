@@ -42,7 +42,7 @@ void	is_also_builtin(char **commande, t_data *data)
 void	is_builtin_exec(char **commande, t_data *data)
 {
 	if (!ft_strcmp(commande[0], "cd"))
-		data->last_error = cd(commande[1], data->envp);
+		data->last_error = cd(commande[1], data);
 	else if (!ft_strcmp(commande[0], "pwd"))
 		data->last_error = pwd();
 	else if (!ft_strcmp(commande[0], "env"))

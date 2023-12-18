@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:24:43 by cgermain          #+#    #+#             */
-/*   Updated: 2023/12/17 15:55:23 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/18 22:33:46 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	main(int argc, char **argv, char **envp)
 		return (exit_error(data));
 	if (!init_data(env2, data))
 		return (1);
+	data->envlen = tablen(env2);
 	signal_loop(data);
 	if (argc == 1)
 		prompt(data);
