@@ -12,12 +12,6 @@
 
 #include "minishell.h"
 
-void	restore_signal(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, signal_handler);
-}
-
 int	isitlast(t_token *token)
 {
 	int	type;
@@ -33,12 +27,21 @@ int	isitlast(t_token *token)
 	return (1);
 }
 
-void	ctrl_c_heredoc(int std_in, t_data *data)
+int	end_error_heredoc(t_node *node)
+{
+	node->fd_in = 0;
+	node->fd_out = 1;
+	node->heredoc = NULL;
+	return (0);
+}
+
+int	ctrl_c_heredoc(int std_in, t_data *data, t_node *node)
 {
 	dup2(std_in, STDIN_FILENO);
 	close(std_in);
-	g_sig_handle = 0;
 	data->last_error = 130;
+	g_sig_handle = 0;
+	return (end_error_heredoc(node));
 }
 
 void	ctrl_d_heredoc(char *str, t_data *data)

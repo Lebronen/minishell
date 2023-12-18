@@ -117,11 +117,12 @@ char	*manage_error_cmd(char *commande);
 int		syntax_error(t_data *data, char *commande, int i);
 
 //REDIRECTIONS + HEREDOCS
-void	ctrl_c_heredoc(int std_in, t_data *data);
+int		ctrl_c_heredoc(int std_in, t_data *data, t_node *node);
 void	ctrl_d_heredoc(char *str, t_data *data);
 char	**end_heredoc(char **heredoc, int i);
 int		isitlast(t_token *token);
 char	*heredocv2(char *commande);
+int		end_error_heredoc(t_node *node);
 
 //SIGNALS
 void	restore_signal(void);
@@ -155,6 +156,7 @@ t_token	*lexer(char *commande, t_data *data);
 void	print_token(t_token *token);
 int		init_node(char	**commande, t_token **token,
 			t_node **node, t_data *data);
+
 //UTILS + FREE
 void	prompt(t_data *data);
 void	execute(char **commande, t_data *data);
@@ -182,7 +184,7 @@ void	ft_exit(char **commande, t_data *data);
 int		init_out(t_token *token);
 int		init_in(t_token *token, t_data *data);
 void	free_lexer(t_token *token);
-void	manage_heredoc(t_node *node, t_token *token, t_data *data);
+int		manage_heredoc(t_node *node, t_token *token, t_data *data);
 void	loop_unset(char **commande, t_data *data);
 int		unset(char *commande, t_data *data);
 void	del(void *content);
@@ -198,5 +200,6 @@ void	pipe_process(t_node *tmp, int *fd1, int *fd2, int nb);
 void	pipe_loop(t_node *tmp, int *fd1, int *fd2, int j);
 void	child_process(t_node *tmp, int *fd1, int *fd2, int i);
 int		only_export(t_data *data);
+void	free_heredoc(t_node *node);
 
 #endif

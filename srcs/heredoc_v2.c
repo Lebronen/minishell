@@ -47,24 +47,29 @@ char	**manage_heredoc_last(char *endword, t_data *data)
 	return (end_manage_heredoc(heredoc, i));
 }
 
-void	manage_heredoc_notlast(char *endword)
+void	manage_heredoc_notlast(char *endword, t_data *data)
 {
 	char	*heredoc;
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, signal_handler_heredoc);
-	heredoc = readline(">");
+	if (g_sig_handle != SIGINT)
+		heredoc = readline(">");
+	if (!heredoc && g_sig_handle != SIGINT)
+		ctrl_d_heredoc(endword, data);
 	while (heredoc && ft_strncmp(heredoc, endword, ft_strlen(endword)))
 	{
 		free(heredoc);
 		heredoc = readline(">");
+		if (!heredoc && g_sig_handle != SIGINT)
+			ctrl_d_heredoc(endword, data);
 	}
 	if (heredoc)
 		free(heredoc);
 	restore_signal();
 }
 
-void	manage_heredoc(t_node *node, t_token *token, t_data *data)
+int	manage_heredoc(t_node *node, t_token *token, t_data *data)
 {
 	int	std_in;
 
@@ -72,19 +77,21 @@ void	manage_heredoc(t_node *node, t_token *token, t_data *data)
 	while (node && token && token->next && token->type != PIPE)
 	{
 		if (token->type_2 == ENDOF && !isitlast(token))
-			manage_heredoc_notlast(token->next->str);
+			manage_heredoc_notlast(token->next->str, data);
 		else if (token->type_2 == ENDOF && isitlast(token))
 			node->heredoc = manage_heredoc_last(token->next->str, data);
-		if (token->type_2 == ENDOF && isitlast(token) && !node->heredoc)
+		if (token->type_2 == ENDOF && !node->heredoc)
 		{
 			if (g_sig_handle == SIGINT)
-				ctrl_c_heredoc(std_in, data);
-			else
+				return (ctrl_c_heredoc(std_in, data, node));
+			else if (isitlast(token))
+			{
 				ctrl_d_heredoc(token->next->str, data);
-			node->heredoc = NULL;
-			return ;
+				return (end_error_heredoc(node));
+			}		
 		}
 		token = token->next;
 	}
 	close(std_in);
+	return (1);
 }
