@@ -43,10 +43,15 @@ char	*new_command(char *commande, char *env_value, int i)
 {
 	size_t	k;
 	char	*str;
+	int		no_value;
 
 	k = i;
+	no_value = 0;
 	if (!env_value)
-		return (commande);
+	{
+		env_value = ft_strdup("");
+		no_value = 1;
+	}
 	while (commande[i] != ' ' && commande[i] != '\0' && commande[i] != '"'
 		&& commande[i] != '$' && commande[i] != 39)
 		i++;
@@ -55,6 +60,8 @@ char	*new_command(char *commande, char *env_value, int i)
 	if (!str)
 		return (NULL);
 	str = fill_command(commande, env_value, str, k);
+	if (no_value)
+		free(env_value);
 	free(commande);
 	return (str);
 }
@@ -78,14 +85,14 @@ int	env_value_dollar(int i, char **commande, t_data *data)
 		str = get_env_value(data->envp, str1);
 	}
 	(*commande) = new_command((*commande), str, i - 1);
-	while ((*commande)[i] && (*commande)[i] != ' '
+	while ((*commande)[i - 1] && (*commande)[i] && (*commande)[i] != ' '
 		&& (*commande)[i] != '$' && (*commande)[i] != '"')
 		i++;
-	if (str)
-		free(str);
-	if (str1)
-		free(str1);
-	return (i);
+	free_str(str, str1);
+	if ((*commande)[i - 1] && (*commande)[i])
+		return (i);
+	else
+		return (i - 1);
 }
 
 char	*error_env_value(char *commande, t_data *data)
@@ -105,10 +112,7 @@ char	*env_value_checker(char *commande, t_data *data)
 
 	i = 0;
 	if (g_sig_handle == SIGINT)
-	{
-			data->last_error = 130;
-			g_sig_handle = 0;
-	}
+		sigint_react(data);
 	if (!commande)
 		return (NULL);
 	while (commande[i])

@@ -105,6 +105,7 @@ int		env_value_backslash(int i, char **commande);
 char	*manage_with_quote(char *commande);
 int		has_quote(char *commande);
 size_t	boost_i(char *commande, size_t i);
+void	free_str(char *str, char *str1);
 
 //ERRORS
 int		print_error(int error_num, char *nom, char *str, t_data *data);
@@ -113,6 +114,7 @@ int		input_error(char *str, t_data *data);
 int		error_ambig(char *commande, t_data *data);
 int		no_command(char *commande);
 char	*manage_error_cmd(char *commande);
+int		syntax_error(t_data *data, char *commande, int i);
 
 //REDIRECTIONS + HEREDOCS
 void	ctrl_c_heredoc(int std_in, t_data *data);
@@ -128,6 +130,7 @@ void	signal_handler(int signum);
 void	signal_handler_exec(int signum);
 void	signal_handler_heredoc(int signum);
 int		check_signal(void);
+void	sigint_react(t_data *data);
 
 //PARSING
 void	free_nodes(t_node *node);
@@ -194,6 +197,6 @@ void	execloop(t_node *node);
 void	pipe_process(t_node *tmp, int *fd1, int *fd2, int nb);
 void	pipe_loop(t_node *tmp, int *fd1, int *fd2, int j);
 void	child_process(t_node *tmp, int *fd1, int *fd2, int i);
-int 	only_export(t_data *data);
+int		only_export(t_data *data);
 
 #endif

@@ -110,12 +110,7 @@ int	error_cmd2(char *commande, int i, t_data *data)
 int	error_cmd(char *commande, t_data *data)
 {
 	int		i;
-	char	c;
-	int		quotes1;
-	int		quotes2;
 
-	quotes1 = 0;
-	quotes2 = 0;
 	i = 0;
 	if (!commande)
 		return (1);
@@ -125,17 +120,5 @@ int	error_cmd(char *commande, t_data *data)
 		i++;
 	if (error_cmd2(commande, i, data))
 		return (1);
-	while (commande[i])
-	{
-		if (commande[i] != ' ' && commande[i] != 9)
-			c = commande[i];
-		if (commande[i] == '"')
-			quotes1++;
-		if ((quotes1 % 2 == 0) && commande[i] == '\'')
-			quotes2++;
-		i++;
-	}
-	if (c == '|' || c == '>' || c == '<' || quotes1 % 2 != 0 || quotes2 % 2 != 0)
-		return (print_error(2, NULL, "Syntax error\n", data));
-	return (0);
+	return (syntax_error(data, commande, i));
 }

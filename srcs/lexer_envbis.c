@@ -68,3 +68,11 @@ int	env_value_quote(int i, char **commande, t_data *data)
 			i = env_value_quote1(i, commande, data);
 	return (i);
 }
+
+void	free_str(char *str, char *str1)
+{
+	if (str)
+		free(str);
+	if (str1)
+		free(str1);
+}
