@@ -25,19 +25,20 @@ void	free_env(char **env)
 	free(env);
 }
 
-void	manage_shlvl(char *env, char **result, int j)
+int	manage_shlvl(char *env, char **result, int j)
 {
 	int		nb;
 	int		i;
 	char	*number;
 
 	i = 0;
-	nb = ft_atoi(&env[6]);
-	nb++;
+	nb = ft_atoi(&env[6]) + 1;
 	number = ft_itoa(nb);
+	if (!number)
+		return (0);
 	result[j] = malloc(sizeof(char) * (7 + ft_strlen(number)));
 	if (!result)
-		return ;
+		return (0);
 	while (i < 6)
 	{
 		result[j][i] = env[i];
@@ -50,6 +51,7 @@ void	manage_shlvl(char *env, char **result, int j)
 	}
 	free(number);
 	result[j][i] = '\0';
+	return (1);
 }
 
 char	*manage_pwd(void)

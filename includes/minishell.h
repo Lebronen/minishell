@@ -91,7 +91,7 @@ int		tablen(char **tab);
 char	**list_to_tab(t_list *env);
 t_list	*ft_lstdupnew(char *content);
 void	set_shlvl(t_list *envp);
-void	manage_shlvl(char *env, char **result, int j);
+int		manage_shlvl(char *env, char **result, int j);
 void	free_env(char **env);
 char	*ft_strdup_c(char *s, char c);
 char	*ft_strdup_c2(char *s, char c);
