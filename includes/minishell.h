@@ -162,7 +162,7 @@ int		init_node(char	**commande, t_token **token,
 int		has_prev_cmd(t_token *token);
 
 //UTILS + FREE
-void	prompt(t_data *data);
+void	prompt(t_data *data, int in, int out);
 void	execute(char **commande, t_data *data);
 void	error(t_data *data);
 char	*find_path(char *cmd, char **envp);
@@ -173,7 +173,7 @@ void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb);
 void	close_pipes(int *fd1, int *fd2, int i);
 int		wait_for_childrens(int nb);
 int		nb_pipes(t_node *node);
-void	process(t_node *node, t_data *data);
+void	process(t_node *node, t_data *data, int in, int out);
 int		open_file(char *argv, int i);
 void	ft_redirect_in(t_node *node, t_data *data);
 void	ft_redirect_out(t_node *node);
@@ -199,7 +199,7 @@ void	free_data(t_data *data);
 int		is_only_builtin(char **commande);
 int		ft_heredoc(t_node *node, t_data *data);
 void	exec_cmd(t_node *node, t_data *data);
-void	execloop(t_node *node);
+void	execloop(t_node *node, int in, int out);
 void	pipe_process(t_node *tmp, int *fd1, int *fd2, int nb);
 void	pipe_loop(t_node *tmp, int *fd1, int *fd2, int j);
 void	child_process(t_node *tmp, int *fd1, int *fd2, int i);

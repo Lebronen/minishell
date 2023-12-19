@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:24:43 by cgermain          #+#    #+#             */
-/*   Updated: 2023/12/18 22:45:09 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:03:16 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,20 @@ int	exit_error(t_data *data)
 	return (1);
 }
 
+void	close_and_free(t_data *data, int in, int out, char **env2)
+{
+	close(in);
+	close(out);
+	free_env(env2);
+	free_data(data);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 	char	**env2;
+	int		in;
+	int		out;
 
 	(void)argv;
 	data = malloc(sizeof(t_data));
@@ -59,10 +69,11 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	data->envlen = ft_lstsize(data->envp);
 	signal_loop(data);
+	in = dup(STDIN_FILENO);
+	out = dup(STDOUT_FILENO);
 	if (argc == 1)
-		prompt(data);
+		prompt(data, in, out);
 	else
 		ft_putstr_fd("Error : launch without args\n", 2);
-	free_env(env2);
-	free_data(data);
+	close_and_free(data, in, out, env2);
 }

@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:14:32 by lebronen          #+#    #+#             */
-/*   Updated: 2023/12/17 15:57:05 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/19 17:04:36 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	execute(char **commande, t_data *data)
 	}
 }
 
-void	process(t_node *node, t_data *data)
+void	process(t_node *node, t_data *data, int in, int out)
 {
 	if (node->str_options && node->str_options[0]
 		&& !ft_strncmp(node->str_options[0], "./minishell", 12))
@@ -100,7 +100,7 @@ void	process(t_node *node, t_data *data)
 		signal(SIGINT, signal_handler_exec);
 		signal(SIGQUIT, signal_handler_exec);
 	}
-	execloop(node);
+	execloop(node, in, out);
 	if (g_sig_handle == SIGINT)
 		data->last_error = 130;
 	if (g_sig_handle == SIGQUIT)

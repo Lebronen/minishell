@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:25:00 by cgermain          #+#    #+#             */
-/*   Updated: 2023/11/29 19:23:19 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/19 16:50:18 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	free_all(char *commande, t_token *token, t_node *node)
 		free_nodes(node);
 }
 
-void	prompt(t_data *data)
+void	prompt(t_data *data, int in, int out)
 {
 	char	*commande;
 	t_token	*token;
@@ -67,7 +67,7 @@ void	prompt(t_data *data)
 			break ;
 		add_history(commande);
 		if (init_node(&commande, &token, &node, data) && check_heredoc(node))
-			process(node, data);
+			process(node, data, in, out);
 		free_all(commande, token, node);
 	}
 	rl_clear_history();
