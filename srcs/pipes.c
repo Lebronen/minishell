@@ -109,29 +109,29 @@ void	ft_last_cmd(t_node *node, int *fd1, int *fd2, int nb)
 		node->data->last_error = wait_for_childrens(nb);
 }
 
-void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb)
+void	ft_pipe(t_node *tmp, int *fd1, int *fd2, int nb)
 {
 	int		i;
 	int		j;
-	t_node	*tmp;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	tmp = node;
-	while (i < nb)
+	while (++i < nb)
 	{
 		if (!tmp->str_options || !tmp->str_options[0]
 			|| is_only_builtin(tmp->str_options))
 		{
 			if (!j)
+			{
 				fd2[0] = STDIN_FILENO;
+				nb--;
+			}
 		}
 		else
 		{
 			pipe_loop(tmp, fd1, fd2, j);
 			j++;
 		}
-		i++;
 		tmp = tmp->next;
 	}
 	if (tmp->str_options && tmp->str_options[0])

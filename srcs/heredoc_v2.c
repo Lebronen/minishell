@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_v2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 16:57:39 by rshay             #+#    #+#             */
-/*   Updated: 2023/11/22 18:56:46 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/19 10:37:34 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	manage_heredoc_notlast(char *endword, t_data *data)
 {
 	char	*heredoc;
 
+	heredoc = NULL;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, signal_handler_heredoc);
 	if (g_sig_handle != SIGINT)
