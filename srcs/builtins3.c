@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 15:58:26 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/18 22:49:53 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/19 15:47:12 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,14 @@ int	only_export(t_data *data)
 		current = current->next;
 	}
 	return (0);
+}
+
+void	free_first(t_list **lst)
+{
+	t_list	*next;
+
+	next = (*lst)->next;
+	free((*lst)->content);
+	free(*lst);
+	*lst = next;
 }

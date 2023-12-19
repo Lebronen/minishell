@@ -18,11 +18,11 @@ t_list	*tab_to_list(char **tab)
 	t_list	*first;
 	t_list	*new;
 
-	first = ft_lstnew(tab[0]);
+	first = ft_lstnew(ft_strdup(tab[0]));
 	i = 1;
 	while (tab[i])
 	{
-		new = ft_lstnew(tab[i]);
+		new = ft_lstnew(ft_strdup(tab[i]));
 		ft_lstadd_back(&first, new);
 		i++;
 	}

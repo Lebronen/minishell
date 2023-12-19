@@ -183,7 +183,7 @@ int		n_parsing(char **str);
 int		export(char *commande, t_data *data);
 void	loop_export(char **commande, t_data *data);
 void	ft_exit(char **commande, t_data *data);
-int		init_out(t_token *token);
+int		init_out(t_token *token, int fd_in);
 int		init_in(t_token *token, t_data *data);
 void	free_lexer(t_token *token);
 int		manage_heredoc(t_node *node, t_token *token, t_data *data);
@@ -202,6 +202,7 @@ void	pipe_process(t_node *tmp, int *fd1, int *fd2, int nb);
 void	pipe_loop(t_node *tmp, int *fd1, int *fd2, int j);
 void	child_process(t_node *tmp, int *fd1, int *fd2, int i);
 int		only_export(t_data *data);
+void	free_first(t_list **current);
 void	free_heredoc(t_node *node);
 
 #endif

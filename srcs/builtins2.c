@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/18 22:50:24 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/19 15:46:54 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	export(char *commande, t_data *data)
 	{
 		if (!ft_strncmp(current->content, commande, ft_index(commande, '=')))
 		{
+			free(current->content);
 			current->content = commande;
 			here = 1;
 		}
@@ -43,24 +44,25 @@ int	unset(char *commande, t_data *data)
 {
 	t_list	*current;
 	t_list	*next;
-	int		i;
 
-	i = 0;
 	if (!ft_strcmp(commande, "PATH"))
 		data->is_path = 0;
-	current = data->envp;
-	while (current && current ->next)
+	if (!ft_strcmp(data->envp->content, commande))
+		free_first(&(data->envp));
+	else
 	{
-		if (!ft_strncmp(current->next->content, commande, ft_strlen(commande)))
+		current = data->envp;
+		while (current && current ->next)
 		{
-			next = current->next->next;
-			if (i >= data->envlen - 1)
+			if (!ft_strcmp(current->next->content, commande))
+			{
+				next = current->next->next;
 				free(current->next->content);
-			free(current->next);
-			current->next = next;
+				free(current->next);
+				current->next = next;
+			}
+			current = current->next;
 		}
-		current = current->next;
-		i++;
 	}
 	data->envlen -= 1;
 	return (0);

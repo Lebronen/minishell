@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nodes_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:04:31 by cgermain          #+#    #+#             */
-/*   Updated: 2023/12/18 22:28:31 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:01:27 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,13 @@ void	free_nodes(t_node *node)
 void	free_data(t_data *data)
 {
 	t_list	*temp_env;
-	int		i;
 
-	i = 0;
 	while (data->envp)
 	{
 		temp_env = data->envp->next;
-		if (i >= data->envlen)
-			free(data->envp->content);
+		free(data->envp->content);
 		free(data->envp);
 		data->envp = temp_env;
-		i++;
 	}
 	free(data->envp);
 	if (data->path)
