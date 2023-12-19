@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-int	init_out(t_token *token)
+int	init_out(t_token *token, int fd_in)
 {
 	int	fd;
 
 	fd = 1;
-	while (token && token->type != PIPE)
+	while (fd_in != -1 && token && token->type != PIPE)
 	{
 		if (token->type_2 == OUT)
 		{
