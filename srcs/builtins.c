@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/18 22:19:16 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:12:17 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	cd(char *path, t_data *data)
 {
 	struct stat	buf;
 	mode_t		mode;
-	char		cwd[256];
+	char		cwd[PATH_MAX];
 
 	if (!path)
 		path = getenv("HOME");

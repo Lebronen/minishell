@@ -25,6 +25,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <signal.h>
+# include <limits.h>
 
 # define PIPE 0
 # define REDIR 1

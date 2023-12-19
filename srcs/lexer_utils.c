@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgermain <cgermain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:03:45 by cgermain          #+#    #+#             */
-/*   Updated: 2023/10/19 15:03:49 by cgermain         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:13:21 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	free_lexer(t_token *token)
 int	has_prev_cmd(t_token *token)
 {
 	token = token->previous;
-	while (token && token->type_2 != PIPE)
+	while (token && token->type != PIPE)
 	{
 		if (token->type_2 == COMMAND)
 			return (1);
