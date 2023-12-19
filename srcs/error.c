@@ -22,7 +22,7 @@ int	error_ambig(char *commande, t_data *data)
 		if (commande[i] == '<' || commande[i] == '>')
 		{
 			i ++;
-			if (commande[i] == '$')
+			if (commande[i] && commande[i] == '$')
 			{
 				while (commande[i] && commande [i] != ' ' && commande[i] != '|')
 				{
@@ -33,7 +33,8 @@ int	error_ambig(char *commande, t_data *data)
 				return (1);
 			}
 		}
-		i++;
+		if (commande[i])
+			i++;
 	}
 	return (0);
 }
