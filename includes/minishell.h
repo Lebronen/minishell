@@ -158,6 +158,7 @@ t_token	*lexer(char *commande, t_data *data);
 void	print_token(t_token *token);
 int		init_node(char	**commande, t_token **token,
 			t_node **node, t_data *data);
+int		has_prev_cmd(t_token *token);
 
 //UTILS + FREE
 void	prompt(t_data *data);
@@ -183,7 +184,7 @@ int		n_parsing(char **str);
 int		export(char *commande, t_data *data);
 void	loop_export(char **commande, t_data *data);
 void	ft_exit(char **commande, t_data *data);
-int		init_out(t_token *token);
+int		init_out(t_token *token, int fd_in);
 int		init_in(t_token *token, t_data *data);
 void	free_lexer(t_token *token);
 int		manage_heredoc(t_node *node, t_token *token, t_data *data);
