@@ -158,6 +158,7 @@ t_token	*lexer(char *commande, t_data *data);
 void	print_token(t_token *token);
 int		init_node(char	**commande, t_token **token,
 			t_node **node, t_data *data);
+int		has_prev_cmd(t_token *token);
 
 //UTILS + FREE
 void	prompt(t_data *data);

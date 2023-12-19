@@ -49,8 +49,8 @@ void	tokenizer(t_token *token)
 		if ((token->type == WORD || token->type == QUOTE)
 			&& token->previous->type != REDIR)
 		{
-			if (token->previous->type == PIPE
-				|| token->previous->type_2 == PATH)
+			if ((token->previous->type == PIPE
+					|| token->previous->type_2 == PATH) && !has_prev_cmd(token))
 				token->type_2 = COMMAND;
 			else if (token->str[0] == '-')
 				token->type_2 = OPTION;
@@ -100,7 +100,6 @@ t_token	*lexer(char *commande, t_data *data)
 	tokenizer(first_token(last));
 	return (first_token(last));
 }
-
 /*
 void print_token(t_token *token)
 {

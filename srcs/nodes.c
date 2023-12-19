@@ -17,7 +17,7 @@ char	**cmd_str(t_token *token, char **str)
 	int	i;
 
 	i = 0;
-	if (token->str[0])
+	if (token->str && token->str[0])
 	{
 		str[0] = ft_strdup(token->str);
 		i++;

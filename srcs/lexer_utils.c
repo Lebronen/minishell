@@ -58,3 +58,18 @@ void	free_lexer(t_token *token)
 		token = tmp_token;
 	}
 }
+
+int	has_prev_cmd(t_token *token)
+{
+	token = token->previous;
+	while (token && token->type_2 != PIPE)
+	{
+		if (token->type_2 == COMMAND)
+			return (1);
+		if (token->previous)
+			token = token->previous;
+		else
+			return (0);
+	}
+	return (0);
+}
