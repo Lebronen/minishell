@@ -69,7 +69,7 @@ int	has_prev_cmd(t_token *token)
 		if (token->previous)
 			token = token->previous;
 		else
-			return(0);
+			return (0);
 	}
 	return (0);
 }
