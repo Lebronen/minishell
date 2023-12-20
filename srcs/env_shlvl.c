@@ -25,32 +25,44 @@ void	free_env(char **env)
 	free(env);
 }
 
-int	manage_shlvl(char *env, char **result, int j)
+void	fill_shlvl(char **result, char *env, char *number)
 {
-	int		nb;
-	int		i;
-	char	*number;
+	int	i;
 
 	i = 0;
-	nb = ft_atoi(&env[6]) + 1;
-	number = ft_itoa(nb);
-	if (!number)
-		return (0);
-	result[j] = malloc(sizeof(char) * (7 + ft_strlen(number)));
-	if (!result)
-		return (0);
 	while (i < 6)
 	{
-		result[j][i] = env[i];
+		(*result)[i] = env[i];
 		i++;
 	}
 	while (number[i - 6])
 	{
-		result[j][i] = number[i - 6];
+		(*result)[i] = number[i - 6];
 		i++;
 	}
-	free(number);
-	result[j][i] = '\0';
+	free (number);
+	(*result)[i] = '\0';
+}
+
+int	manage_shlvl(char *env, char **result, int j)
+{
+	int		nb;
+	char	*number;
+
+	nb = ft_atoi(&env[6]) + 1;
+	number = ft_itoa(nb);
+	if (!number)
+	{
+		result[j] = NULL;
+		return (0);
+	}
+	result[j] = malloc(sizeof(char) * (7 + ft_strlen(number)));
+	if (!result[j])
+	{
+		free(number);
+		return (0);
+	}
+	fill_shlvl(&result[j], env, number);
 	return (1);
 }
 
@@ -78,7 +90,17 @@ char	**create_envp(t_data *data)
 	if (!envp)
 		return (NULL);
 	envp[0] = manage_pwd();
+	if (!envp[0])
+	{
+		free_env(envp);
+		return (NULL);
+	}
 	envp[1] = ft_strdup("SHLVL=1");
+	if (!envp[1])
+	{
+		free_env(envp);
+		return (NULL);
+	}
 	envp[2] = NULL;
 	return (envp);
 }

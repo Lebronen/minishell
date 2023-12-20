@@ -17,36 +17,35 @@ static void	*free_array(char **array)
 	int	i;
 
 	i = 0;
-	while (array[i])
+	while (array && array[i])
 	{
 		free(array[i]);
 		i++;
 	}
-	free(array);
+	if (array)
+		free(array);
 	return (NULL);
 }
 
 static char	**fill_env(char **envp, char **result)
 {
-	int	i;
 	int	j;
 
 	j = 0;
 	while (envp[j])
 	{
-		i = 0;
 		if (!ft_strncmp(envp[j], "SHLVL=", 6))
 		{
 			if (!manage_shlvl(envp[j], result, j))
-				return (NULL);
+				return (free_array(result));
 			j++;
 		}
-		while (envp[j][i])
+		if (envp && envp[j])
 		{
-			result[j][i] = envp[j][i];
-			i++;
+			result[j] = ft_strdup(envp[j]);
+			if (!result[j])
+				return (free_array(result));
 		}
-		result[j][i] = '\0';
 		j++;
 	}
 	result[j] = NULL;
@@ -67,17 +66,6 @@ char	**init_env(char **envp, t_data *data)
 	result = malloc(sizeof(char *) * (i + 1));
 	if (result == NULL)
 		return (NULL);
-	i--;
-	while (i >= 0)
-	{
-		if (envp && strncmp(envp[i], "SHLVL=", 6))
-		{
-			result[i] = malloc((ft_strlen(envp[i]) + 1) * sizeof(char));
-			if (!result[i])
-				return (free_array(result));
-		}
-		i--;
-	}
 	return (fill_env(envp, result));
 }
 
