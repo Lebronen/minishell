@@ -52,7 +52,7 @@ t_node	*make_cmd(t_token *token)
 	while (token->next && (token->next->type_2 == OPTION
 			|| token->next->type_2 == ARG))
 	{
-		if (!ft_strcmp(token->next->str, ""))
+		if (!ft_strcmp2(token->next->str, ""))
 			i++;
 		token = token->next;
 	}

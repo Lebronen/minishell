@@ -207,5 +207,6 @@ void	child_process(t_node *tmp, int *fd1, int *fd2, int i);
 int		only_export(t_data *data);
 void	free_first(t_list **current);
 void	free_heredoc(t_node *node);
+int		ft_strcmp2(char *s1, char *s2);
 
 #endif

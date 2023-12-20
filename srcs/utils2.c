@@ -12,6 +12,18 @@
 
 #include "minishell.h"
 
+int	ft_strcmp2(char *s1, char *s2)
+{
+	while (*s1 && *s2)
+	{
+		if (*s1 != *s2)
+			return (1);
+		s1++;
+		s2++;
+	}
+	return (0);
+}
+
 int	ft_index(char *commande, char c)
 {
 	int	i;
