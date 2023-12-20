@@ -7,7 +7,7 @@ LIBFT		= libft
 SRC_DIR		= srcs/
 OBJ_DIR		= objects/
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g3
+CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -f
 SMAKE		= make --no-print-directory
 

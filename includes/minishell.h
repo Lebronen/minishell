@@ -182,6 +182,7 @@ int		update_pwd(char *cwd, t_data *data);
 int		pwd(void);
 int		echo(char **str, int option, int fd);
 int		n_parsing(char **str);
+int		ft_str_only_ncmp(char *s1, char *s2, int n);
 int		export(char *commande, t_data *data);
 void	loop_export(char **commande, t_data *data);
 void	ft_exit(char **commande, t_data *data);

@@ -6,7 +6,7 @@
 /*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 18:04:17 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/18 22:50:47 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/20 12:31:11 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,9 @@ int	tablen(char **tab)
 	while (tab[i])
 		i++;
 	return (i);
+}
+
+int	ft_str_only_ncmp(char *s1, char *s2, int n)
+{
+	return (!ft_strncmp(s1, s2, n) && ft_strcmp(s1 + n, s2 + n));
 }

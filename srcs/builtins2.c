@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/19 15:46:54 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/20 12:30:47 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int	unset(char *commande, t_data *data)
 		current = data->envp;
 		while (current && current ->next)
 		{
-			if (!ft_strcmp(current->next->content, commande))
+			if (ft_str_only_ncmp(current->next->content,
+					commande, ft_strlen(commande)))
 			{
 				next = current->next->next;
 				free(current->next->content);
