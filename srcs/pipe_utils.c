@@ -57,8 +57,10 @@ void	pipe_process(t_node *tmp, int *fd1, int *fd2, int nb)
 
 void	close_pipes(int *fd1, int *fd2, int i)
 {
-	close(fd1[0]);
-	close(fd1[1]);
+	if (fd1[0] != -1)
+		close(fd1[0]);
+	if (fd1[1] != -1)
+		close(fd1[1]);
 	if (i)
 	{	
 		close(fd2[0]);

@@ -6,11 +6,25 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:51:54 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/19 16:53:05 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/21 19:53:20 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	close_on_exit(t_node *node, int in, int out)
+{
+	while (node)
+	{
+		if (node->fd_in != in)
+			close(node->fd_in);
+		if (node->fd_out != out)
+			close(node->fd_out);
+		node = node->prev;
+	}
+	close(in);
+	close(out);
+}
 
 void	execloop(t_node *node, int in, int out)
 {
@@ -18,11 +32,13 @@ void	execloop(t_node *node, int in, int out)
 	int	tube2[2];
 	int	nb;
 
-	tube1[0] = 0;
-	tube1[1] = 1;
-	tube2[0] = 0;
-	tube2[1] = 1;
+	tube1[0] = -1;
+	tube1[1] = -1;
+	tube2[0] = -1;
+	tube2[1] = -1;
 	nb = nb_pipes(node);
+	if (!ft_strcmp("exit", node->str_options[0]) && !node->next)
+		close_on_exit(node, in, out);
 	ft_pipe(node, tube1, tube2, nb);
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);
