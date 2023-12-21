@@ -23,9 +23,9 @@ char	**cmd_str(t_token *token, char **str)
 		i++;
 	}
 	token = token->next;
-	while (token && (token->type_2 == OPTION || token->type_2 == ARG))
+	while (token && token->type != PIPE)
 	{
-		if (token->str[0])
+		if ((token->type_2 == OPTION || token->type_2 == ARG) && token->str[0])
 		{
 			str[i] = ft_strdup(token->str);
 			i++;
@@ -49,10 +49,10 @@ t_node	*make_cmd(t_token *token)
 	node = malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
-	while (token->next && (token->next->type_2 == OPTION
-			|| token->next->type_2 == ARG))
+	while (token->next && token->next->type != PIPE)
 	{
-		if (!ft_strcmp2(token->next->str, ""))
+		if ((token->next->type_2 == OPTION || token->next->type_2 == ARG)
+			&& !ft_strcmp2(token->next->str, ""))
 			i++;
 		token = token->next;
 	}
