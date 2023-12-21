@@ -51,7 +51,7 @@ int	error_cmd4(char *cmd, t_data *data)
 			if (cmd[i + 1] && cmd[i + 1] == '<')
 				return (print_error(2, NULL, "Syntax error\n", data));
 			else if (cmd[i + 1] && cmd[i + 1] == '>')
-				if (cmd[i + 2] && (cmd[i + 2] == '>' || cmd[i - 2] == '<'))
+				if (cmd[i + 2] && (cmd[i + 2] == '>' || cmd[i + 2] == '<'))
 					return (print_error(2, NULL, "Syntax error\n", data));
 		}
 		else if (cmd[i] == '<')
