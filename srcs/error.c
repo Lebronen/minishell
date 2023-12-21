@@ -80,7 +80,7 @@ int	error_cmd3(char *commande, t_data *data)
 			j = i - 1;
 			while (commande[j] && (commande[j] == ' ' || commande[j] == 9))
 				j--;
-			if (commande[j] == '<' || commande[j] == '>')
+			if (commande[j] == '<' || commande[j] == '>' || commande[j] == '|')
 				return (print_error(2, NULL, "Syntax error\n", data));
 		}
 		i++;
