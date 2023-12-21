@@ -37,7 +37,8 @@ void	execloop(t_node *node, int in, int out)
 	tube2[0] = -1;
 	tube2[1] = -1;
 	nb = nb_pipes(node);
-	if (!ft_strcmp("exit", node->str_options[0]) && !node->next)
+	if (node->str_options
+		&& !ft_strcmp("exit", node->str_options[0]) && !node->next)
 		close_on_exit(node, in, out);
 	ft_pipe(node, tube1, tube2, nb);
 	dup2(in, STDIN_FILENO);

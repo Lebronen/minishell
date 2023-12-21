@@ -37,7 +37,7 @@ char	**manage_heredoc_last(char *endword, t_data *data)
 	heredoc[0] = env_value_checker(readline(">"), data);
 	if (!heredoc[0])
 		return (end_heredoc(heredoc, 0));
-	while (heredoc[i] && ft_strncmp(heredoc[i], endword, ft_strlen(endword)))
+	while (heredoc[i] && ft_strcmp(heredoc[i], endword))
 	{
 			i++;
 			heredoc[i] = env_value_checker(readline(">"), data);
@@ -58,7 +58,7 @@ void	manage_heredoc_notlast(char *endword, t_data *data)
 		heredoc = readline(">");
 	if (!heredoc && g_sig_handle != SIGINT)
 		ctrl_d_heredoc(endword, data);
-	while (heredoc && ft_strncmp(heredoc, endword, ft_strlen(endword)))
+	while (heredoc && ft_strcmp(heredoc, endword))
 	{
 		free(heredoc);
 		heredoc = readline(">");
