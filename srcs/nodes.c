@@ -58,7 +58,10 @@ t_node	*make_cmd(t_token *token)
 	}
 	node->str_options = malloc((i + 2) * sizeof(char *));
 	if (!node->str_options)
+	{
+		free(node);
 		return (NULL);
+	}
 	node->str_options = cmd_str(tmp_token, node->str_options);
 	node->next = NULL;
 	return (node);
@@ -74,18 +77,17 @@ t_node	*nodizer_unit(t_token *token, t_data *data)
 	while (token && token->type != PIPE)
 	{
 		if (token->type_2 == COMMAND)
+		{
 			node = make_cmd(token);
+			if (!node || !node->str_options || !node->str_options[0])
+				return (NULL);
+		}	
 		token = token->next;
 	}
 	if (!node)
-	{
-		node = malloc(sizeof(t_node));
-		if (!node)
-			return (NULL);
-		node->str_options = NULL;
-		node->next = NULL;
-	}
-	node->heredoc = NULL;
+		node = node_no_cmd(node);
+	if (!node)
+		return (NULL);
 	if (!manage_heredoc(node, tmp_token, data))
 		return (node);
 	node->fd_in = init_in(tmp_token, data);
@@ -113,7 +115,10 @@ t_node	*nodizer(t_token *token, t_data *data)
 	node = NULL;
 	while (token)
 	{
+		tmp_node = node;
 		node = nodizer_unit(token, data);
+		if (!node)
+			return (error_malloc_node(tmp_node));
 		node->data = data;
 		node->prev = prev;
 		prev = node;

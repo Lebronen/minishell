@@ -74,6 +74,7 @@ int	manage_heredoc(t_node *node, t_token *token, t_data *data)
 {
 	int	std_in;
 
+	node->heredoc = NULL;
 	std_in = dup(STDIN_FILENO);
 	while (node && token && token->next && token->type != PIPE)
 	{

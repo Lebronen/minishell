@@ -67,3 +67,23 @@ void	free_data(t_data *data)
 		free(data->path);
 	free(data);
 }
+
+t_node	*error_malloc_node(t_node *node)
+{
+	while (node && node->prev)
+	{
+		node = node->prev;
+	}
+	free_nodes(node);
+	return (NULL);
+}
+
+t_node	*node_no_cmd(t_node *node)
+{
+	node = malloc(sizeof(t_node));
+	if (!node)
+		return (NULL);
+	node->str_options = NULL;
+	node->next = NULL;
+	return (node);
+}

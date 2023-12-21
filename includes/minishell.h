@@ -127,6 +127,7 @@ char	**end_heredoc(char **heredoc, int i);
 int		isitlast(t_token *token);
 char	*heredocv2(char *commande);
 int		end_error_heredoc(t_node *node);
+t_node	*node_no_cmd(t_node *node);
 
 //SIGNALS
 void	restore_signal(void);
@@ -161,6 +162,7 @@ void	print_token(t_token *token);
 int		init_node(char	**commande, t_token **token,
 			t_node **node, t_data *data);
 int		has_prev_cmd(t_token *token);
+t_node	*error_malloc_node(t_node *node);
 
 //UTILS + FREE
 void	prompt(t_data *data, int in, int out);
