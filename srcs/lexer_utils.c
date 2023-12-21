@@ -16,6 +16,8 @@ t_token	*new_token(int type, char *str, t_token *last)
 {
 	t_token	*new;
 
+	if (str == NULL && type != PIPE)
+		return (NULL);
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return (NULL);
@@ -72,4 +74,11 @@ int	has_prev_cmd(t_token *token)
 			return (0);
 	}
 	return (0);
+}
+
+t_token	*malloc_error_token(t_token *token)
+{
+	if (token)
+		free_lexer(first_token(token));
+	return (NULL);
 }

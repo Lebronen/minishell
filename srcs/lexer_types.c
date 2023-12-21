@@ -17,6 +17,8 @@ int	handlepipetoken(int i, t_token **last)
 	(*last) = new_token(PIPE, NULL, (*last));
 	(*last)->type_2 = 8;
 	i++;
+	if (!(*last))
+		return (-1);
 	return (i);
 }
 
@@ -34,6 +36,8 @@ int	handleinputredir(int i, t_token **last, char *commande)
 		(*last)->type_2 = IN;
 	}
 	i++;
+	if (!(*last))
+		return (-1);
 	if (commande[i] == '|' || commande[i] == '\\' || commande[i] == '$')
 		i++;
 	return (i);
@@ -53,6 +57,8 @@ int	handleoutputredir(int i, t_token **last, char *commande)
 		(*last)->type_2 = OUT;
 	}
 	i++;
+	if (!(*last))
+		return (-1);
 	if (commande[i] == '|' || commande[i] == '\\' || commande[i] == '$')
 		i++;
 	return (i);

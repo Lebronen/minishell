@@ -118,6 +118,7 @@ int		error_ambig(char *commande, t_data *data);
 int		no_command(char *commande);
 char	*manage_error_cmd(char *commande);
 int		syntax_error(t_data *data, char *commande, int i);
+t_token	*malloc_error_token(t_token *token);
 
 //REDIRECTIONS + HEREDOCS
 int		ctrl_c_heredoc(int std_in, t_data *data, t_node *node);

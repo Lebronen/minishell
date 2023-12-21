@@ -56,6 +56,8 @@ int	handledoublequotetoken(int i, t_token **last, char *commande)
 		i++;
 	if (commande[i] == 34)
 		i++;
+	if (!(*last))
+		return (-1);
 	return (i);
 }
 
@@ -67,6 +69,8 @@ int	handlesinglequotetoken(int i, t_token **last, char *commande)
 		i++;
 	if (commande[i] == 39)
 		i++;
+	if (!(*last))
+		return (-1);
 	return (i);
 }
 
@@ -82,6 +86,8 @@ int	handlewordtoken(int i, t_token **last, char *commande)
 	}
 	else
 		(*last) = new_token(WORD, ft_strdup_c(&commande[i], 32), (*last));
+	if (!(*last))
+		return (-1);
 	while (commande[i] != 32 && commande[i] != '\0'
 		&& commande[i] != '>' && commande[i] != '<' && commande[i] != '|')
 		i++;

@@ -82,6 +82,7 @@ t_token	*lexer(char *commande, t_data *data)
 {
 	int		i;
 	t_token	*last;
+	t_token	*lastbis;
 
 	i = 0;
 	last = NULL;
@@ -89,12 +90,15 @@ t_token	*lexer(char *commande, t_data *data)
 		return (NULL);
 	while (commande[i])
 	{
+		lastbis = last;
 		if (commande[i] == ' ')
 			i++;
 		else if (commande[i] == '|')
 			i = handlepipetoken(i, &last);
 		else
 			i = handlecommande(i, &last, commande);
+		if (i == -1)
+			return (malloc_error_token(lastbis));
 	}
 	last->next = NULL;
 	tokenizer(first_token(last));
