@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:51:54 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/21 19:53:20 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/26 19:15:56 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	close_on_exit(t_node *node, int in, int out)
 {
 	while (node)
 	{
-		if (node->fd_in != in)
+		if (node->fd_in != STDIN_FILENO && node->fd_in != -2)
 			close(node->fd_in);
-		if (node->fd_out != out)
+		if (node->fd_out != STDOUT_FILENO)
 			close(node->fd_out);
 		node = node->prev;
 	}
@@ -41,6 +41,5 @@ void	execloop(t_node *node, int in, int out)
 		&& !ft_strcmp("exit", node->str_options[0]) && !node->next)
 		close_on_exit(node, in, out);
 	ft_pipe(node, tube1, tube2, nb);
-	dup2(in, STDIN_FILENO);
-	dup2(out, STDOUT_FILENO);
+	close_on_exit(node, in, out);
 }
