@@ -31,7 +31,7 @@ void	child_process(t_node *tmp, int *fd1, int *fd2, int i)
 			}
 		}
 		if (tmp->fd_out != STDOUT_FILENO)
-			ft_redirect_out(tmp, tmp->data);
+			ft_redirect_out(tmp);
 		else
 			dup2(fd1[1], STDOUT_FILENO);
 		close_pipes(fd1, fd2, i);
@@ -41,8 +41,8 @@ void	child_process(t_node *tmp, int *fd1, int *fd2, int i)
 
 int	parent_process(t_node *tmp, int *fd1, int *fd2, int nb)
 {
-	int	in;
-	int	out;
+	int		in;
+	int		out;
 
 	if (is_builtin(tmp->str_options))
 	{
@@ -51,7 +51,7 @@ int	parent_process(t_node *tmp, int *fd1, int *fd2, int nb)
 			in = dup(STDIN_FILENO);
 			out = dup(STDOUT_FILENO);
 			ft_redirect_in(tmp, tmp->data);
-			ft_redirect_out(tmp, tmp->data);
+			ft_redirect_out(tmp);
 			is_builtin_exec(tmp->str_options, tmp->data);
 			dup2(in, STDIN_FILENO);
 			close(in);

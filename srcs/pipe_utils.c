@@ -50,7 +50,7 @@ void	pipe_process(t_node *tmp, int *fd1, int *fd2, int nb)
 				}
 			}
 		}
-		ft_redirect_out(tmp, tmp->data);
+		ft_redirect_out(tmp);
 		exec_cmd(tmp, tmp->data);
 	}
 }

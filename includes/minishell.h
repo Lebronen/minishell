@@ -59,7 +59,6 @@ typedef struct s_data
 	char	*path;
 	t_list	*envp;
 	int		envlen;
-	int		is_redir;
 }	t_data;
 
 typedef struct s_token
@@ -175,14 +174,13 @@ int		nb_str(char *s, char c);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_index(char *commande, char c);
 void	ft_pipe(t_node *node, int *fd1, int *fd2, int nb);
-void	pipe_redir(t_node *tmp);
 void	close_pipes(int *fd1, int *fd2, int i);
 int		wait_for_childrens(int nb);
 int		nb_pipes(t_node *node);
 void	process(t_node *node, t_data *data, int in, int out);
 int		open_file(char *argv, int i);
 void	ft_redirect_in(t_node *node, t_data *data);
-void	ft_redirect_out(t_node *node, t_data *data);
+void	ft_redirect_out(t_node *node);
 int		cd(char *path, t_data *data);
 int		update_pwd(char *cwd, t_data *data);
 int		pwd(void);
@@ -207,7 +205,6 @@ int		is_only_builtin(char **commande);
 int		ft_heredoc(t_node *node, t_data *data);
 void	exec_cmd(t_node *node, t_data *data);
 void	execloop(t_node *node, int in, int out);
-void	close_on_exit(t_node *node, int in, int out, int exit);
 void	pipe_process(t_node *tmp, int *fd1, int *fd2, int nb);
 void	pipe_loop(t_node *tmp, int *fd1, int *fd2, int j);
 void	child_process(t_node *tmp, int *fd1, int *fd2, int i);
