@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+void	handlenothing(t_token **last)
+{
+	(*last) = new_token(COMMAND, " ", (*last));
+}
+
 int	has_quote(char *commande)
 {
 	int	i;
