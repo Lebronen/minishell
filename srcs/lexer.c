@@ -100,6 +100,8 @@ t_token	*lexer(char *commande, t_data *data)
 		if (i == -1)
 			return (malloc_error_token(lastbis));
 	}
+	if (!last)
+		handlenothing(&last);
 	last->next = NULL;
 	tokenizer(first_token(last));
 	return (first_token(last));
