@@ -56,15 +56,17 @@ void	ft_redirect_in(t_node *node, t_data *data)
 			fd = ft_heredoc(node, data);
 		dup2(fd, STDIN_FILENO);
 		close(fd);
+		data->is_redir = 1;
 	}
 }
 
-void	ft_redirect_out(t_node *node)
+void	ft_redirect_out(t_node *node, t_data *data)
 {
 	if (node->fd_out != STDOUT_FILENO)
 	{
 		dup2(node->fd_out, STDOUT_FILENO);
 		close(node->fd_out);
+		data->is_redir = 1;
 	}
 }
 

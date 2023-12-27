@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 12:24:43 by cgermain          #+#    #+#             */
-/*   Updated: 2023/12/19 17:03:16 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/27 12:29:13 by lebronen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	main(int argc, char **argv, char **envp)
 	signal_loop(data);
 	in = dup(STDIN_FILENO);
 	out = dup(STDOUT_FILENO);
+	data->is_redir = 0;
 	if (argc == 1)
 		prompt(data, in, out);
 	else
