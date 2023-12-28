@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 15:58:26 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/28 19:28:20 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/28 19:35:55 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,20 @@ void	remove_loop(t_data *data, char *commande)
 		}
 		current = current->next;
 	}
+}
+
+int	is_n_good(char *str)
+{
+	int	i;
+
+	i = 1;
+	if (str[0] != '-')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
 }

@@ -76,25 +76,12 @@ int	n_parsing(char **str)
 {
 	int	i;
 	int	non;
-	int	j;
 
 	i = 1;
-	non = 0;
-	j = 1;
-	while (str[i + 1])
+	non = 1;
+	while (str[i] && is_n_good(str[i]))
 	{
-		j = 1;
-		while (str[i][j])
-		{
-			if (str[i][j] != 'n')
-			{
-				non = 1;
-				break ;
-			}
-			j++;
-		}
-		if (non)
-			break ;
+		non = 0;
 		i++;
 	}
 	return (echo(str, i, non));
