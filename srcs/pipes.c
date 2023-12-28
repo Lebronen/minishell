@@ -126,6 +126,8 @@ void	ft_pipe(t_node *tmp, int *fd1, int *fd2, int nb)
 				fd2[0] = STDIN_FILENO;
 				nb--;
 			}
+			else
+				nb--;
 		}
 		else
 		{
