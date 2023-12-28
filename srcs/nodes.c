@@ -86,6 +86,8 @@ t_node	*nodizer_unit(t_token *token, t_data *data)
 	}
 	if (!node)
 		node = node_no_cmd(node);
+	else
+		node->has_cmd = 1;
 	if (!node)
 		return (NULL);
 	if (!manage_heredoc(node, tmp_token, data))
