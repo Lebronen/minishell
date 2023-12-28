@@ -72,7 +72,6 @@ typedef struct s_token
 
 typedef struct s_node
 {
-	int				has_cmd;
 	int				fd_in;
 	int				fd_out;
 	char			**str_options;

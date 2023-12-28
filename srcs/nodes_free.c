@@ -83,7 +83,6 @@ t_node	*node_no_cmd(t_node *node)
 	node = malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
-	node->has_cmd = 0;
 	node->str_options = NULL;
 	node->next = NULL;
 	return (node);
