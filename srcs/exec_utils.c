@@ -52,7 +52,8 @@ void	ft_redirect_in(t_node *node, t_data *data)
 	if (node->fd_in != STDIN_FILENO)
 	{
 		fd = node->fd_in;
-		if (fd == -2)
+		if (!(fd == -2 && (!node->str_options && !node->str_options[0] && 
+			ft_strcmp(node->str_options[0], " "))))
 			fd = ft_heredoc(node, data);
 		dup2(fd, STDIN_FILENO);
 		close(fd);

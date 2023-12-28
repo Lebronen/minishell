@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:51:54 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/28 15:33:56 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/28 16:23:04 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	ft_closing_fd(t_node *node)
 		i++;
 	}
 	i = 0;
+	printf("fds = %d et redir = %d\n", fds, nb_redir(node));
 	while (i < fds + nb_redir(node))
 	{
 		close(i + 5);
@@ -84,6 +85,8 @@ void	execloop(t_node *node, int in, int out)
 	tube2[0] = -1;
 	tube2[1] = -1;
 	nb = nb_pipes(node);
+	if (!node->str_options || !node->str_options[0])
+			return ;
 	if (node->str_options
 		&& !ft_strcmp("exit", node->str_options[0]) && !node->next)
 		close_on_exit(node, in, out);
