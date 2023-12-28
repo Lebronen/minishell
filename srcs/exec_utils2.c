@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:51:54 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/28 16:49:25 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/28 17:14:18 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,11 @@ void	ft_closing_fd(t_node *node)
 	fds = 0;
 	while (i < nb_pipes(node) + 1)
 	{
-		if (i == 3)
-			fds = 2;
-		if (i > 3)
-		{
-			fds += fds + 1;
-		}
+		fds += fds + 1;
 		i++;
 	}
 	i = 0;
-	printf("fds = %d et redir = %d\n", fds, nb_redir(node));
-	while (i < fds + nb_redir(node))
+	while (i <= fds + nb_redir(node))
 	{
 		close(i + 5);
 		i++;
