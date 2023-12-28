@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 14:50:04 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/28 09:21:37 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/28 18:31:11 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,23 +68,18 @@ int	env(t_data *data)
 	return (0);
 }
 
-int	echo(char **str, int option, int fd)
+int	echo(char **str, int index, int option)
 {
-	int	i;
-
-	i = n_parsing(str);
-	if (i == 1)
-		option = 0;
-	while (str[i])
+	while (str[index])
 	{
-		if (write(fd, str[i], ft_strlen(str[i])) == -1)
+		if (write(1, str[index], ft_strlen(str[index])) == -1)
 			ft_printf("write error\n");
-		if (str[i + 1])
-			write(fd, " ", 1);
-		i++;
+		if (str[index + 1])
+			write(1, " ", 1);
+		index++;
 	}
-	if (!option)
-		ft_putchar_fd('\n', fd);
+	if (option)
+		ft_putchar_fd('\n', 1);
 	return (0);
 }
 

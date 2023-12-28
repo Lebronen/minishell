@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/28 12:24:44 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/28 18:42:39 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,27 +94,26 @@ int	n_parsing(char **str)
 	int	non;
 	int	j;
 
-	i = 0;
-	non = 1;
-	while (str[++i] && !ft_strncmp(str[i], "-n", 2))
+	i = 1;
+	non = 0;
+	j = 1;
+	while (str[i + 1])
 	{
-		j = 2;
+		j = 1;
 		while (str[i][j])
 		{
 			if (str[i][j] != 'n')
 			{
-				non = 0;
+				non = 1;
 				break ;
 			}
 			j++;
 		}
-		if (!non)
-		{
-			i = 1;
+		if (non)
 			break ;
-		}
+		i++;
 	}
-	return (i);
+	return (echo(str, i, non));
 }
 
 void	loop_export(char **commande, t_data *data)
