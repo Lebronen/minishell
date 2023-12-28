@@ -51,12 +51,11 @@ void	ft_redirect_in(t_node *node, t_data *data)
 
 	if (node->fd_in != STDIN_FILENO)
 	{
-
-			fd = node->fd_in;
-			if (fd == -2)
-				fd = ft_heredoc(node, data);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
+		fd = node->fd_in;
+		if (fd == -2)
+			fd = ft_heredoc(node, data);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
 	}
 }
 

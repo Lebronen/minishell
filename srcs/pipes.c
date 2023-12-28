@@ -122,12 +122,8 @@ void	ft_pipe(t_node *tmp, int *fd1, int *fd2, int nb)
 			|| is_only_builtin(tmp->str_options))
 		{
 			if (!j)
-			{
 				fd2[0] = STDIN_FILENO;
-				nb--;
-			}
-			else
-				nb--;
+			nb--;
 		}
 		else
 		{

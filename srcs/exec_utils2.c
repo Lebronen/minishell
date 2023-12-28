@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:51:54 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/28 17:14:18 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/28 17:42:55 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	execloop(t_node *node, int in, int out)
 	tube2[1] = -1;
 	nb = nb_pipes(node);
 	if (!node->str_options || !node->str_options[0])
-			return ;
+		return ;
 	if (node->str_options
 		&& !ft_strcmp("exit", node->str_options[0]) && !node->next)
 		close_on_exit(node, in, out);
