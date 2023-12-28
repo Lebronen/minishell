@@ -214,5 +214,7 @@ int		only_export(t_data *data);
 void	free_first(t_list **current);
 void	free_heredoc(t_node *node);
 int		ft_strcmp2(char *s1, char *s2);
+t_list	*remove_first(t_list *head, char *commande);
+void	remove_loop(t_data *data, char *commande);
 
 #endif

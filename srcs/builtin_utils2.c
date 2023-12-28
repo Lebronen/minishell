@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>				+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/12/05 16:48:55 by rshay			 #+#	#+#			 */
-/*   Updated: 2023/12/28 11:31:20 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/28 19:29:39 by rshay            ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	ft_strlencmp(char *s1, char *s2, int ind)
 
 	i = 0;
 	j = 0;
-	while (s1[i] != '=')
+	while (s1[i] && s1[i] != '=')
 		i++;
-	while (s2[j] != '=')
+	while (s2[j] && s2[j] != '=')
 		j++;
 	if (i != j)
 		return (1);

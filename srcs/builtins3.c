@@ -6,7 +6,7 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 15:58:26 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/19 15:47:12 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/28 19:28:20 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,24 @@ void	free_first(t_list **lst)
 	free((*lst)->content);
 	free(*lst);
 	*lst = next;
+}
+
+void	remove_loop(t_data *data, char *commande)
+{
+	t_list	*current;
+	t_list	*next;
+
+	current = data->envp;
+	while (current && current ->next)
+	{
+		if (!ft_strlencmp(current->next->content,
+				commande, ft_index(current->next->content, '=')))
+		{
+			next = current->next->next;
+			free(current->next->content);
+			free(current->next);
+			current->next = next;
+		}
+		current = current->next;
+	}
 }
