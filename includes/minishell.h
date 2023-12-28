@@ -164,6 +164,7 @@ int		init_node(char	**commande, t_token **token,
 int		has_prev_cmd(t_token *token);
 t_node	*error_malloc_node(t_node *node);
 void	handlenothing(t_token **last);
+int		is_n_good(char *str);
 
 //UTILS + FREE
 void	prompt(t_data *data, int in, int out);

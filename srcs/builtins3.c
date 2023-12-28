@@ -39,3 +39,19 @@ void	free_first(t_list **lst)
 	free(*lst);
 	*lst = next;
 }
+
+int	is_n_good(char *str)
+{
+	int	i;
+
+	i = 1;
+	if (str[0] != '-')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
