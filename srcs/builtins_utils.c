@@ -30,7 +30,7 @@ void	is_also_builtin(char **commande, t_data *data)
 	{
 		if (!commande[1])
 			write(1, "\n", 1);
-		else if (!ft_strcmp(commande[1], "-n"))
+		else if (!ft_strncmp(commande[1], "-n", 2))
 			data->last_error = echo(commande, 1, 1);
 		else
 			data->last_error = echo(commande, 0, 1);

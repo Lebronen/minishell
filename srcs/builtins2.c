@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lebronen <lebronen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:02:37 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/20 12:30:47 by lebronen         ###   ########.fr       */
+/*   Updated: 2023/12/28 12:24:44 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	export(char *commande, t_data *data)
 	current = data->envp;
 	while (current)
 	{
-		if (!ft_strncmp(current->content, commande, ft_index(commande, '=')))
+		if (!ft_strlencmp(commande, current->content, ft_index(commande, '=')))
 		{
 			free(current->content);
 			current->content = commande;
@@ -94,9 +94,9 @@ int	n_parsing(char **str)
 	int	non;
 	int	j;
 
-	i = 1;
+	i = 0;
 	non = 1;
-	while (str[i] && !ft_strcmp(str[i], "-n"))
+	while (str[++i] && !ft_strncmp(str[i], "-n", 2))
 	{
 		j = 2;
 		while (str[i][j])
@@ -109,8 +109,10 @@ int	n_parsing(char **str)
 			j++;
 		}
 		if (!non)
+		{
+			i = 1;
 			break ;
-		i++;
+		}
 	}
 	return (i);
 }
@@ -126,10 +128,19 @@ void	loop_export(char **commande, t_data *data)
 	while (commande[i])
 	{
 		if (ft_index(commande[i], '=') != -1)
-		{	
-			str = ft_strdup(commande[i]);
-			data->is_env += export(str, data);
-			data->is_path = data->is_env;
+		{
+			if (ft_strlen(commande[i]) == 1 && !isalpha(commande[i][0]))
+			{
+				ft_printf("export: '%c' : not a valid identifier\n",
+					commande[i][0]);
+				data->last_error = 1;
+			}
+			else
+			{
+				str = ft_strdup(commande[i]);
+				data->is_env += export(str, data);
+				data->is_path = data->is_env;
+			}
 		}
 		i++;
 	}

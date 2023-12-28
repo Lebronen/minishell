@@ -189,6 +189,8 @@ int		n_parsing(char **str);
 int		ft_str_only_ncmp(char *s1, char *s2, int n);
 int		export(char *commande, t_data *data);
 void	loop_export(char **commande, t_data *data);
+int		ft_strlencmp(char *s1, char *s2, int ind);
+char	*trimexport(char *str);
 void	ft_exit(char **commande, t_data *data);
 int		init_out(t_token *token, int fd_in);
 int		init_in(t_token *token, t_data *data);
