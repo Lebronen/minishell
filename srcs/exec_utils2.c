@@ -6,24 +6,71 @@
 /*   By: rshay <rshay@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:51:54 by rshay             #+#    #+#             */
-/*   Updated: 2023/12/28 11:35:55 by rshay            ###   ########.fr       */
+/*   Updated: 2023/12/28 15:33:56 by rshay            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	nb_redir(t_node *node)
+{
+	t_node	*tmp;
+	int		redir;
+
+	tmp = node;
+	redir = 0;
+	while (tmp)
+	{
+		if (tmp->fd_out != STDOUT_FILENO)
+			redir++;
+		if (tmp->fd_in != STDIN_FILENO)
+			redir++;
+		tmp = tmp->next;
+	}
+	return (redir);
+}
+
+void	ft_closing_fd(t_node *node)
+{
+	int	i;
+	int	fds;
+
+	i = 0;
+	fds = 0;
+	while (i < nb_pipes(node) + 1)
+	{
+		if (i == 3)
+			fds = 2;
+		if (i > 3)
+		{
+			fds += fds + 1;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < fds + nb_redir(node))
+	{
+		close(i + 5);
+		i++;
+	}
+}
+
 void	close_on_exit(t_node *node, int in, int out)
 {
-	while (node)
+	t_node	*tmp;
+
+	tmp = node;
+	while (tmp)
 	{
-		if (node->fd_in != STDIN_FILENO && node->fd_in != -2)
-			close(node->fd_in);
-		if (node->fd_out != STDOUT_FILENO)
-			close(node->fd_out);
-		node = node->next;
+		if (tmp->fd_in != STDIN_FILENO && tmp->fd_in != -2)
+			close(tmp->fd_in);
+		if (tmp->fd_out != STDOUT_FILENO)
+			close(tmp->fd_out);
+		tmp = tmp->next;
 	}
 	close(in);
 	close(out);
+	ft_closing_fd(node);
 }
 
 void	execloop(t_node *node, int in, int out)
